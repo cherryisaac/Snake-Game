@@ -1,4 +1,4 @@
-My Snake Game - Freelance Java Project
+My SnakeGamer - Freelance Java Project
 by Isaac Cherry
 
 The goal of the user - 
