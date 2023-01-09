@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean running = false;
     Timer timer;
     Random random;
+    boolean paused = false;
 
     GamePanel(){
         random = new Random();
@@ -50,7 +51,18 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         draw(g);
-        paused(g);
+        if(paused){
+            g.setColor(new Color(0, 0, 0, 128));
+            g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+            FontMetrics metrics = getFontMetrics(g.getFont());
+            g.drawString("Paused", (SCREEN_WIDTH - metrics.stringWidth("Paused"))/2, SCREEN_HEIGHT/2);
+            timer.stop();
+        }
+            paused = false;
+
+
     }
 
     public void draw(Graphics g){
@@ -66,13 +78,12 @@ public class GamePanel extends JPanel implements ActionListener {
             for (int i = 0; i < bodyParts; i++) {
                 if(i == 0){
                     g.setColor(Color.GREEN);
-                    g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
                     g.setColor(new Color(45, 100, 0));
                     //un-comment below to add random colors to the snake's body
 //                    g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-                    g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
                 }
+                g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 40));
@@ -80,7 +91,6 @@ public class GamePanel extends JPanel implements ActionListener {
             g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         } else {
             gameOver(g);
-
         }
     }
 
@@ -142,7 +152,10 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over"))/2,SCREEN_HEIGHT/2);
+    }
 
+    public void togglePause(){
+        paused = !paused;
     }
 
     public class MyKeyAdapter extends KeyAdapter{
@@ -165,9 +178,9 @@ public class GamePanel extends JPanel implements ActionListener {
                     if(direction != 'U'){
                         direction = 'D';
                     }
-                } case  KeyEvent.VK_SPACE -> { //Adds pause button with space bar
+                } case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
-                        timer.stop();
+                        togglePause();
                     } else {
                         timer.start();
                     }
@@ -178,34 +191,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public class Keyboard {
         private static final Map<Integer, Boolean> pressedKeys = new HashMap<>();
-        static {
-            KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
-                synchronized (Keyboard.class) {
-                    if (event.getID() == KeyEvent.KEY_PRESSED){
-                        pressedKeys.put(event.getKeyCode(), true);
-                    } else if (event.getID() == KeyEvent.KEY_RELEASED) {
-                        pressedKeys.put(event.getKeyCode(), false);
-                    }
-                    return false;
-                }
-
-            });
-        }
         public static boolean isKeyPressed(int keyCode) { // Any key code from the KeyEvent class
             return pressedKeys.getOrDefault(keyCode, false);
         }
     }
-
-        public void paused(Graphics g) {
-            if (Keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("Ink Free", Font.BOLD, 25));
-                FontMetrics metrics2 = getFontMetrics(g.getFont());
-                g.drawString("Paused", (SCREEN_WIDTH - metrics2.stringWidth("Paused")) / 2, SCREEN_HEIGHT / 2);
-            } else if (Keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
-                g.dispose();
-            }
-        }
 
     @Override
     public void actionPerformed(ActionEvent e) {
