@@ -1,10 +1,10 @@
 My SnakeGamer - Freelance Java Project
 by Isaac Cherry
 
-The goal of the user - 
+The goal of the user:
 - To collect as many apples as possible
 
-Functionality - 
+Functionality:
 - The arrows control the snake
 - The space bar pauses the game
 - The apple will appear randomly each time the snake eats it
@@ -12,11 +12,10 @@ Functionality -
 - There is a scoreboard at the top that lets you know how many apples you've collected in total so far
 - When the snake goes out of bounds or runs into itself game over text will be shown to the user
 
-Bugs - 
-- The pause screen text does not function correctly
+Bugs:
 - Sometimes the snake can go out of bounds with no game over function triggered
 
-Future features I would like to implement -
+Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
 - A basic pause menu feature to select the choices of resume, restart and exit game
 - Select difficulty between Easy, Medium, and Hard
