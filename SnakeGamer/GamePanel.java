@@ -11,7 +11,9 @@ import java.util.Map;
 import java.util.Random;
 
 
+
 public class GamePanel extends JPanel implements ActionListener {
+    HighScoreTracker highScoreTracker;
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     //How big do we want the objects in this game?
@@ -34,6 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     GamePanel(){
         random = new Random();
+        highScoreTracker = new HighScoreTracker();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK); //Changes background color
         this.setFocusable(true);
@@ -61,8 +64,6 @@ public class GamePanel extends JPanel implements ActionListener {
             timer.stop();
         }
             paused = false;
-
-
     }
 
     public void draw(Graphics g){
