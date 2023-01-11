@@ -131,7 +131,7 @@ public class MainMenu extends JFrame implements ActionListener {
                 exitButton.setBackground(UIManager.getColor("control"));
             }
         });
-        
+
         //Buttons change color with arrow keys...a little BUGGY...commented out for now
 
 //        startButton.addKeyListener(new KeyAdapter() {
