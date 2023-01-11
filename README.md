@@ -4,6 +4,9 @@ by Isaac Cherry
 The goal of the user:
 - To collect as many apples as possible
 
+Latest Update 1/9/23:
+- Added Main Menu with choices of Start Game, High Scores, Exit
+
 Functionality:
 - The arrows control the snake
 - The space bar pauses the game
@@ -22,4 +25,4 @@ Future features I would like to implement:
 - With easy mode the snake can go out of bounds and spawns on the opposite side, but can still fail if it runs into it's self
 - With medium mode the user can lose if the snake goes out of bounds, or it runs into itself
 - With hard mode I would like the same as medium, but with a few obstacles that have to be avoided
-- Time attack mode where the snake collects as many apples in a given time frame (5 or 10 min)
+- Time attack mode where the snake collects as many apples in a given time frame (2 or 5 min)
