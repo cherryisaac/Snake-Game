@@ -1,6 +1,7 @@
 package SnakeGamer;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +21,9 @@ public class MainMenu extends JFrame implements ActionListener {
         setTitle("Snake Game");
 //        setLayout(null);
 
-        //Set background image
-        ImageIcon bg = new ImageIcon("/Users/Isaac Cherry/Documents/Game/Snake-Game/snake-apple-fruit-its-mouth-forbidden-concept-164896573.jpg");
+        //Set background image...change directory according to the image route on your os.
+        //If background only shows a black screen then there might be a typo or wrong directory.
+        ImageIcon bg = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/snake-apple-fruit-its-mouth-forbidden-concept-164896573-transformed-FINAL.jpg");
         JLabel background = new JLabel(bg);
 
         //Add the buttons to the main menu frame
@@ -37,19 +39,31 @@ public class MainMenu extends JFrame implements ActionListener {
         background.setBackground(new Color(0,0,0)); //Changes window color
 
         //Ensure that the buttons are rendered on top of the background image
-//        getContentPane().setComponentZOrder(startButton, 0);
-//        getContentPane().setComponentZOrder(highScoreButton, 0);
-//        getContentPane().setComponentZOrder(exitButton, 0);
+        getContentPane().setComponentZOrder(startButton, 0);
+        getContentPane().setComponentZOrder(highScoreButton, 0);
+        getContentPane().setComponentZOrder(exitButton, 0);
 
         //move the buttons on top of background
-        startButton.setBounds(250, 420, 100, 20);
-        highScoreButton.setBounds(250, 440, 100, 20);
+        startButton.setBounds(250, 420, 125, 20);
+        highScoreButton.setBounds(235, 440, 145, 20);
         exitButton.setBounds(250, 460, 100, 20);
+
+//        startButton.setBounds(250, 420, 100, 20);
+//        highScoreButton.setBounds(250, 440, 100, 20);
+//        exitButton.setBounds(250, 460, 100, 20);
 
         //Add action listeners to the buttons
         startButton.addActionListener(this);
         exitButton.addActionListener(this);
         highScoreButton.addActionListener(this);
+
+        //Changes button font and removes button border
+        startButton.setFont(new Font("Arial", Font.ITALIC, 16));
+        highScoreButton.setFont(new Font("Arial", Font.ITALIC, 16));
+        exitButton.setFont(new Font("Arial", Font.ITALIC, 16));
+        startButton.setBorderPainted(false);
+        highScoreButton.setBorderPainted(false);
+        exitButton.setBorderPainted(false);
 
         //Set the size and location of the main menu frame
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
