@@ -190,13 +190,6 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
 
-    public class Keyboard {
-        private static final Map<Integer, Boolean> pressedKeys = new HashMap<>();
-        public static boolean isKeyPressed(int keyCode) { // Any key code from the KeyEvent class
-            return pressedKeys.getOrDefault(keyCode, false);
-        }
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running){
