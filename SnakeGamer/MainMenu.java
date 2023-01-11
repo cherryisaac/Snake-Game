@@ -30,6 +30,52 @@ public class MainMenu extends JFrame implements ActionListener {
         setSize(200, 200);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+         //Arrow keys for navigating the menu and enter to execute each action
+        startButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    startButton.doClick();
+                }
+                if(e.getKeyCode() == KeyEvent.VK_UP){
+                    exitButton.requestFocus();
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+                    highScoreButton.requestFocus();
+                }
+            }
+        });
+
+        highScoreButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    highScoreButton.doClick();
+                }
+                if(e.getKeyCode() == KeyEvent.VK_UP){
+                    startButton.requestFocus();
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+                    exitButton.requestFocus();
+                }
+            }
+        });
+
+        exitButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    exitButton.doClick();
+                }
+                if(e.getKeyCode() == KeyEvent.VK_UP){
+                    highScoreButton.requestFocus();
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+                    startButton.requestFocus();
+                }
+            }
+        });
     }
 
     @Override
