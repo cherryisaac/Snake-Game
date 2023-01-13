@@ -153,6 +153,32 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over"))/2,SCREEN_HEIGHT/2);
+        //Create a button for the option to retry the game
+        JButton retryButton = new JButton("Retry");
+        retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
+        retryButton.setBounds(230,325,150,50);
+        add(retryButton);
+        retryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    new GameFrame();
+            }
+        });
+        //Create a button for the option to return to the main menu
+        JButton mainMenuButton = new JButton("Main Menu");
+        mainMenuButton.setBackground(Color.RED);
+        mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
+        mainMenuButton.setBounds(230,375,150,50);
+        add(mainMenuButton);
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.setVisible(true);
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
+                currentFrame.dispose();
+            }
+        });
     }
 
     public void togglePause(){
