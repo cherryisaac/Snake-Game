@@ -189,10 +189,12 @@ public class GamePanel extends JPanel implements ActionListener {
         Timer delayTimer = new Timer(delayTime, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                retryButton.setVisible(true);
-                mainMenuButton.setVisible(true);
                 retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
                 mainMenuButton.setBounds(230,375,150,50);
+                if(!running){
+                    retryButton.setVisible(true);
+                    mainMenuButton.setVisible(true);
+                }
             }
         });
         delayTimer.setRepeats(false);
