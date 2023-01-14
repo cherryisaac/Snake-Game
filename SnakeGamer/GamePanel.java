@@ -33,6 +33,8 @@ public class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
     boolean paused = false;
+    JButton retryButton, mainMenuButton;
+    
 
     GamePanel(){
         random = new Random();
@@ -81,7 +83,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     g.setColor(Color.GREEN);
                 } else {
                     g.setColor(new Color(45, 100, 0));
-                    //un-comment below to add random colors to the snake's body
+                    //Un-comment below to add random colors to the snake's body
 //                    g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
@@ -153,22 +155,23 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over"))/2,SCREEN_HEIGHT/2);
+    }
+    
+    public void gameOverButtons(){
         //Create a button for the option to retry the game
-        JButton retryButton = new JButton("Retry");
+        retryButton = new JButton("Retry");
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
-        retryButton.setBounds(230,325,150,50);
         add(retryButton);
         retryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    new GameFrame();
+                new GameFrame();
             }
         });
         //Create a button for the option to return to the main menu
-        JButton mainMenuButton = new JButton("Main Menu");
+        mainMenuButton = new JButton("Main Menu");
         mainMenuButton.setBackground(Color.RED);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
-        mainMenuButton.setBounds(230,375,150,50);
         add(mainMenuButton);
         mainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -179,6 +182,21 @@ public class GamePanel extends JPanel implements ActionListener {
                 currentFrame.dispose();
             }
         });
+            retryButton.setVisible(false);
+            mainMenuButton.setVisible(false);
+        //Delay the appearance of the buttons
+        int delayTime =3000; // 3 seconds
+        Timer delayTimer = new Timer(delayTime, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retryButton.setVisible(true);
+                mainMenuButton.setVisible(true);
+                retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
+                mainMenuButton.setBounds(230,375,150,50);
+            }
+        });
+        delayTimer.setRepeats(false);
+        delayTimer.start();
     }
 
     public void togglePause(){
@@ -212,9 +230,9 @@ public class GamePanel extends JPanel implements ActionListener {
                         timer.start();
                     }
                 }
-                }
             }
         }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -224,5 +242,6 @@ public class GamePanel extends JPanel implements ActionListener {
             checkCollisions();
         }
             repaint();
+            gameOverButtons();
     }
 }
