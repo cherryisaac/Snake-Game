@@ -34,6 +34,8 @@ public class GamePanel extends JPanel implements ActionListener {
     Random random;
     boolean paused = false;
     JButton retryButton, mainMenuButton;
+    private int alpha = 255;
+    private Timer animationTimer;
     
 
     GamePanel(){
@@ -158,17 +160,17 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     public void gameOverButtons(){
-        //Create a button for the option to retry the game
+        //Creates a button for the option to retry the game
         retryButton = new JButton("Retry");
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
         retryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameFrame();
+                retryButtonClicked();
             }
         });
-        //Create a button for the option to return to the main menu
+        //Creates a button for the option to return to the main menu
         mainMenuButton = new JButton("Main Menu");
         mainMenuButton.setBackground(Color.RED);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
@@ -176,10 +178,7 @@ public class GamePanel extends JPanel implements ActionListener {
         mainMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.setVisible(true);
-                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
-                currentFrame.dispose();
+                menuButtonClicked();
             }
         });
             retryButton.setVisible(false);
@@ -199,6 +198,45 @@ public class GamePanel extends JPanel implements ActionListener {
         });
         delayTimer.setRepeats(false);
         delayTimer.start();
+    }
+    
+     //Game over button animations
+    private void retryButtonClicked() {
+        animationTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                alpha -= 5;
+                retryButton.setForeground(new Color(255, 0, 0, alpha));
+                retryButton.setBackground(new Color(255, 0, 0, alpha));
+                if (alpha <= 0) {
+                    animationTimer.stop();
+                    //restart game
+                    new GameFrame();
+                }
+            }
+        });
+        animationTimer.start();
+    }
+
+    private void menuButtonClicked() {
+        animationTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                alpha -= 3;
+                mainMenuButton.setForeground(new Color(0, 188, 255, alpha));
+                mainMenuButton.setBackground(new Color(0, 188, 255, alpha));
+                if (alpha <= 0) {
+                    animationTimer.stop();
+                    //Return to main menu
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.setVisible(true);
+                    JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
+                    currentFrame.dispose();
+                }
+
+            }
+        });
+        animationTimer.start();
     }
 
     public void togglePause(){
