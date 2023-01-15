@@ -36,6 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
     JButton retryButton, mainMenuButton;
     private int alpha = 255;
     private Timer animationTimer;
+    boolean gameOver = false;
     
 
     GamePanel(){
@@ -152,11 +153,12 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+        //Background image/animation
+        ImageIcon background = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/gif-blood.gif");
+        g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         //Game Over text
-        g.setColor(Color.RED);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
-        FontMetrics metrics2 = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over"))/2,SCREEN_HEIGHT/2);
+        ImageIcon gif = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/game-over-text.gif");
+        g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
     }
     
     public void gameOverButtons(){
@@ -190,7 +192,7 @@ public class GamePanel extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
                 mainMenuButton.setBounds(230,375,150,50);
-                if(!running){
+                if(!running & gameOver){
                     retryButton.setVisible(true);
                     mainMenuButton.setVisible(true);
                 }
@@ -283,5 +285,6 @@ public class GamePanel extends JPanel implements ActionListener {
         }
             repaint();
             gameOverButtons();
+            gameOver = true;
     }
 }
