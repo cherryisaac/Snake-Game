@@ -154,10 +154,10 @@ public class GamePanel extends JPanel implements ActionListener {
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         //Background image/animation
-        ImageIcon background = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/gif-blood.gif");
+        ImageIcon background = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/gif-blood.gif");
         g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         //Game Over text
-        ImageIcon gif = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/game-over-text.gif");
+        ImageIcon gif = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/game-over-text.gif");
         g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
     }
     
