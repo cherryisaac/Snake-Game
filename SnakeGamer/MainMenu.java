@@ -19,12 +19,17 @@ public class MainMenu extends JFrame implements ActionListener {
     public MainMenu() {
         //Set the title and layout of the main menu frame
         setTitle("Snake Game");
-//        setLayout(null);
+        setLayout(null);
 
         //Set background image...change directory according to the image route on your os.
         //If background only shows a black screen then there might be a typo or wrong directory.
         ImageIcon bg = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/snake-apple-fruit-its-mouth-forbidden-concept-164896573-transformed-FINAL.jpg");
         JLabel background = new JLabel(bg);
+        ImageIcon logo = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/3D-Text-1s-280px.gif");
+        titleLogo = new JLabel(logo);
+        titleLogo.setVerticalAlignment(JLabel.TOP);
+        ImageIcon snake = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/snake.gif");
+        snakeImage = new JLabel(snake);
 
         //Add the buttons to the main menu frame
         add(startButton);
@@ -33,24 +38,32 @@ public class MainMenu extends JFrame implements ActionListener {
 
         //Adds background to the main menu, adjust size and position
         add(background);
-        background.setBounds(0, -95, 750, 750);
-//      getContentPane().setComponentZOrder(background, 0);
-        background.setOpaque(true);
+        add(snakeImage);
+        add(titleLogo);
+        
+        //Snake, logo, and background positions
+        background.setBounds(-25, -95, 750, 750);
+        snakeImage.setBounds(95, 125, 400, 300);
+        titleLogo.setBounds(150, 15, 300, 300);
+        
+      //background.setOpaque(true);
         background.setBackground(new Color(0,0,0)); //Changes window color
 
-        //Ensure that the buttons are rendered on top of the background image
+        //Ensure that the buttons/images are rendered on top of the background image
+        getContentPane().setComponentZOrder(titleLogo, 0);
+        getContentPane().setComponentZOrder(snakeImage, 0);
         getContentPane().setComponentZOrder(startButton, 0);
         getContentPane().setComponentZOrder(highScoreButton, 0);
         getContentPane().setComponentZOrder(exitButton, 0);
 
         //move the buttons on top of background
-        startButton.setBounds(250, 420, 125, 20);
-        highScoreButton.setBounds(235, 440, 145, 20);
-        exitButton.setBounds(250, 460, 100, 20);
-
-//        startButton.setBounds(250, 420, 100, 20);
-//        highScoreButton.setBounds(250, 440, 100, 20);
+//        startButton.setBounds(250, 420, 125, 20);
+//        highScoreButton.setBounds(235, 440, 145, 20);
 //        exitButton.setBounds(250, 460, 100, 20);
+        
+        startButton.setBounds(250, 375, 100, 20);
+        highScoreButton.setBounds(250, 395, 100, 20);
+        exitButton.setBounds(250, 415, 100, 20);
 
         //Add action listeners to the buttons
         startButton.addActionListener(this);
@@ -61,9 +74,15 @@ public class MainMenu extends JFrame implements ActionListener {
         startButton.setFont(new Font("Arial", Font.ITALIC, 16));
         highScoreButton.setFont(new Font("Arial", Font.ITALIC, 16));
         exitButton.setFont(new Font("Arial", Font.ITALIC, 16));
-        startButton.setBorderPainted(false);
-        highScoreButton.setBorderPainted(false);
-        exitButton.setBorderPainted(false);
+        startButton.setForeground(Color.black);
+        highScoreButton.setForeground(Color.black);
+        exitButton.setForeground(Color.black);
+        startButton.setVisible(true);
+        highScoreButton.setVisible(true);
+        exitButton.setVisible(true);
+//        startButton.setBorderPainted(false);
+//        highScoreButton.setBorderPainted(false);
+//        exitButton.setBorderPainted(false);
 
         //Set the size and location of the main menu frame
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
