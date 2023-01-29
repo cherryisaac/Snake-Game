@@ -21,13 +21,12 @@ public class GamePanel extends JPanel implements ActionListener {
     //Calculates how many objects can fit into the game
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
     //The higher the number, the slower the game is
-    static final int DELAY = 75;
+//     static final int DELAY = 75;
     final int [] X = new int[GAME_UNITS];
     final int [] Y = new int[GAME_UNITS];
     int bodyParts = 6;
     int applesEaten;
-    int appleX;
-    int appleY;
+    int appleX, appleY;
     char direction = 'R';
     boolean running = false;
     Timer timer;
@@ -37,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int alpha = 255;
     private Timer animationTimer;
     boolean gameOver = false;
-    
+    private final OptionsMenu optionsMenu;
 
     GamePanel(){
         random = new Random();
@@ -46,13 +45,16 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.BLACK); //Changes background color
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        optionsMenu = new OptionsMenu();
+        optionsMenu.setVisible(false);
         startGame();
     }
 
     public void startGame(){
+        optionsMenu.loadOptions();
         newApple();
         running = true;
-        timer = new Timer(DELAY, this);
+        timer = new Timer(optionsMenu.getGameSpeed(), this);
         timer.start();
     }
 
@@ -83,7 +85,17 @@ public class GamePanel extends JPanel implements ActionListener {
 
             for (int i = 0; i < bodyParts; i++) {
                 if(i == 0){
-                    g.setColor(Color.GREEN);
+                    //Maps corresponding options values to colors
+                    switch (optionsMenu.getSnakeColor()) {
+                        case "green" -> g.setColor(Color.green);
+                        case "blue" -> g.setColor(Color.blue);
+                        case "orange" -> g.setColor(Color.orange);
+                        case "purple" -> g.setColor(Color.magenta);
+                        case "cyan" -> g.setColor(Color.cyan);
+                        case "yellow" -> g.setColor(Color.yellow);
+                        case "pink" -> g.setColor(Color.pink);
+                        case "random" -> g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    }
                 } else {
                     g.setColor(new Color(45, 100, 0));
                     //Un-comment below to add random colors to the snake's body
