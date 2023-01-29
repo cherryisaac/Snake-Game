@@ -18,7 +18,6 @@ Functionality:
 - Settings menu allows the player to change the snake's color, snake's speed, and grid color
 
 Bugs:
-- Options menu shows up in game
 - Game over screen buttons can appear randomly instead of as prompted
 
 Future features I would like to implement:
