@@ -20,6 +20,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private Timer timer;
     private JSlider speedSlider;
     private JComboBox<String> snakeColorComboBox;
+    private JComboBox<String> gridColorComboBox;
     private JCheckBox timeModeCheckBox;
     private JFrame optionsFrame;
     private static final String OPTIONS_FILE = "options.txt";
@@ -32,7 +33,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
 
         JPanel optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
-
+        
+        //Snake color settings
         JLabel snakeColorLabel = new JLabel("Select snake color:");
         snakeColorComboBox = new JComboBox<>(new String[]
             {"orange", "purple", "blue", "green", "cyan", "yellow", "pink", "random"});
@@ -45,7 +47,21 @@ public class OptionsMenu extends JFrame implements ActionListener {
         });
         optionsPanel.add(snakeColorLabel);
         optionsPanel.add(snakeColorComboBox);
-
+         
+         //Grid color settings
+         JLabel gridColorLabel = new JLabel("Select grid color:");
+         gridColorComboBox = new JComboBox<>(new String[]{"white", "gray", "black"});
+         gridColorComboBox.setSelectedItem(gridColor);
+         gridColorComboBox.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 gridColor = (String) gridColorComboBox.getSelectedItem();
+             }
+         });
+         optionsPanel.add(gridColorLabel);
+         optionsPanel.add(gridColorComboBox);
+        
+        //Snake speed settings
         JLabel gameSpeedLabel = new JLabel("Select game speed:");
         //The higher the number, the slower the game is
         speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
@@ -58,6 +74,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         optionsPanel.add(gameSpeedLabel);
         optionsPanel.add(speedSlider);
 
+        //Time Mode settings...WIP
         JLabel timeModeLabel = new JLabel("Select time mode:");
         timeModeCheckBox = new JCheckBox();
         timeModeCheckBox.setSelected(timeMode);
@@ -69,7 +86,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
         });
          optionsPanel.add(timeModeLabel);
          optionsPanel.add(timeModeCheckBox);
-
+         
+        //Save button properties
         saveButton = new JButton("Save");
         optionsPanel.add(saveButton);
 
@@ -82,7 +100,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
             }
         });
 
-
+        //Cancel button properties
         cancelButton = new JButton("Cancel");
         optionsPanel.add(cancelButton);
 
@@ -108,26 +126,34 @@ public class OptionsMenu extends JFrame implements ActionListener {
         }
     }
 
+    //Write settings to a save file
     public void saveOptions() {
         try (PrintWriter writer = new PrintWriter(OPTIONS_FILE)) {
             writer.println(snakeColor);
+            writer.println(gridColor);
             writer.println(gameSpeed);
             writer.println(timeMode);
         } catch (FileNotFoundException e) {
             System.err.println("Could not save options to file " + OPTIONS_FILE);
         }
     }
-    public int getGameSpeed() {
-        return gameSpeed;
+    
+    private void saveSettings() {
+        snakeColor = (String) snakeColorComboBox.getSelectedItem();
+        gridColor = (String) gridColorComboBox.getSelectedItem();
+        gameSpeed = speedSlider.getValue();
+        timeMode = timeModeCheckBox.isSelected();
     }
+    
+    //Getters so the parameters are accessible to other classes
     public String getSnakeColor() {
         return snakeColor;
     }
-
-    private void saveSettings() {
-        snakeColor = (String) snakeColorComboBox.getSelectedItem();
-        gameSpeed = speedSlider.getValue();
-        timeMode = timeModeCheckBox.isSelected();
+    public String getGridColor() {
+        return gridColor;
+    }
+    public int getGameSpeed() {
+        return gameSpeed;
     }
 
     @Override
