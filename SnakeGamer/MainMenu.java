@@ -23,7 +23,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         //Set background image...change directory according to the image route on your os.
         //If background only shows a black screen then there might be a typo or wrong directory.
-        ImageIcon bg = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/snake-apple-fruit-its-mouth-forbidden-concept-164896573-transformed-FINAL.jpg");
+        ImageIcon bg = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/grid.gif");
         JLabel background = new JLabel(bg);
         ImageIcon logo = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/3D-Text-1s-280px.gif");
         titleLogo = new JLabel(logo);
@@ -228,9 +228,10 @@ public class MainMenu extends JFrame implements ActionListener {
             //Start the game when the start button is clicked
             new GameFrame();
             dispose();
-        } else if(e.getSource() == highScoreButton) {
+        } else if(e.getSource() == optionsButton) {
             //Show the high scores when the high scores button is clicked
-            JOptionPane.showMessageDialog(this, "Placeholder for high scores");
+           //JOptionPane.showMessageDialog(this, "Placeholder for options menu");
+            new OptionsMenu();
         } else if(e.getSource() == exitButton) {
             //Exit the game when the exit button is clicked
             System.exit(0);
