@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Random;
 
 
-
 public class GamePanel extends JPanel implements ActionListener {
     HighScoreTracker highScoreTracker;
     static final int SCREEN_WIDTH = 600;
@@ -78,7 +77,11 @@ public class GamePanel extends JPanel implements ActionListener {
             for(int i = 0; i < SCREEN_HEIGHT/UNIT_SIZE; i++){   //Adds grid lines
                 g.drawLine(i*UNIT_SIZE,0, i*UNIT_SIZE, SCREEN_HEIGHT );
                 g.drawLine(0,i*UNIT_SIZE, SCREEN_WIDTH, i*UNIT_SIZE);
-                g.setColor(Color.GRAY); //Changes grid lines color
+                    switch (optionsMenu.getGridColor()){ //Changes grid lines color
+                    case "white" -> g.setColor(Color.white);
+                    case "gray" -> g.setColor(Color.gray);
+                    case "black" -> g.setColor(Color.black);
+                }
             }
             g.setColor(Color.RED);
             g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
@@ -97,9 +100,16 @@ public class GamePanel extends JPanel implements ActionListener {
                         case "random" -> g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     }
                 } else {
-                    g.setColor(new Color(45, 100, 0));
-                    //Un-comment below to add random colors to the snake's body
-//                    g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    switch (optionsMenu.getSnakeColor()){
+                        case "green" -> g.setColor(new Color(45, 100, 0));
+                        case "blue" -> g.setColor(new Color(0, 0, 100));
+                        case "orange" -> g.setColor(new Color(100, 66, 0));
+                        case "purple" -> g.setColor(new Color(100, 0, 100));
+                        case "cyan" -> g.setColor(new Color(0, 100, 100));
+                        case "yellow" -> g.setColor(new Color(100, 100, 0));
+                        case "pink" -> g.setColor(new Color(100, 0, 45));
+                        case "random"-> g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                    }
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
