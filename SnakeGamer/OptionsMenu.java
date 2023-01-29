@@ -34,7 +34,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
 
         JLabel snakeColorLabel = new JLabel("Select snake color:");
-        snakeColorComboBox = new JComboBox<>(new String[]{"orange", "purple", "blue", "green", "cyan", "yellow", "pink"});
+        snakeColorComboBox = new JComboBox<>(new String[]
+            {"orange", "purple", "blue", "green", "cyan", "yellow", "pink", "random"});
         snakeColorComboBox.setSelectedItem(snakeColor);
         snakeColorComboBox.addActionListener(new ActionListener() {
             @Override
