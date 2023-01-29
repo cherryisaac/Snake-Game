@@ -1,12 +1,11 @@
-My SnakeGamer - Freelance Java Project
+My Snake-Game - Freelance Java Project
 by Isaac Cherry
 
 The goal of the user:
 - To collect as many apples as possible
 
-Latest Updates:
-1/9/23 - Added Main Menu with choices of Start Game, High Scores, Exit
-1/29/23 - Added Options Menu with choices to change speed of snake and color (more options will be added soon!)
+Latest Update 1/29/23:
+- Added Options Menu with choices to change speed of snake and color (more options will be added soon!)
 
 Functionality:
 - The arrows control the snake
