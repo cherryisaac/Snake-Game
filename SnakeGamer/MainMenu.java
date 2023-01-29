@@ -15,6 +15,7 @@ public class MainMenu extends JFrame implements ActionListener {
     private final JButton startButton = new JButton("Start Game");
     private final JButton exitButton = new JButton("Exit");
     private final JButton highScoreButton = new JButton("High Scores");
+    private OptionsMenu optionsMenu = new OptionsMenu();
 
     public MainMenu() {
         //Set the title and layout of the main menu frame
@@ -57,10 +58,6 @@ public class MainMenu extends JFrame implements ActionListener {
         getContentPane().setComponentZOrder(exitButton, 0);
 
         //move the buttons on top of background
-//        startButton.setBounds(250, 420, 125, 20);
-//        highScoreButton.setBounds(235, 440, 145, 20);
-//        exitButton.setBounds(250, 460, 100, 20);
-        
         startButton.setBounds(250, 375, 100, 20);
         highScoreButton.setBounds(250, 395, 100, 20);
         exitButton.setBounds(250, 415, 100, 20);
@@ -231,7 +228,7 @@ public class MainMenu extends JFrame implements ActionListener {
         } else if(e.getSource() == optionsButton) {
             //Show the high scores when the high scores button is clicked
            //JOptionPane.showMessageDialog(this, "Placeholder for options menu");
-            new OptionsMenu();
+            new OptionsMenu().optionsFrame.setVisible(true);
         } else if(e.getSource() == exitButton) {
             //Exit the game when the exit button is clicked
             System.exit(0);
