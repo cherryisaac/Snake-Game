@@ -22,7 +22,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private JComboBox<String> snakeColorComboBox;
     private JComboBox<String> gridColorComboBox;
     private JCheckBox timeModeCheckBox;
-    private JFrame optionsFrame;
+    public JFrame optionsFrame; //If it's not accessible to the main menu then the options will not load when clicked
     private static final String OPTIONS_FILE = "options.txt";
 
 
@@ -113,7 +113,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
         });
         optionsFrame.add(optionsPanel);
         optionsFrame.pack();
-        optionsFrame.setVisible(true);
+        //I only want this visible when the options button is clicked NOT in-game
+        optionsFrame.setVisible(false);
     }
 
     public void loadOptions() {
