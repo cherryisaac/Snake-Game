@@ -4,8 +4,9 @@ by Isaac Cherry
 The goal of the user:
 - To collect as many apples as possible
 
-Latest Update 1/9/23:
-- Added Main Menu with choices of Start Game, High Scores, Exit
+Latest Updates:
+1/9/23 - Added Main Menu with choices of Start Game, High Scores, Exit
+1/29/23 - Added Options Menu with choices to change speed of snake and color (more options will be added soon!)
 
 Functionality:
 - The arrows control the snake
@@ -16,7 +17,8 @@ Functionality:
 - When the snake goes out of bounds or runs into itself game over text will be shown to the user
 
 Bugs:
-- Sometimes the snake can go out of bounds with no game over function triggered
+- Options menu shows up in game
+- Game over screen buttons can appear randomly instead of as prompted
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
