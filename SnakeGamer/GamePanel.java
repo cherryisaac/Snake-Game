@@ -1,13 +1,17 @@
 package SnakeGamer;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -123,7 +127,7 @@ public class GamePanel extends JPanel implements ActionListener {
         } else {
             gameOver(g);
             musicClip.stop();
-            running = false
+            running = false;
         }
     }
 
