@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean gameOver = false;
     private final OptionsMenu optionsMenu;
     private ImageIcon backgroundImage;
+    private Clip musicClip;
 
     GamePanel(){
         random = new Random();
@@ -42,27 +43,9 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.optionsMenu = new OptionsMenu();
         this.backgroundImage = new ImageIcon();
-        switch (optionsMenu.getBackgroundImages()){
-            case "yes" -> {
-                try {
-                    File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
-                    ArrayList<String> images = new ArrayList<>();
-
-                    assert listOfFiles != null;
-                    for (File file : listOfFiles) {
-                        if (file.isFile() && (file.getName().endsWith(".gif"))) {
-                            images.add(file.getPath());
-                        }
-                    }
-                    int index = random.nextInt(images.size());
-                    String imagePath = images.get(index);
-                    backgroundImage = new ImageIcon(imagePath);
-                } catch (Exception e) {
-                    System.err.println("Error loading image");
-                }
-            }
-            case "no" -> this.setBackground(Color.BLACK); 
-        }
+        setBackgroundImage();
+        setMusicClip();
+        setMusicChoice();
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         optionsMenu.setVisible(false);
@@ -139,6 +122,8 @@ public class GamePanel extends JPanel implements ActionListener {
             g.drawString("Score: "+applesEaten, (SCREEN_WIDTH/5 - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         } else {
             gameOver(g);
+            musicClip.stop();
+            running = false
         }
     }
 
@@ -168,6 +153,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if((X[0]==appleX) && (Y[0]==appleY)){
             bodyParts++;
             applesEaten++;
+            setAppleSound();
             newApple();
         }
     }
@@ -202,8 +188,10 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     public void gameOverButtons(){
-        //Creates a button for the option to retry the game
+        //A button for the option to retry the game
         retryButton = new JButton("Retry");
+        //        retryButton.setBorder(BorderFactory.createLineBorder(Color.gray));
+        retryButton.setForeground(Color.black);
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
         retryButton.addActionListener(new ActionListener() {
@@ -212,9 +200,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 retryButtonClicked();
             }
         });
-        //Creates a button for the option to return to the main menu
+        //A button for the option to return to the main menu
         mainMenuButton = new JButton("Main Menu");
         mainMenuButton.setBackground(Color.RED);
+        //        mainMenuButton.setBorder(BorderFactory.createLineBorder(Color.gray));
+        mainMenuButton.setForeground(Color.black);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(mainMenuButton);
         mainMenuButton.addActionListener(new ActionListener() {
@@ -315,6 +305,68 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
+    
+    public void setBackgroundImage(){
+        switch (optionsMenu.getBackgroundImages()){
+            case "yes" -> {
+                try {
+                    File [] listOfFiles = new File("./Images/bg/").listFiles();
+                    ArrayList<String> images = new ArrayList<>();
+
+                    assert listOfFiles != null;
+                    for (File file : listOfFiles) {
+                        if (file.isFile() && (file.getName().endsWith(".gif"))) {
+                            images.add(file.getPath());
+                        }
+                    }
+                    int index = random.nextInt(images.size());
+                    String imagePath = images.get(index);
+                    backgroundImage = new ImageIcon(imagePath);
+                } catch (Exception e) {
+                    System.err.println("Error loading image");
+                }
+            }
+            case "no" -> this.setBackground(Color.BLACK); //Changes background color
+        }
+    }
+    
+    public void setAppleSound(){
+        try {
+            //Snake makes a sound when it eats an apple
+            URL soundURL = new URL("file:./Sound/eating-sound-effect.wav");
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(soundURL));
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void setMusicChoice(){
+        switch (optionsMenu.getMusicChoice()) {
+            case "on" -> {
+                try {
+                    File[] listOfFiles = new File("./Music/").listFiles();
+                    ArrayList<String> musicFiles = new ArrayList<>();
+
+                    assert listOfFiles != null;
+                    for (File file : listOfFiles) {
+                        if (file.isFile() && (file.getName().endsWith(".wav"))) {
+                            musicFiles.add(file.getPath());
+                        }
+                    }
+                    int index = random.nextInt(musicFiles.size());
+                    String musicPath = musicFiles.get(index);
+                    musicClip = AudioSystem.getClip();
+                    musicClip.open(AudioSystem.getAudioInputStream(new File(musicPath)));
+                    musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+                    musicClip.start();
+                } catch (Exception e) {
+                    System.err.println("Error loading music");
+                }
+            }
+            case "off" -> { }
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -327,4 +379,119 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOverButtons();
             gameOver = true;
     }
+    
+    //Located here because of all the code filler
+    public void setMusicClip(){
+        this.musicClip = new Clip() {
+            @Override
+            public void open(AudioFormat format, byte[] data, int offset, int bufferSize) throws LineUnavailableException {
+            }
+            @Override
+            public void open(AudioInputStream stream) throws LineUnavailableException, IOException {
+            }
+            @Override
+            public int getFrameLength() {
+                return 0;
+            }
+            @Override
+            public long getMicrosecondLength() {
+                return 0;
+            }
+            @Override
+            public void setFramePosition(int frames) {
+            }
+            @Override
+            public void setMicrosecondPosition(long microseconds) {
+            }
+            @Override
+            public void setLoopPoints(int start, int end) {
+            }
+            @Override
+            public void loop(int count) {
+            }
+            @Override
+            public void drain() {
+            }
+            @Override
+            public void flush() {
+            }
+            @Override
+            public void start() {
+            }
+            @Override
+            public void stop() {
+            }
+            @Override
+            public boolean isRunning() {
+                return false;
+            }
+            @Override
+            public boolean isActive() {
+                return false;
+            }
+            @Override
+            public AudioFormat getFormat() {
+                return null;
+            }
+            @Override
+            public int getBufferSize() {
+                return 0;
+            }
+            @Override
+            public int available() {
+                return 0;
+            }
+            @Override
+            public int getFramePosition() {
+                return 0;
+            }
+            @Override
+            public long getLongFramePosition() {
+                return 0;
+            }
+            @Override
+            public long getMicrosecondPosition() {
+                return 0;
+            }
+            @Override
+            public float getLevel() {
+                return 0;
+            }
+            @Override
+            public Line.Info getLineInfo() {
+                return null;
+            }
+            @Override
+            public void open() throws LineUnavailableException {
+            }
+            @Override
+            public void close() {
+            }
+            @Override
+            public boolean isOpen() {
+                return false;
+            }
+            @Override
+            public Control[] getControls() {
+                return new Control[0];
+            }
+            @Override
+            public boolean isControlSupported(Control.Type control) {
+                return false;
+            }
+            @Override
+            public Control getControl(Control.Type control) {
+                return null;
+            }
+            @Override
+            public void addLineListener(LineListener listener) {
+            }
+            @Override
+            public void removeLineListener(LineListener listener) {
+            }
+        };
+    }
+    
 }
+
+
