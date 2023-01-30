@@ -4,8 +4,9 @@ by Isaac Cherry
 The goal of the player:
 - To collect as many apples as possible
 
-Latest Update 1/29/23:
-- Added Options Menu with choices to change speed of snake and color (more options will be added soon!)
+Latest Update 1/29/23 - 1/30/23:
+- Added Options Menu with choices to change speed of snake and color (and more!)
+- Added sound effects and music
 
 Functionality:
 - The arrows control the snake
@@ -19,6 +20,7 @@ Functionality:
 
 Bugs:
 - Game over screen buttons can appear randomly instead of as prompted
+- "Pause" words can be triggered with pause button after game over screen
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
