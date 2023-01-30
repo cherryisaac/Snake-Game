@@ -15,12 +15,15 @@ import java.util.Scanner;
 public class OptionsMenu extends JFrame implements ActionListener {
     private JButton saveButton, cancelButton;
     private String snakeColor = "blue";
+    private String gridColor = "white";
+    private String imageChoice = "no";
     private int gameSpeed = 75;
     private boolean timeMode = false;
     private Timer timer;
     private JSlider speedSlider;
     private JComboBox<String> snakeColorComboBox;
     private JComboBox<String> gridColorComboBox;
+    private JComboBox<String> imageComboBox;
     private JCheckBox timeModeCheckBox;
     public JFrame optionsFrame; //If it's not accessible to the main menu then the options will not load when clicked
     private static final String OPTIONS_FILE = "options.txt";
@@ -60,6 +63,19 @@ public class OptionsMenu extends JFrame implements ActionListener {
          });
          optionsPanel.add(gridColorLabel);
          optionsPanel.add(gridColorComboBox);
+         
+         //Background image settings
+         JLabel imageLabel = new JLabel("Toggle background Images:");
+         imageComboBox = new JComboBox<>(new String[]{"yes", "no"});
+         imageComboBox.setSelectedItem(imageChoice);
+         imageComboBox.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 imageChoice = (String) imageComboBox.getSelectedItem();
+             }
+         });
+         optionsPanel.add(imageLabel);
+         optionsPanel.add(imageComboBox);
         
         //Snake speed settings
         JLabel gameSpeedLabel = new JLabel("Select game speed:");
@@ -74,7 +90,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         optionsPanel.add(gameSpeedLabel);
         optionsPanel.add(speedSlider);
 
-        //Time Mode settings...WIP
+        //TODO: Time Mode settings
         JLabel timeModeLabel = new JLabel("Select time mode:");
         timeModeCheckBox = new JCheckBox();
         timeModeCheckBox.setSelected(timeMode);
@@ -120,6 +136,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
     public void loadOptions() {
         try (Scanner reader = new Scanner(new File(OPTIONS_FILE))) {
             snakeColor = reader.nextLine();
+            gridColor = reader.nextLine();
+            imageChoice = reader.nextLine();
             gameSpeed = reader.nextInt();
             timeMode = reader.nextBoolean();
         } catch (FileNotFoundException e) {
@@ -132,6 +150,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         try (PrintWriter writer = new PrintWriter(OPTIONS_FILE)) {
             writer.println(snakeColor);
             writer.println(gridColor);
+            writer.println(imageChoice);
             writer.println(gameSpeed);
             writer.println(timeMode);
         } catch (FileNotFoundException e) {
@@ -142,6 +161,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private void saveSettings() {
         snakeColor = (String) snakeColorComboBox.getSelectedItem();
         gridColor = (String) gridColorComboBox.getSelectedItem();
+        imageChoice = (String) imageComboBox.getSelectedItem();
         gameSpeed = speedSlider.getValue();
         timeMode = timeModeCheckBox.isSelected();
     }
@@ -152,6 +172,9 @@ public class OptionsMenu extends JFrame implements ActionListener {
     }
     public String getGridColor() {
         return gridColor;
+    }
+    public String getBackgroundImages(){
+        return imageChoice;
     }
     public int getGameSpeed() {
         return gameSpeed;
