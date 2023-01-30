@@ -216,7 +216,7 @@ public class GamePanel extends JPanel implements ActionListener {
             retryButton.setVisible(false);
             mainMenuButton.setVisible(false);
         //Delay the appearance of the buttons
-        int delayTime =3000; // 3 seconds
+        int delayTime =10000; // 10 seconds
         Timer delayTimer = new Timer(delayTime, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -491,7 +491,6 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         };
     }
-    
 }
 
 
