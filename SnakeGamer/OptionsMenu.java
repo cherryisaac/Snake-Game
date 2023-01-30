@@ -29,7 +29,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private static final String OPTIONS_FILE = "options.txt";
 
 
-     OptionsMenu(){
+     public OptionsMenu(){
          loadOptions();
          optionsFrame = new JFrame("Options");
          optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
