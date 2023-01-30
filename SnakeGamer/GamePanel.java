@@ -153,7 +153,11 @@ public class GamePanel extends JPanel implements ActionListener {
         if((X[0]==appleX) && (Y[0]==appleY)){
             bodyParts++;
             applesEaten++;
-            setAppleSound();
+                try {
+                setSound(new URL("file:./Sound/eating-sound-effect.wav"));
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
             newApple();
         }
     }
@@ -172,6 +176,19 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(!running){
             timer.stop();
+            if(applesEaten < 25){
+                try{
+                    setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
+                } catch (MalformedURLException e){
+                    throw new RuntimeException();
+                }
+            } else if(applesEaten >= 25){
+                try{
+                    setSound(new URL("file:./Sound/Metal Gear Solid Game Over screen.wav"));
+                } catch (MalformedURLException e){
+                    throw new RuntimeException();
+                }
+            }
         }
     }
 
@@ -179,12 +196,17 @@ public class GamePanel extends JPanel implements ActionListener {
         //Score
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
-        //Background image/animation
-        ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
-        g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-        //Game Over text
-        ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
-        g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
+        if(applesEaten < 25){
+            //Background image/animation
+            ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
+            g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+            //Game Over text
+            ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
+            g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
+        } else if(applesEaten >= 25){
+            ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+            g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+        }
     }
     
     public void gameOverButtons(){
@@ -330,17 +352,17 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
     
-    public void setAppleSound(){
+   public void setSound(URL url){
         try {
             //Snake makes a sound when it eats an apple
-            URL soundURL = new URL("file:./Sound/eating-sound-effect.wav");
             Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(soundURL));
+            clip.open(AudioSystem.getAudioInputStream(url));
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
     public void setMusicChoice(){
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> {
