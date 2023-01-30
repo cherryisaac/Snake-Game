@@ -16,7 +16,7 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     //How big do we want the objects in this game?
-    static final int UNIT_SIZE = 25;
+    static final int UNIT_SIZE = 20;
     //Calculates how many objects can fit into the game
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
     final int [] X = new int[GAME_UNITS];
@@ -84,7 +84,7 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setColor(new Color(0, 0, 0, 128));
             g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+            g.setFont(new Font("Ink Free", Font.BOLD, 30));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Paused", (SCREEN_WIDTH - metrics.stringWidth("Paused"))/2, SCREEN_HEIGHT/2);
             timer.stop();
@@ -134,9 +134,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
             g.setColor(Color.RED);
-            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+            g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+            g.drawString("Score: "+applesEaten, (SCREEN_WIDTH/5 - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         } else {
             gameOver(g);
         }
@@ -191,8 +191,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void gameOver(Graphics g){
         //Score
-        g.setColor(Color.RED);
-        g.setFont(new Font("Ink Free", Font.BOLD, 40));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         //Background image/animation
