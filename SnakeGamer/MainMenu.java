@@ -16,6 +16,8 @@ public class MainMenu extends JFrame implements ActionListener {
     private final JButton exitButton = new JButton("Exit");
     private final JButton highScoreButton = new JButton("High Scores");
     private OptionsMenu optionsMenu = new OptionsMenu();
+    private JLabel titleLogo;
+    private JLabel snakeImage;
 
     public MainMenu() {
         //Set the title and layout of the main menu frame
@@ -54,28 +56,28 @@ public class MainMenu extends JFrame implements ActionListener {
         getContentPane().setComponentZOrder(titleLogo, 0);
         getContentPane().setComponentZOrder(snakeImage, 0);
         getContentPane().setComponentZOrder(startButton, 0);
-        getContentPane().setComponentZOrder(highScoreButton, 0);
+        getContentPane().setComponentZOrder(optionsButton, 0);
         getContentPane().setComponentZOrder(exitButton, 0);
 
         //move the buttons on top of background
         startButton.setBounds(250, 375, 100, 20);
-        highScoreButton.setBounds(250, 395, 100, 20);
+        optionsButton.setBounds(250, 395, 100, 20);
         exitButton.setBounds(250, 415, 100, 20);
 
         //Add action listeners to the buttons
         startButton.addActionListener(this);
         exitButton.addActionListener(this);
-        highScoreButton.addActionListener(this);
+        optionsButton.addActionListener(this);
 
         //Changes button font and removes button border
         startButton.setFont(new Font("Arial", Font.ITALIC, 16));
-        highScoreButton.setFont(new Font("Arial", Font.ITALIC, 16));
+        optionsButton.setFont(new Font("Arial", Font.ITALIC, 16));
         exitButton.setFont(new Font("Arial", Font.ITALIC, 16));
         startButton.setForeground(Color.black);
-        highScoreButton.setForeground(Color.black);
+        optionsButton.setForeground(Color.black);
         exitButton.setForeground(Color.black);
         startButton.setVisible(true);
-        highScoreButton.setVisible(true);
+        optionsButton.setVisible(true);
         exitButton.setVisible(true);
 //        startButton.setBorderPainted(false);
 //        highScoreButton.setBorderPainted(false);
@@ -102,7 +104,7 @@ public class MainMenu extends JFrame implements ActionListener {
             }
         });
 
-        highScoreButton.addKeyListener(new KeyAdapter() {
+        optionsButton.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -142,7 +144,7 @@ public class MainMenu extends JFrame implements ActionListener {
             }
         });
 
-        highScoreButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        optionsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 highScoreButton.setBackground(Color.CYAN);
             }
@@ -182,7 +184,7 @@ public class MainMenu extends JFrame implements ActionListener {
 //            }
 //        });
 //
-//        highScoreButton.addKeyListener(new KeyAdapter() {
+//        optionsButton.addKeyListener(new KeyAdapter() {
 //            @Override
 //            public void keyPressed(KeyEvent e) {
 //                if (e.getKeyCode() == KeyEvent.VK_UP) {
