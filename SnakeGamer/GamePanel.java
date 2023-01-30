@@ -19,8 +19,6 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int UNIT_SIZE = 25;
     //Calculates how many objects can fit into the game
     static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
-    //The higher the number, the slower the game is
-//     static final int DELAY = 75;
     final int [] X = new int[GAME_UNITS];
     final int [] Y = new int[GAME_UNITS];
     int bodyParts = 6;
@@ -36,15 +34,37 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer animationTimer;
     boolean gameOver = false;
     private final OptionsMenu optionsMenu;
+    private ImageIcon backgroundImage;
 
     GamePanel(){
         random = new Random();
         highScoreTracker = new HighScoreTracker();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.BLACK); //Changes background color
+        this.optionsMenu = new OptionsMenu();
+        this.backgroundImage = new ImageIcon();
+        switch (optionsMenu.getBackgroundImages()){
+            case "yes" -> {
+                try {
+                    File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
+                    ArrayList<String> images = new ArrayList<>();
+
+                    assert listOfFiles != null;
+                    for (File file : listOfFiles) {
+                        if (file.isFile() && (file.getName().endsWith(".gif"))) {
+                            images.add(file.getPath());
+                        }
+                    }
+                    int index = random.nextInt(images.size());
+                    String imagePath = images.get(index);
+                    backgroundImage = new ImageIcon(imagePath);
+                } catch (Exception e) {
+                    System.err.println("Error loading image");
+                }
+            }
+            case "no" -> this.setBackground(Color.BLACK); 
+        }
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-        optionsMenu = new OptionsMenu();
         optionsMenu.setVisible(false);
         startGame();
     }
@@ -176,10 +196,10 @@ public class GamePanel extends JPanel implements ActionListener {
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         //Background image/animation
-        ImageIcon background = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/gif-blood.gif");
+        ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
         g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         //Game Over text
-        ImageIcon gif = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/game-over-text.gif");
+        ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
         g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
     }
     
