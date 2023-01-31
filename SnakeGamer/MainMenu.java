@@ -14,7 +14,7 @@ public class MainMenu extends JFrame implements ActionListener {
     //Create buttons for the main menu
     private final JButton startButton = new JButton("Start Game");
     private final JButton exitButton = new JButton("Exit");
-    private final JButton highScoreButton = new JButton("High Scores");
+    private final JButton optionsButton = new JButton("Options");
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel titleLogo;
     private JLabel snakeImage;
@@ -36,7 +36,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
         //Add the buttons to the main menu frame
         add(startButton);
-        add(highScoreButton);
+        add(optionsButton);
         add(exitButton);
 
         //Adds background to the main menu, adjust size and position
@@ -99,7 +99,7 @@ public class MainMenu extends JFrame implements ActionListener {
                     exitButton.requestFocus();
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN){
-                    highScoreButton.requestFocus();
+                    optionsButton.requestFocus();
                 }
             }
         });
@@ -108,7 +108,7 @@ public class MainMenu extends JFrame implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    highScoreButton.doClick();
+                    optionsButton.doClick();
                 }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     startButton.requestFocus();
@@ -126,7 +126,7 @@ public class MainMenu extends JFrame implements ActionListener {
                     exitButton.doClick();
                 }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
-                    highScoreButton.requestFocus();
+                    optionsButton.requestFocus();
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN){
                     startButton.requestFocus();
@@ -146,11 +146,11 @@ public class MainMenu extends JFrame implements ActionListener {
 
         optionsButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                highScoreButton.setBackground(Color.CYAN);
+                optionsButton.setBackground(Color.CYAN);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                highScoreButton.setBackground(UIManager.getColor("control"));
+                optionsButton.setBackground(UIManager.getColor("control"));
             }
         });
 
@@ -171,15 +171,15 @@ public class MainMenu extends JFrame implements ActionListener {
 //            public void keyPressed(KeyEvent e) {
 //                if (e.getKeyCode() == KeyEvent.VK_UP) {
 //                    startButton.setBackground(Color.CYAN);
-//                    highScoreButton.setBackground(UIManager.getColor("control"));
+//                    optionsButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.requestFocus();
 //                }
 //                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 //                    startButton.setBackground(Color.CYAN);
-//                    highScoreButton.setBackground(UIManager.getColor("control"));
+//                    optionsButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.setBackground(UIManager.getColor("control"));
-//                    highScoreButton.requestFocus();
+//                    optionsButton.requestFocus();
 //                }
 //            }
 //        });
@@ -189,13 +189,13 @@ public class MainMenu extends JFrame implements ActionListener {
 //            public void keyPressed(KeyEvent e) {
 //                if (e.getKeyCode() == KeyEvent.VK_UP) {
 //                    startButton.setBackground(UIManager.getColor("control"));
-//                    highScoreButton.setBackground(Color.CYAN);
+//                    optionsButton.setBackground(Color.CYAN);
 //                    exitButton.setBackground(UIManager.getColor("control"));
 //                    startButton.requestFocus();
 //                }
 //                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 //                    startButton.setBackground(UIManager.getColor("control"));
-//                    highScoreButton.setBackground(Color.CYAN);
+//                    optionsButton.setBackground(Color.CYAN);
 //                    exitButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.requestFocus();
 //                }
@@ -207,13 +207,13 @@ public class MainMenu extends JFrame implements ActionListener {
 //            public void keyPressed(KeyEvent e) {
 //                if (e.getKeyCode() == KeyEvent.VK_UP) {
 //                    startButton.setBackground(UIManager.getColor("control"));
-//                    highScoreButton.setBackground(UIManager.getColor("control"));
+//                    optionsButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.setBackground(Color.CYAN);
-//                    highScoreButton.requestFocus();
+//                    optionsButton.requestFocus();
 //                }
 //                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 //                    startButton.setBackground(UIManager.getColor("control"));
-//                    highScoreButton.setBackground(UIManager.getColor("control"));
+//                    optionsButton.setBackground(UIManager.getColor("control"));
 //                    exitButton.setBackground(Color.CYAN);
 //                    startButton.requestFocus();
 //                }
