@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,13 +33,13 @@ public class GamePanel extends JPanel implements ActionListener {
     Random random;
     boolean paused = false;
     JButton retryButton, mainMenuButton;
-    private int alpha = 255;
+    int alpha = 255;
     private Timer animationTimer;
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
     ImageIcon backgroundImage;
     private MusicSoundBoard musicSoundBoard;
-    ImageTester imageTester;
+
 
     public GamePanel(){
         random = new Random();
@@ -56,9 +55,9 @@ public class GamePanel extends JPanel implements ActionListener {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
         }
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
+        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setFocusable(true);
+        addKeyListener(new MyKeyAdapter());
         startGame();
     }
 
@@ -132,6 +131,15 @@ public class GamePanel extends JPanel implements ActionListener {
         } else {
             gameOver(g);
             musicSoundBoard.stopMusic();
+            //Delay the appearance of the buttons
+            int delayTime = 10000; // 10 seconds
+            Timer delayTimer = new Timer(delayTime, e -> {
+                retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
+                mainMenuButton.setBounds(230,375,150,50);
+                retryButton.setVisible(true);
+                mainMenuButton.setVisible(true);
+            });
+            delayTimer.start();
             running = false;
         }
     }
@@ -221,83 +229,60 @@ public class GamePanel extends JPanel implements ActionListener {
     public void gameOverButtons(){
         //A button for the option to retry the game
         retryButton = new JButton("Retry");
-        //        retryButton.setBorder(BorderFactory.createLineBorder(Color.gray));
-        retryButton.setForeground(Color.black);
+        retryButton.setBorder(BorderFactory.createLineBorder(Color.black));
+        retryButton.setForeground(Color.white);
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
-        retryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retryButtonClicked();
+        retryButton.addActionListener(e -> {
+            try {
+                musicSoundBoard.setSound(new URL("file:./Sound/retry-sound.wav"));
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
             }
+            retryButtonClicked();
         });
         //A button for the option to return to the main menu
         mainMenuButton = new JButton("Main Menu");
         mainMenuButton.setBackground(Color.RED);
-        //        mainMenuButton.setBorder(BorderFactory.createLineBorder(Color.gray));
-        mainMenuButton.setForeground(Color.black);
+        mainMenuButton.setBorder(BorderFactory.createLineBorder(Color.black));
+        mainMenuButton.setForeground(Color.white);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(mainMenuButton);
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                menuButtonClicked();
-            }
-        });
+        mainMenuButton.addActionListener(e -> menuButtonClicked());
             retryButton.setVisible(false);
             mainMenuButton.setVisible(false);
-        //Delay the appearance of the buttons
-        int delayTime =10000; // 10 seconds
-        Timer delayTimer = new Timer(delayTime, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
-                mainMenuButton.setBounds(230,375,150,50);
-                if(!running & gameOver){
-                    retryButton.setVisible(true);
-                    mainMenuButton.setVisible(true);
-                }
-            }
-        });
-        delayTimer.setRepeats(false);
-        delayTimer.start();
+
     }
     
      //Game over button animations
     private void retryButtonClicked() {
-        animationTimer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                alpha -= 5;
-                retryButton.setForeground(new Color(255, 0, 0, alpha));
-                retryButton.setBackground(new Color(255, 0, 0, alpha));
-                if (alpha <= 0) {
-                    animationTimer.stop();
-                    //restart game
-                    new GameFrame();
-                }
+        animationTimer = new Timer(15, e -> {
+            alpha -= 5;
+            retryButton.setForeground(new Color(255, 0, 0, alpha));
+            retryButton.setBackground(new Color(255, 0, 0, alpha));
+            if (alpha <= 0) {
+                animationTimer.stop();
+                //restart game
+                new GameFrame();
             }
         });
         animationTimer.start();
     }
 
     private void menuButtonClicked() {
-        animationTimer = new Timer(10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                alpha -= 3;
-                mainMenuButton.setForeground(new Color(0, 188, 255, alpha));
-                mainMenuButton.setBackground(new Color(0, 188, 255, alpha));
-                if (alpha <= 0) {
-                    animationTimer.stop();
-                    //Return to main menu
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.setVisible(true);
-                    JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
-                    currentFrame.dispose();
-                }
-
+        animationTimer = new Timer(10, e -> {
+            alpha -= 3;
+            mainMenuButton.setForeground(new Color(33, 145, 89, alpha));
+            mainMenuButton.setBackground(new Color(33, 145, 89, alpha));
+            if (alpha <= 0) {
+                animationTimer.stop();
+                //Return to main menu
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.setVisible(true);
+                JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
+                currentFrame.dispose();
             }
+
         });
         animationTimer.start();
     }
