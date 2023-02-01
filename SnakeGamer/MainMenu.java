@@ -163,62 +163,6 @@ public class MainMenu extends JFrame implements ActionListener {
                 exitButton.setBackground(UIManager.getColor("control"));
             }
         });
-
-        //Buttons change color with arrow keys...a little BUGGY...commented out for now
-
-//        startButton.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_UP) {
-//                    startButton.setBackground(Color.CYAN);
-//                    optionsButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.requestFocus();
-//                }
-//                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//                    startButton.setBackground(Color.CYAN);
-//                    optionsButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.setBackground(UIManager.getColor("control"));
-//                    optionsButton.requestFocus();
-//                }
-//            }
-//        });
-//
-//        optionsButton.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_UP) {
-//                    startButton.setBackground(UIManager.getColor("control"));
-//                    optionsButton.setBackground(Color.CYAN);
-//                    exitButton.setBackground(UIManager.getColor("control"));
-//                    startButton.requestFocus();
-//                }
-//                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//                    startButton.setBackground(UIManager.getColor("control"));
-//                    optionsButton.setBackground(Color.CYAN);
-//                    exitButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.requestFocus();
-//                }
-//            }
-//        });
-//
-//        exitButton.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_UP) {
-//                    startButton.setBackground(UIManager.getColor("control"));
-//                    optionsButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.setBackground(Color.CYAN);
-//                    optionsButton.requestFocus();
-//                }
-//                else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//                    startButton.setBackground(UIManager.getColor("control"));
-//                    optionsButton.setBackground(UIManager.getColor("control"));
-//                    exitButton.setBackground(Color.CYAN);
-//                    startButton.requestFocus();
-//                }
-//            }
-//        });
     }
 
     @Override

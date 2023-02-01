@@ -192,7 +192,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         return gridColor;
     }
     public String getBackgroundImages(){
-        return imageChoice;
+        return this.imageChoice;
     }
     public String getMusicChoice() {
         return musicChoice;

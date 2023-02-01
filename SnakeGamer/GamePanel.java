@@ -1,6 +1,6 @@
 package SnakeGamer;
 
-import javax.sound.sampled.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,27 +37,26 @@ public class GamePanel extends JPanel implements ActionListener {
     private int alpha = 255;
     private Timer animationTimer;
     boolean gameOver = false;
-    private final OptionsMenu optionsMenu;
+    private OptionsMenu optionsMenu;
     ImageIcon backgroundImage;
-    private ArrayList<String> images;
-    private Clip musicClip;
+    private MusicSoundBoard musicSoundBoard;
+    ImageTester imageTester;
 
-    GamePanel(){
+    public GamePanel(){
         random = new Random();
-        highScoreTracker = new HighScoreTracker();
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.optionsMenu = new OptionsMenu();
+        optionsMenu = new OptionsMenu();
+        backgroundImage = new ImageIcon();
         setBackgroundImage();
-        setMusicClip();
-        setMusicChoice();
+        musicSoundBoard = new MusicSoundBoard();
+        musicSoundBoard.setMusicClip();
+        musicSoundBoard.setMusicChoice();
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-        optionsMenu.setVisible(false);
         startGame();
     }
 
     public void startGame(){
-        optionsMenu.loadOptions();
         newApple();
         running = true;
         timer = new Timer(optionsMenu.getGameSpeed(), this);
@@ -126,7 +125,7 @@ public class GamePanel extends JPanel implements ActionListener {
             g.drawString("Score: "+applesEaten, (SCREEN_WIDTH/5 - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         } else {
             gameOver(g);
-            musicClip.stop();
+            musicSoundBoard.stopMusic();
             running = false;
         }
     }
@@ -158,7 +157,7 @@ public class GamePanel extends JPanel implements ActionListener {
             bodyParts++;
             applesEaten++;
                 try {
-                setSound(new URL("file:./Sound/eating-sound-effect.wav"));
+               musicSoundBoard.setSound(new URL("file:./Sound/eating-sound-effect.wav"));
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
@@ -180,15 +179,15 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(!running){
             timer.stop();
-            if(applesEaten < 25){
+            if(applesEaten < 20){
                 try{
-                    setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
+                    musicSoundBoard.setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
                 } catch (MalformedURLException e){
                     throw new RuntimeException();
                 }
-            } else if(applesEaten >= 25){
+            } else {
                 try{
-                    setSound(new URL("file:./Sound/Metal Gear Solid Game Over screen.wav"));
+                   musicSoundBoard.setSound(new URL("file:./Sound/Metal Gear Solid Game Over screen.wav"));
                 } catch (MalformedURLException e){
                     throw new RuntimeException();
                 }
@@ -200,14 +199,14 @@ public class GamePanel extends JPanel implements ActionListener {
         //Score
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
-        if(applesEaten < 25){
+        if(applesEaten < 20){
             //Background image/animation
             ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
             g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
             //Game Over text
             ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
-        } else if(applesEaten >= 25){
+        } else {
             ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
             g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         }
@@ -331,13 +330,13 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
     }
-    
+
     public void setBackgroundImage(){
         switch (optionsMenu.getBackgroundImages()){
             case "yes" -> {
                 try {
                     File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
-                    images = new ArrayList<String>();
+                    ArrayList<String> images = new ArrayList<String>();
 
                     assert listOfFiles != null;
                     for (File file : listOfFiles) {
@@ -347,50 +346,13 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                     int index = random.nextInt(images.size());
                     String imagePath = images.get(index);
-                    this.backgroundImage = new ImageIcon(imagePath);
+                    backgroundImage = new ImageIcon(imagePath);
+                    backgroundImage.setImage(backgroundImage.getImage());
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
             }
             case "no" -> setBackground(Color.BLACK); //Changes background color
-        }
-    }
-    
-   public void setSound(URL url){
-        try {
-            //Snake makes a sound when it eats an apple
-            Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(url));
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void setMusicChoice(){
-        switch (optionsMenu.getMusicChoice()) {
-            case "on" -> {
-                try {
-                    File[] listOfFiles = new File("./Music/").listFiles();
-                    ArrayList<String> musicFiles = new ArrayList<>();
-
-                    assert listOfFiles != null;
-                    for (File file : listOfFiles) {
-                        if (file.isFile() && (file.getName().endsWith(".wav"))) {
-                            musicFiles.add(file.getPath());
-                        }
-                    }
-                    int index = random.nextInt(musicFiles.size());
-                    String musicPath = musicFiles.get(index);
-                    musicClip = AudioSystem.getClip();
-                    musicClip.open(AudioSystem.getAudioInputStream(new File(musicPath)));
-                    musicClip.loop(Clip.LOOP_CONTINUOUSLY);
-                    musicClip.start();
-                } catch (Exception e) {
-                    System.err.println("Error loading music");
-                }
-            }
-            case "off" -> { }
         }
     }
 
@@ -404,118 +366,6 @@ public class GamePanel extends JPanel implements ActionListener {
             repaint();
             gameOverButtons();
             gameOver = true;
-    }
-    
-    //Located here because of all the code filler
-    public void setMusicClip(){
-        this.musicClip = new Clip() {
-            @Override
-            public void open(AudioFormat format, byte[] data, int offset, int bufferSize) throws LineUnavailableException {
-            }
-            @Override
-            public void open(AudioInputStream stream) throws LineUnavailableException, IOException {
-            }
-            @Override
-            public int getFrameLength() {
-                return 0;
-            }
-            @Override
-            public long getMicrosecondLength() {
-                return 0;
-            }
-            @Override
-            public void setFramePosition(int frames) {
-            }
-            @Override
-            public void setMicrosecondPosition(long microseconds) {
-            }
-            @Override
-            public void setLoopPoints(int start, int end) {
-            }
-            @Override
-            public void loop(int count) {
-            }
-            @Override
-            public void drain() {
-            }
-            @Override
-            public void flush() {
-            }
-            @Override
-            public void start() {
-            }
-            @Override
-            public void stop() {
-            }
-            @Override
-            public boolean isRunning() {
-                return false;
-            }
-            @Override
-            public boolean isActive() {
-                return false;
-            }
-            @Override
-            public AudioFormat getFormat() {
-                return null;
-            }
-            @Override
-            public int getBufferSize() {
-                return 0;
-            }
-            @Override
-            public int available() {
-                return 0;
-            }
-            @Override
-            public int getFramePosition() {
-                return 0;
-            }
-            @Override
-            public long getLongFramePosition() {
-                return 0;
-            }
-            @Override
-            public long getMicrosecondPosition() {
-                return 0;
-            }
-            @Override
-            public float getLevel() {
-                return 0;
-            }
-            @Override
-            public Line.Info getLineInfo() {
-                return null;
-            }
-            @Override
-            public void open() throws LineUnavailableException {
-            }
-            @Override
-            public void close() {
-            }
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-            @Override
-            public Control[] getControls() {
-                return new Control[0];
-            }
-            @Override
-            public boolean isControlSupported(Control.Type control) {
-                return false;
-            }
-            @Override
-            public Control getControl(Control.Type control) {
-                return null;
-            }
-            @Override
-            public void addLineListener(LineListener listener) {
-            }
-            @Override
-            public void removeLineListener(LineListener listener) {
-            }
-        };
     }
 }
 
