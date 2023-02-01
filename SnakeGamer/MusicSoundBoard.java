@@ -9,12 +9,10 @@ import java.util.Random;
 
 public class MusicSoundBoard {
     private Clip musicClip;
-    private OptionsMenu optionsMenu;
     private Random random;
 
     public MusicSoundBoard(){
         random = new Random();
-        this.optionsMenu = new OptionsMenu();
     }
 
     public void setSound(URL url){
@@ -28,8 +26,6 @@ public class MusicSoundBoard {
     }
 
     public void setMusicChoice(){
-        switch (optionsMenu.getMusicChoice()) {
-            case "on" -> {
                 try {
                     File[] listOfFiles = new File("./Music/").listFiles();
                     ArrayList<String> musicFiles = new ArrayList<>();
@@ -49,9 +45,6 @@ public class MusicSoundBoard {
                 } catch (Exception e) {
                     System.err.println("Error loading music");
                 }
-            }
-            case "off" -> { }
-        }
     }
 
     public void stopMusic(){

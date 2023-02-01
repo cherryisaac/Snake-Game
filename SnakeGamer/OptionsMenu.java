@@ -10,6 +10,8 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Scanner;
 
 public class OptionsMenu extends JFrame implements ActionListener {
@@ -32,6 +34,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
 
 
      public OptionsMenu(){
+         MusicSoundBoard soundBoard = new MusicSoundBoard();
          loadOptions();
          optionsFrame = new JFrame("Options");
          optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -68,7 +71,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
          
          //Background image settings
          JLabel imageLabel = new JLabel("Toggle background Images:");
-         imageComboBox = new JComboBox<>(new String[]{"yes", "no"});
+         imageComboBox = new JComboBox<>(new String[]{"on", "off"});
          imageComboBox.setSelectedItem(imageChoice);
          imageComboBox.addActionListener(new ActionListener() {
              @Override
@@ -81,7 +84,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
          
           //Music settings
          JLabel musicLabel = new JLabel("Enable music:");
-         musicComboBox = new JComboBox<>(new String[]{"off", "on"});
+         musicComboBox = new JComboBox<>(new String[]{"on", "off"});
          musicComboBox.setSelectedItem(musicChoice);
          musicComboBox.addActionListener(new ActionListener() {
              @Override
@@ -127,6 +130,16 @@ public class OptionsMenu extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 saveSettings();
                 saveOptions();
+                try {
+                    Thread.sleep(350);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    soundBoard.setSound(new URL("file:./Sound/save-sound.wav"));
+                } catch (MalformedURLException ex) {
+                    throw new RuntimeException(ex);
+                }
                 optionsFrame.dispose();
             }
         });
@@ -139,6 +152,16 @@ public class OptionsMenu extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                try {
+                    Thread.sleep(275);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    soundBoard.setSound(new URL("file:./Sound/cancel-sound.wav"));
+                } catch (MalformedURLException ex) {
+                    throw new RuntimeException(ex);
+                }
                 optionsFrame.dispose();
             }
         });

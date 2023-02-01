@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainMenu extends JFrame implements ActionListener {
     static final int SCREEN_WIDTH = 600;
@@ -18,11 +20,12 @@ public class MainMenu extends JFrame implements ActionListener {
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel titleLogo;
     private JLabel snakeImage;
-
+    private MusicSoundBoard soundBoard;
     public MainMenu() {
         //Set the title and layout of the main menu frame
         setTitle("Snake Game");
         setLayout(null);
+        soundBoard = new MusicSoundBoard();
 
         //Set background image...change directory according to the image route on your os.
         //If background only shows a black screen then there might be a typo or wrong directory.
@@ -168,15 +171,29 @@ public class MainMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startButton) {
-            //Start the game when the start button is clicked
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
             new GameFrame();
             dispose();
         } else if(e.getSource() == optionsButton) {
-            //Show the high scores when the high scores button is clicked
            //JOptionPane.showMessageDialog(this, "Placeholder for options menu");
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                soundBoard.setSound(new URL("file:./Sound/main-menu-sound.wav"));
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
+            }
             new OptionsMenu().optionsFrame.setVisible(true);
+
+
         } else if(e.getSource() == exitButton) {
-            //Exit the game when the exit button is clicked
             System.exit(0);
         }
     }

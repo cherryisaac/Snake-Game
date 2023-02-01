@@ -46,10 +46,16 @@ public class GamePanel extends JPanel implements ActionListener {
         random = new Random();
         optionsMenu = new OptionsMenu();
         backgroundImage = new ImageIcon();
-        setBackgroundImage();
+        switch (optionsMenu.getBackgroundImages()){
+            case "on" -> setBackgroundImage();
+            case "off" -> setBackground(Color.black);
+        }
         musicSoundBoard = new MusicSoundBoard();
         musicSoundBoard.setMusicClip();
-        musicSoundBoard.setMusicChoice();
+        switch (optionsMenu.getMusicChoice()) {
+            case "on" -> musicSoundBoard.setMusicChoice();
+            case "off" -> {}
+        }
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
@@ -332,8 +338,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void setBackgroundImage(){
-        switch (optionsMenu.getBackgroundImages()){
-            case "yes" -> {
                 try {
                     File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
                     ArrayList<String> images = new ArrayList<String>();
@@ -347,14 +351,10 @@ public class GamePanel extends JPanel implements ActionListener {
                     int index = random.nextInt(images.size());
                     String imagePath = images.get(index);
                     backgroundImage = new ImageIcon(imagePath);
-                    backgroundImage.setImage(backgroundImage.getImage());
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
             }
-            case "no" -> setBackground(Color.BLACK); //Changes background color
-        }
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

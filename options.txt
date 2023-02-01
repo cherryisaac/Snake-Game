@@ -1,6 +1,6 @@
 purple
-black
-yes
+gray
+on
 on
 75
 false
