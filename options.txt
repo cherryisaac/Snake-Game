@@ -1,0 +1,6 @@
+purple
+black
+yes
+on
+75
+false

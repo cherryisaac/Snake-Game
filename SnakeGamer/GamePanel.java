@@ -38,7 +38,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer animationTimer;
     boolean gameOver = false;
     private final OptionsMenu optionsMenu;
-    private ImageIcon backgroundImage;
+    ImageIcon backgroundImage;
+    private ArrayList<String> images;
     private Clip musicClip;
 
     GamePanel(){
@@ -46,7 +47,6 @@ public class GamePanel extends JPanel implements ActionListener {
         highScoreTracker = new HighScoreTracker();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.optionsMenu = new OptionsMenu();
-        this.backgroundImage = new ImageIcon();
         setBackgroundImage();
         setMusicClip();
         setMusicChoice();
@@ -336,8 +336,8 @@ public class GamePanel extends JPanel implements ActionListener {
         switch (optionsMenu.getBackgroundImages()){
             case "yes" -> {
                 try {
-                    File [] listOfFiles = new File("./Images/bg/").listFiles();
-                    ArrayList<String> images = new ArrayList<>();
+                    File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
+                    images = new ArrayList<String>();
 
                     assert listOfFiles != null;
                     for (File file : listOfFiles) {
@@ -347,12 +347,12 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                     int index = random.nextInt(images.size());
                     String imagePath = images.get(index);
-                    backgroundImage = new ImageIcon(imagePath);
+                    this.backgroundImage = new ImageIcon(imagePath);
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
             }
-            case "no" -> this.setBackground(Color.BLACK); //Changes background color
+            case "no" -> setBackground(Color.BLACK); //Changes background color
         }
     }
     
