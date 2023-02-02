@@ -19,8 +19,9 @@ Functionality:
 - Settings menu allows the player to change the snake's color, snake's speed, and grid color
 
 Bugs:
-- Game over screen buttons can appear randomly instead of as prompted
-- "Pause" words can be triggered with pause button after game over screen
+- Alternative Game Over screen only runs once and not fully other times during a session
+- Background images do not appear like they did before
+- "Pause" word can be triggered with pause button after game over screen
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
