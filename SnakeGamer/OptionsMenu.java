@@ -29,7 +29,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private JComboBox<String> imageComboBox;
     private JComboBox<String> musicComboBox;
     private JCheckBox timeModeCheckBox;
-    public JFrame optionsFrame; //If it's not accessible to the main menu then the options will not load when clicked
+    //If it's not accessible to the main menu then the options will not load when clicked
+    public JFrame optionsFrame;
     private static final String OPTIONS_FILE = "options.txt";
 
 
@@ -47,12 +48,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         snakeColorComboBox = new JComboBox<>(new String[]
             {"orange", "purple", "blue", "green", "cyan", "yellow", "pink", "random"});
         snakeColorComboBox.setSelectedItem(snakeColor);
-        snakeColorComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    snakeColor = (String) snakeColorComboBox.getSelectedItem();
-            }
-        });
+        snakeColorComboBox.addActionListener(e -> snakeColor = (String) snakeColorComboBox.getSelectedItem());
         optionsPanel.add(snakeColorLabel);
         optionsPanel.add(snakeColorComboBox);
          
@@ -60,12 +56,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
          JLabel gridColorLabel = new JLabel("Select grid color:");
          gridColorComboBox = new JComboBox<>(new String[]{"white", "gray", "black"});
          gridColorComboBox.setSelectedItem(gridColor);
-         gridColorComboBox.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 gridColor = (String) gridColorComboBox.getSelectedItem();
-             }
-         });
+         gridColorComboBox.addActionListener(e -> gridColor = (String) gridColorComboBox.getSelectedItem());
          optionsPanel.add(gridColorLabel);
          optionsPanel.add(gridColorComboBox);
          
@@ -73,12 +64,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
          JLabel imageLabel = new JLabel("Toggle background Images:");
          imageComboBox = new JComboBox<>(new String[]{"on", "off"});
          imageComboBox.setSelectedItem(imageChoice);
-         imageComboBox.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 imageChoice = (String) imageComboBox.getSelectedItem();
-             }
-         });
+         imageComboBox.addActionListener(e -> imageChoice = (String) imageComboBox.getSelectedItem());
          optionsPanel.add(imageLabel);
          optionsPanel.add(imageComboBox);
          
@@ -86,25 +72,16 @@ public class OptionsMenu extends JFrame implements ActionListener {
          JLabel musicLabel = new JLabel("Enable music:");
          musicComboBox = new JComboBox<>(new String[]{"on", "off"});
          musicComboBox.setSelectedItem(musicChoice);
-         musicComboBox.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 musicChoice = (String) musicComboBox.getSelectedItem();
-             }
-         });
+         musicComboBox.addActionListener(e -> musicChoice = (String) musicComboBox.getSelectedItem());
          optionsPanel.add(musicLabel);
          optionsPanel.add(musicComboBox);
         
         //Snake speed settings
         JLabel gameSpeedLabel = new JLabel("Select game speed:");
-        //The higher the number, the slower the game is
+        //The higher the number, the slower the snake moves
+         // TODO: fix it so that it's the opposite of above
         speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
-        speedSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                gameSpeed = speedSlider.getValue();
-            }
-        });
+        speedSlider.addChangeListener(e -> gameSpeed = speedSlider.getValue());
         optionsPanel.add(gameSpeedLabel);
         optionsPanel.add(speedSlider);
 
@@ -112,12 +89,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         JLabel timeModeLabel = new JLabel("Select time mode:");
         timeModeCheckBox = new JCheckBox();
         timeModeCheckBox.setSelected(timeMode);
-        timeModeCheckBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                timeMode = timeModeCheckBox.isSelected();
-            }
-        });
+        timeModeCheckBox.addItemListener(e -> timeMode = timeModeCheckBox.isSelected());
          optionsPanel.add(timeModeLabel);
          optionsPanel.add(timeModeCheckBox);
          
@@ -125,35 +97,29 @@ public class OptionsMenu extends JFrame implements ActionListener {
         saveButton = new JButton("Save");
         optionsPanel.add(saveButton);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveSettings();
-                saveOptions();
-                try {
-                    soundBoard.setSoundAndPause(new URL("file:./Sound/save-sound.wav"), 350);
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                optionsFrame.dispose();
+        saveButton.addActionListener(e -> {
+            saveSettings();
+            saveOptions();
+            try {
+                soundBoard.setSoundAndPause(new URL("file:./Sound/save-sound.wav"), 350);
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
             }
+            optionsFrame.dispose();
         });
 
         //Cancel button properties
         cancelButton = new JButton("Cancel");
         optionsPanel.add(cancelButton);
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                try {
-                    soundBoard.setSoundAndPause(new URL("file:./Sound/cancel-sound.wav"), 275);
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
-                }
-                optionsFrame.dispose();
+        cancelButton.addActionListener(e -> {
+            setVisible(false);
+            try {
+                soundBoard.setSoundAndPause(new URL("file:./Sound/cancel-sound.wav"), 275);
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
             }
+            optionsFrame.dispose();
         });
         optionsFrame.add(optionsPanel);
         optionsFrame.pack();

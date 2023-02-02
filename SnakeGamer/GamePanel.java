@@ -34,10 +34,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer animationTimer;
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
-    private ImageIcon backgroundImage;
+    ImageIcon backgroundImage;
     private MusicSoundBoard musicSoundBoard;
-    Window frame;
-    ImageIcon gameOverTwo;
+    ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
 
 
     public GamePanel(){
@@ -54,7 +53,6 @@ public class GamePanel extends JPanel implements ActionListener {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
         }
-        frame = new JFrame();
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
@@ -194,7 +192,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(!running){
             timer.stop();
-            if(applesEaten < 2){
+            if(applesEaten < 20){
                 try{
                     musicSoundBoard.setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
                 } catch (MalformedURLException e){
@@ -214,7 +212,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //Score
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
-        if(applesEaten < 2){
+        if(applesEaten < 20){
             //Background image/animation
             ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
             g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
@@ -222,19 +220,10 @@ public class GamePanel extends JPanel implements ActionListener {
             ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
         } else {
-                this.gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
-                g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-            frame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent e) {
-                    frame.dispose();
-                    gameOver(g);
-                }
-            });
+            g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
 
         }
     }
-
-
 
     public void gameOverButtons(){
         //A button for the option to retry the game
@@ -244,7 +233,6 @@ public class GamePanel extends JPanel implements ActionListener {
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
         retryButton.addActionListener(e -> {
-
             try {
                 musicSoundBoard.setSound(new URL("file:./Sound/retry-sound.wav"));
             } catch (MalformedURLException ex) {
@@ -274,13 +262,13 @@ public class GamePanel extends JPanel implements ActionListener {
     
      //Game over button animations
     private void retryButtonClicked() {
-        gameOverTwo.getImage().flush();
         animationTimer = new Timer(15, e -> {
             alpha -= 5;
             retryButton.setForeground(new Color(255, 0, 0, alpha));
             retryButton.setBackground(new Color(255, 0, 0, alpha));
             if (alpha <= 0) {
                 animationTimer.stop();
+                flushIcon();
                 //restart game
                 new GameFrame();
             }
@@ -303,6 +291,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
         });
         animationTimer.start();
+    }
+    //TODO: Fix issue below
+    //Allows for repeat gif plays from start to finish (1 loop),
+    // BUT not consecutively from one game over after another.
+    public void flushIcon(){
+        gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+        gameOverTwo.getImage().flush();
     }
 
     public void togglePause(){
