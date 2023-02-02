@@ -51,6 +51,10 @@ public class MusicSoundBoard {
         musicClip.stop();
     }
 
+    public void resumeMusic(){
+        musicClip.start();
+    }
+
     public void setMusicClip(){
         this.musicClip = new Clip() {
             @Override

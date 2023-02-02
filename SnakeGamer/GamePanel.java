@@ -248,7 +248,14 @@ public class GamePanel extends JPanel implements ActionListener {
         mainMenuButton.setForeground(Color.white);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(mainMenuButton);
-        mainMenuButton.addActionListener(e -> menuButtonClicked());
+        mainMenuButton.addActionListener(e -> {
+            menuButtonClicked();
+            try {
+                musicSoundBoard.setSound(new URL("file:./Sound/laserrocket-5984.wav"));
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
             retryButton.setVisible(false);
             mainMenuButton.setVisible(false);
 
@@ -313,9 +320,22 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                 } case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
+                        try {
+                            Thread.sleep(260);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        try {
+                            musicSoundBoard.setSound(new URL("file:./Sound/pause-sound.wav"));
+                        } catch (MalformedURLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         togglePause();
+                        musicSoundBoard.stopMusic();
+
                     } else {
                         timer.start();
+                        musicSoundBoard.resumeMusic();
                     }
                 }
             }
