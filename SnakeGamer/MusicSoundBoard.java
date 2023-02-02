@@ -3,6 +3,7 @@ package SnakeGamer;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +23,19 @@ public class MusicSoundBoard {
             clip.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setSoundAndPause(URL url, int timer){
+        try {
+            Thread.sleep(timer);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+        try {
+            setSound(new URL(url.toString()));
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

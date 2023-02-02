@@ -3,10 +3,7 @@ package SnakeGamer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,8 +34,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer animationTimer;
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
-    ImageIcon backgroundImage;
+    private ImageIcon backgroundImage;
     private MusicSoundBoard musicSoundBoard;
+    Window frame;
+    ImageIcon gameOverTwo;
 
 
     public GamePanel(){
@@ -55,6 +54,7 @@ public class GamePanel extends JPanel implements ActionListener {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
         }
+        frame = new JFrame();
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
@@ -141,6 +141,7 @@ public class GamePanel extends JPanel implements ActionListener {
             });
             delayTimer.start();
             running = false;
+
         }
     }
 
@@ -193,7 +194,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(!running){
             timer.stop();
-            if(applesEaten < 20){
+            if(applesEaten < 2){
                 try{
                     musicSoundBoard.setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
                 } catch (MalformedURLException e){
@@ -213,7 +214,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //Score
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
-        if(applesEaten < 20){
+        if(applesEaten < 2){
             //Background image/animation
             ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
             g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
@@ -221,11 +222,20 @@ public class GamePanel extends JPanel implements ActionListener {
             ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
         } else {
-            ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
-            g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+                this.gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+                g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+            frame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    frame.dispose();
+                    gameOver(g);
+                }
+            });
+
         }
     }
-    
+
+
+
     public void gameOverButtons(){
         //A button for the option to retry the game
         retryButton = new JButton("Retry");
@@ -234,6 +244,7 @@ public class GamePanel extends JPanel implements ActionListener {
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
         retryButton.addActionListener(e -> {
+
             try {
                 musicSoundBoard.setSound(new URL("file:./Sound/retry-sound.wav"));
             } catch (MalformedURLException ex) {
@@ -263,6 +274,7 @@ public class GamePanel extends JPanel implements ActionListener {
     
      //Game over button animations
     private void retryButtonClicked() {
+        gameOverTwo.getImage().flush();
         animationTimer = new Timer(15, e -> {
             alpha -= 5;
             retryButton.setForeground(new Color(255, 0, 0, alpha));
@@ -283,11 +295,10 @@ public class GamePanel extends JPanel implements ActionListener {
             mainMenuButton.setBackground(new Color(33, 145, 89, alpha));
             if (alpha <= 0) {
                 animationTimer.stop();
-                //Return to main menu
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.setVisible(true);
                 JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
                 currentFrame.dispose();
+                //Return to main menu
+                new MainMenu().setVisible(true);
             }
 
         });
@@ -321,12 +332,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 } case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
                         try {
-                            Thread.sleep(260);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        try {
-                            musicSoundBoard.setSound(new URL("file:./Sound/pause-sound.wav"));
+                            musicSoundBoard.setSoundAndPause(new URL("file:./Sound/pause-sound.wav"), 260);
                         } catch (MalformedURLException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -345,7 +351,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void setBackgroundImage(){
                 try {
                     File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
-                    ArrayList<String> images = new ArrayList<String>();
+                    ArrayList<String> images = new ArrayList<>();
 
                     assert listOfFiles != null;
                     for (File file : listOfFiles) {

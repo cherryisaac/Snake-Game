@@ -181,18 +181,11 @@ public class MainMenu extends JFrame implements ActionListener {
         } else if(e.getSource() == optionsButton) {
            //JOptionPane.showMessageDialog(this, "Placeholder for options menu");
             try {
-                Thread.sleep(150);
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-            try {
-                soundBoard.setSound(new URL("file:./Sound/main-menu-sound.wav"));
+                soundBoard.setSoundAndPause(new URL("file:./Sound/main-menu-sound.wav"), 150);
             } catch (MalformedURLException ex) {
                 throw new RuntimeException(ex);
             }
             new OptionsMenu().optionsFrame.setVisible(true);
-
-
         } else if(e.getSource() == exitButton) {
             System.exit(0);
         }
