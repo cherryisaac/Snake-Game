@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
     boolean paused = false;
-    JButton retryButton, mainMenuButton;
+    JButton retryButton, mainMenuButton, continueButton;
     int alpha = 255;
     private Timer animationTimer;
     boolean gameOver = false;
@@ -40,22 +40,29 @@ public class GamePanel extends JPanel implements ActionListener {
     private MusicSoundBoard musicSoundBoard;
     private ImageIcon backgroundImage;
     private ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+    private ImageIcon gameOverNot = new ImageIcon("./Images/Snake.....gif");
+    private boolean retryClicked = false;
+    private boolean mainMenuClicked = false;
+    int score;
 
 
     public GamePanel(){
-        random = new Random();
-        optionsMenu = new OptionsMenu();
-        musicSoundBoard = new MusicSoundBoard();
-        musicSoundBoard.setMusicClip();
+        defaultPanel();
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
         }
-        backgroundImage = new ImageIcon(setBackgroundImage());
-        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        startGame();
+    }
+    public void defaultPanel(){
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
-        startGame();
+        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        random = new Random();
+        optionsMenu = new OptionsMenu();
+        musicSoundBoard = new MusicSoundBoard();
+        musicSoundBoard.setMusicClip();
+        backgroundImage = new ImageIcon(setBackgroundImage());
     }
 
     public void startGame(){
@@ -134,12 +141,14 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
             musicSoundBoard.stopMusic();
             //Delay the appearance of the buttons
-
+            score = applesEaten;
             int delayTime;
             if(applesEaten < 20){
                 delayTime = 5000; // 5 seconds
-            } else {
+            } else if(applesEaten <= 39) {
                 delayTime = 10000; // 10 seconds
+            } else {
+                delayTime = 20000; // 20 seconds
             }
             Timer delayTimer = new Timer(delayTime, e -> {
                 retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
@@ -148,6 +157,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 mainMenuButton.setVisible(true);
             });
             delayTimer.start();
+            if (mainMenuClicked && !retryClicked){
+                retryButton.setVisible(false);
+            } else if(retryClicked && !mainMenuClicked){
+                mainMenuButton.setVisible(false);
+            }
             running = false;
 
         }
@@ -208,11 +222,17 @@ public class GamePanel extends JPanel implements ActionListener {
                 } catch (MalformedURLException e){
                     throw new RuntimeException();
                 }
-            } else {
+            } else if (applesEaten <= 39) {
                 try{
                    musicSoundBoard.setSound(new URL("file:./Sound/Metal Gear Solid Game Over screen.wav"));
                 } catch (MalformedURLException e){
                     throw new RuntimeException();
+                }
+            } else {
+                try {
+                    musicSoundBoard.setSound(new URL("file:./Sound/continue.wav"));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -229,9 +249,10 @@ public class GamePanel extends JPanel implements ActionListener {
             //Game Over text
             ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
-        } else {
+        } else if(applesEaten <= 39) {
             g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-
+        } else {
+            g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         }
     }
 
@@ -258,16 +279,15 @@ public class GamePanel extends JPanel implements ActionListener {
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(mainMenuButton);
         mainMenuButton.addActionListener(e -> {
-            menuButtonClicked();
             try {
                 musicSoundBoard.setSound(new URL("file:./Sound/laserrocket-5984.wav"));
             } catch (MalformedURLException ex) {
                 throw new RuntimeException(ex);
             }
+            menuButtonClicked();
         });
             retryButton.setVisible(false);
             mainMenuButton.setVisible(false);
-
     }
     
      //Game over button animations
@@ -278,9 +298,12 @@ public class GamePanel extends JPanel implements ActionListener {
             retryButton.setBackground(new Color(255, 0, 0, alpha));
             if (alpha <= 0) {
                 animationTimer.stop();
+                applesEaten = score;
                 flushIcon();
                 //restart game
                 new GameFrame();
+                retryClicked = true;
+//                mainMenuClicked = false;
             }
         });
         animationTimer.start();
@@ -297,17 +320,20 @@ public class GamePanel extends JPanel implements ActionListener {
                 currentFrame.dispose();
                 //Return to main menu
                 new MainMenu().setVisible(true);
+                mainMenuClicked = true;
+//                retryClicked = false;
             }
 
         });
         animationTimer.start();
+
     }
     //TODO: Fix issue below
     //Allows for repeat gif plays from start to finish (1 loop),
     // BUT not consecutively from one game over after another.
     public void flushIcon(){
-        gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
-        gameOverTwo.getImage().flush();
+        new ImageIcon("./Images/Snake.....gif").getImage().flush();
+        new ImageIcon("./Images/Game-Over-Epic-MG.gif").getImage().flush();
     }
 
     public void togglePause(){

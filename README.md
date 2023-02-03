@@ -23,6 +23,7 @@ Bugs:
 - Music does not loop
 - "Pause" word can be triggered with pause button after game over screen
 - Snake's speed in the settings works the opposite as intended (the higher the number then the slower the snake moves)
+- If retry & main menu buttons are both clicked then the buttons will disappear, and you will be stuck at the game over screen
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode

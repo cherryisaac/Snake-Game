@@ -1,5 +1,5 @@
-purple
-gray
+orange
+black
 on
 on
 75
