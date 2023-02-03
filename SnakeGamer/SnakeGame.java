@@ -1,11 +1,11 @@
 package SnakeGamer;
 
+import java.net.MalformedURLException;
+
 public class SnakeGame {
 
-    public static void main(String [] args){
+    public static void main(String [] args) throws MalformedURLException {
         new MainMenu().setVisible(true);
     }
-    public static void print(Object obj){
-        System.out.println(obj);
-    }
+
 }

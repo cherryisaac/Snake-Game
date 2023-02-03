@@ -3,7 +3,10 @@ package SnakeGamer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,25 +37,21 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer animationTimer;
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
-    ImageIcon backgroundImage;
     private MusicSoundBoard musicSoundBoard;
     ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+    ImageIcon backgroundImage;
 
 
     public GamePanel(){
         random = new Random();
         optionsMenu = new OptionsMenu();
-        backgroundImage = new ImageIcon();
-        switch (optionsMenu.getBackgroundImages()){
-            case "on" -> setBackgroundImage();
-            case "off" -> setBackground(Color.black);
-        }
         musicSoundBoard = new MusicSoundBoard();
         musicSoundBoard.setMusicClip();
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
         }
+        backgroundImage = new ImageIcon(setBackgroundImage());
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setFocusable(true);
         addKeyListener(new MyKeyAdapter());
@@ -68,15 +67,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        switch (optionsMenu.getBackgroundImages()){
+            case "on" -> g.drawImage(backgroundImage.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+            case "off" -> setBackground(Color.black);
+        }
         draw(g);
         if(paused){
+            timer.stop();
             g.setColor(new Color(0, 0, 0, 128));
             g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             g.setColor(Color.WHITE);
             g.setFont(new Font("Ink Free", Font.BOLD, 30));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Paused", (SCREEN_WIDTH - metrics.stringWidth("Paused"))/2, SCREEN_HEIGHT/2);
-            timer.stop();
+
         }
             paused = false;
     }
@@ -333,7 +337,6 @@ public class GamePanel extends JPanel implements ActionListener {
                         }
                         togglePause();
                         musicSoundBoard.stopMusic();
-
                     } else {
                         timer.start();
                         musicSoundBoard.resumeMusic();
@@ -343,7 +346,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void setBackgroundImage(){
+    public String setBackgroundImage(){
                 try {
                     File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
                     ArrayList<String> images = new ArrayList<>();
@@ -355,11 +358,11 @@ public class GamePanel extends JPanel implements ActionListener {
                         }
                     }
                     int index = random.nextInt(images.size());
-                    String imagePath = images.get(index);
-                    backgroundImage = new ImageIcon(imagePath);
+                    return images.get(index);
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
+                    return null;
             }
 
     @Override

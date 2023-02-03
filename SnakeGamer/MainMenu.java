@@ -20,6 +20,7 @@ public class MainMenu extends JFrame implements ActionListener {
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel titleLogo;
     private JLabel snakeImage;
+    private JLabel background;
     private MusicSoundBoard soundBoard;
     public MainMenu() {
         //Set the title and layout of the main menu frame
@@ -27,14 +28,13 @@ public class MainMenu extends JFrame implements ActionListener {
         setLayout(null);
         soundBoard = new MusicSoundBoard();
 
-        //Set background image...change directory according to the image route on your os.
-        //If background only shows a black screen then there might be a typo or wrong directory.
-        ImageIcon bg = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/grid.gif");
-        JLabel background = new JLabel(bg);
-        ImageIcon logo = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/3D-Text-1s-280px.gif");
+        //Set background image
+        ImageIcon bg = new ImageIcon("./Images/grid.gif");
+        background = new JLabel(bg);
+        ImageIcon logo = new ImageIcon("./Images/3D-Text-1s-280px.gif");
         titleLogo = new JLabel(logo);
         titleLogo.setVerticalAlignment(JLabel.TOP);
-        ImageIcon snake = new ImageIcon("/Users/isaaccherry/Documents/Snake-Game/Snake-Game/Images/snake.gif");
+        ImageIcon snake = new ImageIcon("./Images/snake.gif");
         snakeImage = new JLabel(snake);
 
         //Add the buttons to the main menu frame
