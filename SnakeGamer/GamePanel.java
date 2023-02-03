@@ -134,7 +134,13 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
             musicSoundBoard.stopMusic();
             //Delay the appearance of the buttons
-            int delayTime = 10000; // 10 seconds
+
+            int delayTime;
+            if(applesEaten < 20){
+                delayTime = 5000; // 5 seconds
+            } else {
+                delayTime = 10000; // 10 seconds
+            }
             Timer delayTimer = new Timer(delayTime, e -> {
                 retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
                 mainMenuButton.setBounds(230,375,150,50);

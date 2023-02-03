@@ -19,8 +19,8 @@ Functionality:
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, and toggle music
 
 Bugs:
-- Alternative Game Over screen only runs once and not fully other times during a session
-- Background images do not appear like they did before
+- Alternative Game Over screen only runs fully every other time when triggered, but NOT consecutively
+- Music does not loop
 - "Pause" word can be triggered with pause button after game over screen
 - Snake's speed in the settings works the opposite as intended (the higher the number then the slower the snake moves)
 
