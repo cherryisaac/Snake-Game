@@ -32,69 +32,36 @@ public class OptionsMenu extends JFrame implements ActionListener {
     //If it's not accessible to the main menu then the options will not load when clicked
     public JFrame optionsFrame;
     private static final String OPTIONS_FILE = "options.txt";
+    JPanel optionsPanel;
+    MusicSoundBoard soundBoard;
 
 
      public OptionsMenu(){
-         MusicSoundBoard soundBoard = new MusicSoundBoard();
+         soundBoard = new MusicSoundBoard();
          loadOptions();
          optionsFrame = new JFrame("Options");
          optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel optionsPanel = new JPanel();
-        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
-        
-        //Snake color settings
-        JLabel snakeColorLabel = new JLabel("Select snake color:");
-        snakeColorComboBox = new JComboBox<>(new String[]
-            {"orange", "purple", "blue", "green", "cyan", "yellow", "pink", "random"});
-        snakeColorComboBox.setSelectedItem(snakeColor);
-        snakeColorComboBox.addActionListener(e -> snakeColor = (String) snakeColorComboBox.getSelectedItem());
-        optionsPanel.add(snakeColorLabel);
-        optionsPanel.add(snakeColorComboBox);
-         
-         //Grid color settings
-         JLabel gridColorLabel = new JLabel("Select grid color:");
-         gridColorComboBox = new JComboBox<>(new String[]{"white", "gray", "black"});
-         gridColorComboBox.setSelectedItem(gridColor);
-         gridColorComboBox.addActionListener(e -> gridColor = (String) gridColorComboBox.getSelectedItem());
-         optionsPanel.add(gridColorLabel);
-         optionsPanel.add(gridColorComboBox);
-         
-         //Background image settings
-         JLabel imageLabel = new JLabel("Toggle background Images:");
-         imageComboBox = new JComboBox<>(new String[]{"on", "off"});
-         imageComboBox.setSelectedItem(imageChoice);
-         imageComboBox.addActionListener(e -> imageChoice = (String) imageComboBox.getSelectedItem());
-         optionsPanel.add(imageLabel);
-         optionsPanel.add(imageComboBox);
-         
-          //Music settings
-         JLabel musicLabel = new JLabel("Enable music:");
-         musicComboBox = new JComboBox<>(new String[]{"on", "off"});
-         musicComboBox.setSelectedItem(musicChoice);
-         musicComboBox.addActionListener(e -> musicChoice = (String) musicComboBox.getSelectedItem());
-         optionsPanel.add(musicLabel);
-         optionsPanel.add(musicComboBox);
-        
-        //Snake speed settings
-        JLabel gameSpeedLabel = new JLabel("Select game speed:");
-        //The higher the number, the slower the snake moves
-         // TODO: fix it so that it's the opposite of above
-        speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
-        speedSlider.addChangeListener(e -> gameSpeed = speedSlider.getValue());
-        optionsPanel.add(gameSpeedLabel);
-        optionsPanel.add(speedSlider);
+         optionsPanel = new JPanel();
+         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.PAGE_AXIS));
+         snakeColorSettings();
+         gridColorSettings();
+         backgroundImageSettings();
+         musicSettings();
+         snakeSpeedSettings();
+         timeModeSettings();
 
-        //TODO: Time Mode settings
-        JLabel timeModeLabel = new JLabel("Select time mode:");
-        timeModeCheckBox = new JCheckBox();
-        timeModeCheckBox.setSelected(timeMode);
-        timeModeCheckBox.addItemListener(e -> timeMode = timeModeCheckBox.isSelected());
-         optionsPanel.add(timeModeLabel);
-         optionsPanel.add(timeModeCheckBox);
-         
         //Save button properties
         saveButton = new JButton("Save");
+        setSaveButton();
+
+        //Cancel button properties
+        cancelButton = new JButton("Cancel");
+        setCancelButton();
+        //I only want this visible when the options button is clicked NOT in-game
+        optionsFrame.setVisible(false);
+    }
+    public void setSaveButton(){
         optionsPanel.add(saveButton);
 
         saveButton.addActionListener(e -> {
@@ -107,11 +74,10 @@ public class OptionsMenu extends JFrame implements ActionListener {
             }
             optionsFrame.dispose();
         });
+    }
 
-        //Cancel button properties
-        cancelButton = new JButton("Cancel");
+    public void setCancelButton(){
         optionsPanel.add(cancelButton);
-
         cancelButton.addActionListener(e -> {
             setVisible(false);
             try {
@@ -123,8 +89,63 @@ public class OptionsMenu extends JFrame implements ActionListener {
         });
         optionsFrame.add(optionsPanel);
         optionsFrame.pack();
-        //I only want this visible when the options button is clicked NOT in-game
-        optionsFrame.setVisible(false);
+    }
+
+    public void snakeColorSettings(){
+        JLabel snakeColorLabel = new JLabel("Select snake color:");
+        snakeColorComboBox = new JComboBox<>(new String[]
+                {"orange", "purple", "blue", "green", "cyan", "yellow", "pink", "random"});
+        snakeColorComboBox.setSelectedItem(snakeColor);
+        snakeColorComboBox.addActionListener(e -> snakeColor = (String) snakeColorComboBox.getSelectedItem());
+        optionsPanel.add(snakeColorLabel);
+        optionsPanel.add(snakeColorComboBox);
+    }
+
+    public void gridColorSettings(){
+        JLabel gridColorLabel = new JLabel("Select grid color:");
+        gridColorComboBox = new JComboBox<>(new String[]{"white", "gray", "black"});
+        gridColorComboBox.setSelectedItem(gridColor);
+        gridColorComboBox.addActionListener(e -> gridColor = (String) gridColorComboBox.getSelectedItem());
+        optionsPanel.add(gridColorLabel);
+        optionsPanel.add(gridColorComboBox);
+    }
+
+    public void backgroundImageSettings(){
+        JLabel imageLabel = new JLabel("Toggle background Images:");
+        imageComboBox = new JComboBox<>(new String[]{"on", "off"});
+        imageComboBox.setSelectedItem(imageChoice);
+        imageComboBox.addActionListener(e -> imageChoice = (String) imageComboBox.getSelectedItem());
+        optionsPanel.add(imageLabel);
+        optionsPanel.add(imageComboBox);
+    }
+
+    public void musicSettings(){
+        JLabel musicLabel = new JLabel("Enable music:");
+        musicComboBox = new JComboBox<>(new String[]{"on", "off"});
+        musicComboBox.setSelectedItem(musicChoice);
+        musicComboBox.addActionListener(e -> musicChoice = (String) musicComboBox.getSelectedItem());
+        optionsPanel.add(musicLabel);
+        optionsPanel.add(musicComboBox);
+    }
+
+    public void snakeSpeedSettings(){
+        JLabel gameSpeedLabel = new JLabel("Select game speed:");
+        //The higher the number, the slower the snake moves
+        // TODO: fix it so that it's the opposite of above
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
+        speedSlider.addChangeListener(e -> gameSpeed = speedSlider.getValue());
+        optionsPanel.add(gameSpeedLabel);
+        optionsPanel.add(speedSlider);
+    }
+
+    public void timeModeSettings(){
+        //TODO: Time Mode settings
+        JLabel timeModeLabel = new JLabel("Select time mode:");
+        timeModeCheckBox = new JCheckBox();
+        timeModeCheckBox.setSelected(timeMode);
+        timeModeCheckBox.addItemListener(e -> timeMode = timeModeCheckBox.isSelected());
+        optionsPanel.add(timeModeLabel);
+        optionsPanel.add(timeModeCheckBox);
     }
 
     public void loadOptions() {

@@ -38,8 +38,8 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
-    ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
-    ImageIcon backgroundImage;
+    private ImageIcon backgroundImage;
+    private ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
 
 
     public GamePanel(){
