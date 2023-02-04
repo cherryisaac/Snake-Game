@@ -17,6 +17,11 @@ public class MusicSoundBoard {
 
     public MusicSoundBoard(){
         random = new Random();
+        try {
+            musicClip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void mainMenuMusic(){
@@ -55,18 +60,18 @@ public class MusicSoundBoard {
     public void setMusicChoice(){
                 try {
                     String [] musicFiles = {
-                        "Music/Awesome violin beat visualisation.wav",
-                        "Music/Kaine-Salvation.wav",
-                        "Music/KBT Expressway - GBA Pokémon Unbound_ Super Music Collection.wav",
-                        "Music/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav"
+                        "/Awesome violin beat visualisation.wav",
+                        "/Kaine-Salvation.wav",
+                        "/KBT Expressway - GBA Pokémon Unbound_ Super Music Collection.wav",
+                        "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav"
                     };
                     int index = random.nextInt(musicFiles.length);
-                    String musicPath = musicFiles[index];
-                    File musicFile = new File(musicPath);
+                    String musicPath =  musicFiles[index];
                     musicClip = AudioSystem.getClip();
-                    musicClip.open(AudioSystem.getAudioInputStream(musicFile));
+                    musicClip.open(AudioSystem.getAudioInputStream(getClass().getResource(musicPath)));
                     musicClip.loop(Clip.LOOP_CONTINUOUSLY);
                     musicClip.start();
+                    System.out.println(musicPath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println("Error loading music");
