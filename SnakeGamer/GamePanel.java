@@ -148,7 +148,7 @@ public class GamePanel extends JPanel implements ActionListener {
             } else if(applesEaten <= 39) {
                 delayTime = 10000; // 10 seconds
             } else {
-                delayTime = 20000; // 20 seconds
+                delayTime = 19500; // 20 seconds
             }
             Timer delayTimer = new Timer(delayTime, e -> {
                 retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
@@ -259,6 +259,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void gameOverButtons(){
         //A button for the option to retry the game
         retryButton = new JButton("Retry");
+        retryButton.setBackground(Color.black);
         retryButton.setBorder(BorderFactory.createLineBorder(Color.black));
         retryButton.setForeground(Color.white);
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
@@ -273,7 +274,7 @@ public class GamePanel extends JPanel implements ActionListener {
         });
         //A button for the option to return to the main menu
         mainMenuButton = new JButton("Main Menu");
-        mainMenuButton.setBackground(Color.RED);
+        mainMenuButton.setBackground(Color.black);
         mainMenuButton.setBorder(BorderFactory.createLineBorder(Color.black));
         mainMenuButton.setForeground(Color.white);
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
@@ -299,7 +300,6 @@ public class GamePanel extends JPanel implements ActionListener {
             if (alpha <= 0) {
                 animationTimer.stop();
                 applesEaten = score;
-                flushIcon();
                 //restart game
                 new GameFrame();
                 retryClicked = true;
@@ -404,6 +404,7 @@ public class GamePanel extends JPanel implements ActionListener {
             checkApple();
             checkCollisions();
         }
+            flushIcon();
             repaint();
             gameOverButtons();
             gameOver = true;

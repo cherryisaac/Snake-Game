@@ -76,7 +76,7 @@ public class MainMenu extends JFrame implements ActionListener {
     public void setMouseListener(JButton jButton){
         jButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jButton.setBackground(Color.CYAN);
+                jButton.setBackground(Color.green);
             }
 
             public void mouseExited(java.awt.event.MouseEvent evt) {
