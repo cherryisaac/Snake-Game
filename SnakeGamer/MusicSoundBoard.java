@@ -19,27 +19,6 @@ public class MusicSoundBoard {
         random = new Random();
     }
 
-    public void setBackgroundImage(){
-        ImageIcon backgroundImage;
-        try {
-            File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
-            ArrayList<String> images = new ArrayList<>();
-
-            assert listOfFiles != null;
-            for (File file : listOfFiles) {
-                if (file.isFile() && (file.getName().endsWith(".gif"))) {
-                    images.add(file.getPath());
-                }
-            }
-            int index = random.nextInt(images.size());
-            String imagePath = images.get(index);
-            backgroundImage = new ImageIcon(imagePath);
-            System.out.println(backgroundImage);
-        } catch (Exception e) {
-            System.err.println("Error loading image");
-        }
-    }
-
     public void mainMenuMusic(){
             try {
                 musicClip = AudioSystem.getClip();
@@ -70,31 +49,26 @@ public class MusicSoundBoard {
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
-        try {
-            setSound(new URL(url.toString()));
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException(ex);
-        }
+        setSound(url);
     }
 
     public void setMusicChoice(){
                 try {
-                    File[] listOfFiles = new File("./Music/").listFiles();
-                    ArrayList<String> musicFiles = new ArrayList<>();
-
-                    assert listOfFiles != null;
-                    for (File file : listOfFiles) {
-                        if (file.isFile() && (file.getName().endsWith(".wav"))) {
-                            musicFiles.add(file.getPath());
-                        }
-                    }
-                    int index = random.nextInt(musicFiles.size());
-                    String musicPath = musicFiles.get(index);
+                    String [] musicFiles = {
+                        "Music/Awesome violin beat visualisation.wav",
+                        "Music/Kaine-Salvation.wav",
+                        "Music/KBT Expressway - GBA Pokémon Unbound_ Super Music Collection.wav",
+                        "Music/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav"
+                    };
+                    int index = random.nextInt(musicFiles.length);
+                    String musicPath = musicFiles[index];
+                    File musicFile = new File(musicPath);
                     musicClip = AudioSystem.getClip();
-                    musicClip.open(AudioSystem.getAudioInputStream(new File(musicPath)));
+                    musicClip.open(AudioSystem.getAudioInputStream(musicFile));
                     musicClip.loop(Clip.LOOP_CONTINUOUSLY);
                     musicClip.start();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.err.println("Error loading music");
                 }
     }

@@ -67,11 +67,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         saveButton.addActionListener(e -> {
             saveSettings();
             saveOptions();
-            try {
-                soundBoard.setSoundAndPause(new URL("file:./Sound/save-sound.wav"), 350);
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
-            }
+            soundBoard.setSoundAndPause(getClass().getResource("/save-sound.wav"), 350);
             optionsFrame.dispose();
         });
     }
@@ -80,11 +76,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         optionsPanel.add(cancelButton);
         cancelButton.addActionListener(e -> {
             setVisible(false);
-            try {
-                soundBoard.setSoundAndPause(new URL("file:./Sound/cancel-sound.wav"), 275);
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
-            }
+            soundBoard.setSoundAndPause(getClass().getResource("/cancel-sound.wav"), 275);
             optionsFrame.dispose();
         });
         optionsFrame.add(optionsPanel);

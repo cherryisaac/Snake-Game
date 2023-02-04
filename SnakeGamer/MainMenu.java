@@ -21,10 +21,7 @@ public class MainMenu extends JFrame implements ActionListener {
     public MainMenu() {
         defaultMainMenu();
         setBackgroundImage();
-//        setImage("./Images/3D-Text-1s-280px.gif", 150, -10, 300, 300);
         setImage(getClass().getClassLoader().getResource("3D-Text-1s-280px.gif"), 150, -10, 300, 300);
-
-//        setImage("./Images/snake.gif", 95, 125, 400, 300);
         setImage(getClass().getClassLoader().getResource("snake.gif"), 95, 125, 400, 300);
         setButton(startButton, 375);
         setButton(optionsButton, 395);
@@ -57,6 +54,7 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void setBackgroundImage(){
+        //getClass().getClassLoader().getResource() allows for getting resources during production build (not just code)
         ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("grid.gif"));
         background = new JLabel(bg);
         add(background);
@@ -145,11 +143,7 @@ public class MainMenu extends JFrame implements ActionListener {
             dispose();
         } else if(e.getSource() == optionsButton) {
            //JOptionPane.showMessageDialog(this, "Placeholder for options menu");
-            try {
-                soundBoard.setSoundAndPause(new URL("file:./Sound/main-menu-sound.wav"), 150);
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
-            }
+            soundBoard.setSoundAndPause(getClass().getResource("/main-menu-sound.wav"), 150);
             new OptionsMenu().optionsFrame.setVisible(true);
         } else if(e.getSource() == exitButton) {
             System.exit(0);

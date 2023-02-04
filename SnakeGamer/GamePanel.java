@@ -199,11 +199,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if((X[0]==appleX) && (Y[0]==appleY)){
             bodyParts++;
             applesEaten++;
-                try {
-               musicSoundBoard.setSound(new URL("file:./Sound/eating-sound-effect.wav"));
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
+            musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
             newApple();
         }
     }
@@ -223,23 +219,11 @@ public class GamePanel extends JPanel implements ActionListener {
         if(!running){
             timer.stop();
             if(applesEaten < 20){
-                try{
-                    musicSoundBoard.setSound(new URL("file:./Sound/evil-game-over-quote.wav"));
-                } catch (MalformedURLException e){
-                    throw new RuntimeException();
-                }
+                musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
             } else if (applesEaten <= 39) {
-                try{
-                   musicSoundBoard.setSound(new URL("file:./Sound/Metal Gear Solid Game Over screen.wav"));
-                } catch (MalformedURLException e){
-                    throw new RuntimeException();
-                }
+                musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
             } else {
-                try {
-                    musicSoundBoard.setSound(new URL("file:./Sound/continue.wav"));
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                }
+                musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
             }
         }
     }
@@ -271,11 +255,7 @@ public class GamePanel extends JPanel implements ActionListener {
         retryButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(retryButton);
         retryButton.addActionListener(e -> {
-            try {
-                musicSoundBoard.setSound(new URL("file:./Sound/retry-sound.wav"));
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
-            }
+            musicSoundBoard.setSound(getClass().getResource("/retry-sound.wav"));
             retryButtonClicked();
         });
         //A button for the option to return to the main menu
@@ -286,11 +266,7 @@ public class GamePanel extends JPanel implements ActionListener {
         mainMenuButton.setFont(new Font("Ink Free", Font.BOLD, 20));
         add(mainMenuButton);
         mainMenuButton.addActionListener(e -> {
-            try {
-                musicSoundBoard.setSound(new URL("file:./Sound/laserrocket-5984.wav"));
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
-            }
+            musicSoundBoard.setSound(getClass().getResource("/laserrocket-5984.wav"));
             menuButtonClicked();
         });
             retryButton.setVisible(false);
@@ -364,11 +340,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                 } case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
-                        try {
-                            musicSoundBoard.setSoundAndPause(new URL("file:./Sound/pause-sound.wav"), 260);
-                        } catch (MalformedURLException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        musicSoundBoard.setSoundAndPause(getClass().getResource("/Sound/pause-sound.wav"), 260);
                         togglePause();
                         musicSoundBoard.stopMusic();
                     } else {
