@@ -21,8 +21,11 @@ public class MainMenu extends JFrame implements ActionListener {
     public MainMenu() {
         defaultMainMenu();
         setBackgroundImage();
-        setImage("./Images/3D-Text-1s-280px.gif", 150, -10, 300, 300);
-        setImage("./Images/snake.gif", 95, 125, 400, 300);
+//        setImage("./Images/3D-Text-1s-280px.gif", 150, -10, 300, 300);
+        setImage(getClass().getClassLoader().getResource("3D-Text-1s-280px.gif"), 150, -10, 300, 300);
+
+//        setImage("./Images/snake.gif", 95, 125, 400, 300);
+        setImage(getClass().getClassLoader().getResource("snake.gif"), 95, 125, 400, 300);
         setButton(startButton, 375);
         setButton(optionsButton, 395);
         setButton(exitButton, 415);
@@ -42,7 +45,7 @@ public class MainMenu extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public void setImage(String filename, int x, int y, int width, int height){
+    public void setImage(URL filename, int x, int y, int width, int height){
         //Sets image
         ImageIcon imageIcon = new ImageIcon(filename);
         JLabel image = new JLabel(imageIcon);
@@ -54,7 +57,7 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void setBackgroundImage(){
-        ImageIcon bg = new ImageIcon("Images/grid.gif");
+        ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("grid.gif"));
         background = new JLabel(bg);
         add(background);
         background.setBounds(-25, -95, 750, 750);

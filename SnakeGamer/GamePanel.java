@@ -8,9 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -39,8 +43,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
     private ImageIcon backgroundImage;
-    private ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
-    private ImageIcon gameOverNot = new ImageIcon("./Images/Snake.....gif");
+//    private ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
+    private ImageIcon gameOverTwo = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
+
+    private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     int score;
@@ -48,6 +54,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public GamePanel(){
         defaultPanel();
+        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage()));
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
@@ -62,7 +69,6 @@ public class GamePanel extends JPanel implements ActionListener {
         optionsMenu = new OptionsMenu();
         musicSoundBoard = new MusicSoundBoard();
         musicSoundBoard.setMusicClip();
-        backgroundImage = new ImageIcon(setBackgroundImage());
     }
 
     public void startGame(){
@@ -244,10 +250,10 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         if(applesEaten < 20){
             //Background image/animation
-            ImageIcon background = new ImageIcon("./Images/gif-blood.gif");
+            ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
             g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
             //Game Over text
-            ImageIcon gif = new ImageIcon("./Images/game-over-text.gif");
+            ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
         } else if(applesEaten <= 39) {
             g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
@@ -323,17 +329,13 @@ public class GamePanel extends JPanel implements ActionListener {
                 mainMenuClicked = true;
 //                retryClicked = false;
             }
-
         });
         animationTimer.start();
-
     }
-    //TODO: Fix issue below
-    //Allows for repeat gif plays from start to finish (1 loop),
-    // BUT not consecutively from one game over after another.
+
     public void flushIcon(){
-        new ImageIcon("./Images/Snake.....gif").getImage().flush();
-        new ImageIcon("./Images/Game-Over-Epic-MG.gif").getImage().flush();
+        new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif")).getImage().flush();
+        new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif")).getImage().flush();
     }
 
     public void togglePause(){
@@ -380,17 +382,22 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public String setBackgroundImage(){
                 try {
-                    File [] listOfFiles = new File("./Images/Animated-bg/").listFiles();
-                    ArrayList<String> images = new ArrayList<>();
-
-                    assert listOfFiles != null;
-                    for (File file : listOfFiles) {
-                        if (file.isFile() && (file.getName().endsWith(".gif"))) {
-                            images.add(file.getPath());
-                        }
-                    }
-                    int index = random.nextInt(images.size());
-                    return images.get(index);
+                    String [] images = {
+                            "Animated-bg/blue-star.gif",
+                            "Animated-bg/cube-world.gif",
+                            "Animated-bg/green-vortex.gif",
+                            "Animated-bg/hell-maze.gif",
+                            "Animated-bg/hexahedron-animated.gif",
+                            "Animated-bg/light-ball.gif",
+                            "Animated-bg/light-hexahedron-tunnel.gif",
+                            "Animated-bg/light-squares.gif",
+                            "Animated-bg/light-squares2.gif",
+                            "Animated-bg/lines-and-sparks.gif",
+                            "Animated-bg/matrix.gif",
+                            "Animated-bg/speed-tunnel.gif"
+                    };
+                    int index = random.nextInt(images.length);
+                    return images[index];
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
@@ -410,5 +417,3 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver = true;
     }
 }
-
-
