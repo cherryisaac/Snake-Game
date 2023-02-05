@@ -22,7 +22,7 @@ Bugs:
 - Music does not loop...sometimes
 - "Pause" word can be triggered with pause button after game over screen
 - Snake's speed in the settings works the opposite as intended (the higher the number then the slower the snake moves)
-- If retry & main menu buttons are both clicked then the buttons will disappear, and you will be stuck at the game over screen
+- If retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
@@ -31,3 +31,7 @@ Future features I would like to implement:
 - With medium mode the user can lose if the snake goes out of bounds, or it runs into itself
 - With hard mode I would like the same as medium, but with a few obstacles that have to be avoided
 - Time attack mode where the snake collects as many apples in a given time frame (2 or 5 min)
+
+What I learned from this project:
+- How to utilize Java Swing API
+- How to create a Jar file with resources (images & music included)
