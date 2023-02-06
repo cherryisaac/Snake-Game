@@ -35,3 +35,4 @@ Future features I would like to implement:
 What I learned from this project:
 - How to utilize Java Swing API
 - How to create a Jar file with resources (images & music included)
+- Converting a Jar file to an exe application

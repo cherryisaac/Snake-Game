@@ -36,8 +36,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private MusicSoundBoard musicSoundBoard;
     private ImageIcon backgroundImage;
     private ImageIcon gameOverTwo = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
-
     private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
+    private ImageIcon mazeGameOver = new ImageIcon( getClass().getClassLoader().getResource("maze-game-over.gif"));
+
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     int score;
@@ -139,7 +140,7 @@ public class GamePanel extends JPanel implements ActionListener {
             //Delay the appearance of the buttons
             score = applesEaten;
             int delayTime;
-            if(applesEaten < 20){
+            if(applesEaten < 10){
                 delayTime = 5000; // 5 seconds
             } else if(applesEaten <= 39) {
                 delayTime = 10000; // 10 seconds
@@ -201,9 +202,12 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if(!running){
             timer.stop();
-            if(applesEaten < 20){
+            if(applesEaten < 10){
                 musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
-            } else if (applesEaten <= 39) {
+            } else if(applesEaten <= 20){
+                musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
+            }
+            else if (applesEaten <= 39) {
                 musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
             } else {
                 musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
@@ -215,14 +219,17 @@ public class GamePanel extends JPanel implements ActionListener {
         //Score
         FontMetrics metrics1 = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
-        if(applesEaten < 20){
+        if(applesEaten < 10){
             //Background image/animation
             ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
             g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
             //Game Over text
             ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
             g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
-        } else if(applesEaten <= 39) {
+        } else if(applesEaten <=20){
+            g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+        }
+        else if(applesEaten <= 39) {
             g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
         } else {
             g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
@@ -296,6 +303,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void flushIcon(){
         new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif")).getImage().flush();
         new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif")).getImage().flush();
+        new ImageIcon(getClass().getClassLoader().getResource("maze-game-over.gif")).getImage().flush();
     }
 
     public void togglePause(){
