@@ -1,19 +1,17 @@
 package SnakeGamer;
 
 import javax.sound.sampled.*;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class MusicSoundBoard {
     private Clip musicClip;
     private Random random;
 
-//    private Clip menuMusic;
+    private Clip menuMusic;
 
     public MusicSoundBoard(){
         random = new Random();
@@ -26,17 +24,19 @@ public class MusicSoundBoard {
 
     public void mainMenuMusic(){
             try {
-                musicClip = AudioSystem.getClip();
-                musicClip.open(AudioSystem.getAudioInputStream(new File("./Sound/main-menu-theme.wav")));
-                musicClip.start();
+                menuMusic = AudioSystem.getClip();
+                menuMusic.open(AudioSystem.getAudioInputStream(new File("/Users/isaaccherry/Documents/FolderTwo/Snake-Game/Sound/main-menu-theme.wav")));
+                FloatControl volume = (FloatControl) menuMusic.getControl(FloatControl.Type.MASTER_GAIN);
+                volume.setValue(-15.0f); //Lower the volume by 15 decibels
+                menuMusic.start();
             } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
                 throw new RuntimeException(e);
             }
     }
 
-//    public void stopMenuMusic(){
-//        menuMusic.stop();
-//    }
+    public void stopMenuMusic(){
+        menuMusic.stop();
+    }
 
     public void setSound(URL url){
         try {
@@ -63,12 +63,13 @@ public class MusicSoundBoard {
                         "/Awesome violin beat visualisation.wav",
                         "/Kaine-Salvation.wav",
                         "/KBT Expressway - GBA Pokémon Unbound_ Super Music Collection.wav",
-                        "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav"
+                        "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav",
+                        "/Mind-Power-Ki (Instrumental).wav"
                     };
                     int index = random.nextInt(musicFiles.length);
                     String musicPath =  musicFiles[index];
                     musicClip = AudioSystem.getClip();
-                    musicClip.open(AudioSystem.getAudioInputStream(getClass().getResource(musicPath)));
+                    musicClip.open(AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(musicPath))));
                     musicClip.loop(Clip.LOOP_CONTINUOUSLY);
                     musicClip.start();
                     System.out.println(musicPath);

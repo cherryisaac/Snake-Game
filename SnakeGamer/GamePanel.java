@@ -7,14 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 
@@ -43,7 +35,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
     private ImageIcon backgroundImage;
-//    private ImageIcon gameOverTwo = new ImageIcon("./Images/Game-Over-Epic-MG.gif");
     private ImageIcon gameOverTwo = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
 
     private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
@@ -93,7 +84,6 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setFont(new Font("Ink Free", Font.BOLD, 30));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Paused", (SCREEN_WIDTH - metrics.stringWidth("Paused"))/2, SCREEN_HEIGHT/2);
-
         }
             paused = false;
     }
@@ -163,13 +153,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 mainMenuButton.setVisible(true);
             });
             delayTimer.start();
-            if (mainMenuClicked && !retryClicked){
-                retryButton.setVisible(false);
-            } else if(retryClicked && !mainMenuClicked){
-                mainMenuButton.setVisible(false);
-            }
-            running = false;
-
         }
     }
 
@@ -258,6 +241,7 @@ public class GamePanel extends JPanel implements ActionListener {
             musicSoundBoard.setSound(getClass().getResource("/retry-sound.wav"));
             retryButtonClicked();
         });
+
         //A button for the option to return to the main menu
         mainMenuButton = new JButton("Main Menu");
         mainMenuButton.setBackground(Color.black);
@@ -387,5 +371,30 @@ public class GamePanel extends JPanel implements ActionListener {
             repaint();
             gameOverButtons();
             gameOver = true;
+     }
+
+     //TODO: Figure out how to incorporate key interaction for game over buttons
+    public class MyKeyAdapterTwo extends KeyAdapter{
+        public void setActionListener() {//For interacting with game over screen with keys
+            retryButton.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_ENTER -> retryButton.doClick();
+                        case KeyEvent.VK_DOWN, KeyEvent.VK_UP -> retryButton.requestFocus();
+                    }
+                }
+            });
+            mainMenuButton.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_ENTER -> mainMenuButton.doClick();
+                        case KeyEvent.VK_DOWN, KeyEvent.VK_UP -> mainMenuButton.requestFocus();
+                    }
+                }
+            });
+        }
     }
+
 }
