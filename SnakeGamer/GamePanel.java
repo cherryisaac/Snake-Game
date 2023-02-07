@@ -358,7 +358,9 @@ public class GamePanel extends JPanel implements ActionListener {
                             "Animated-bg/light-squares2.gif",
                             "Animated-bg/lines-and-sparks.gif",
                             "Animated-bg/matrix.gif",
-                            "Animated-bg/speed-tunnel.gif"
+                            "Animated-bg/speed-tunnel.gif",
+                            "Animated-bg/occult-triangle.gif",
+                            "Animated-bg/wireframe.gif"
                     };
                     int index = random.nextInt(images.length);
                     return images[index];

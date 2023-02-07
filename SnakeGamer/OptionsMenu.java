@@ -122,9 +122,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
 
     public void snakeSpeedSettings(){
         JLabel gameSpeedLabel = new JLabel("Select game speed:");
-        //The higher the number, the slower the snake moves
-        // TODO: fix it so that it's the opposite of above
         speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
+        speedSlider.setInverted(true);
         speedSlider.addChangeListener(e -> gameSpeed = speedSlider.getValue());
         optionsPanel.add(gameSpeedLabel);
         optionsPanel.add(speedSlider);

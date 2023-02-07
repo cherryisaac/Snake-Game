@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainMenu extends JFrame implements ActionListener {
@@ -17,7 +16,7 @@ public class MainMenu extends JFrame implements ActionListener {
     private final JButton optionsButton = new JButton("Options");
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel background;
-    private MusicSoundBoard soundBoard = new MusicSoundBoard();
+    private MusicSoundBoard soundBoard;
     public MainMenu() {
         defaultMainMenu();
         setBackgroundImage();
@@ -39,7 +38,12 @@ public class MainMenu extends JFrame implements ActionListener {
         //Set the size and location of the main menu frame
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLocationRelativeTo(null);
+        soundBoard = new MusicSoundBoard();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void setMenuMusic(){
+        soundBoard.mainMenuMusic();
     }
 
     public void setImage(URL filename, int x, int y, int width, int height){
@@ -134,6 +138,7 @@ public class MainMenu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == startButton) {
+//            soundBoard.stopMenuMusic();
             try {
                 Thread.sleep(250);
             } catch (InterruptedException ex) {
