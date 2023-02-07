@@ -21,6 +21,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private String imageChoice = "no";
     private String musicChoice = "off";
     private int gameSpeed = 75;
+    private String difficultyChoice = "Normal";
     private boolean timeMode = false;
     private Timer timer;
     private JSlider speedSlider;
@@ -28,6 +29,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private JComboBox<String> gridColorComboBox;
     private JComboBox<String> imageComboBox;
     private JComboBox<String> musicComboBox;
+    private JComboBox<String> difficultyComboBox;
     private JCheckBox timeModeCheckBox;
     //If it's not accessible to the main menu then the options will not load when clicked
     public JFrame optionsFrame;
@@ -48,6 +50,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
          gridColorSettings();
          backgroundImageSettings();
          musicSettings();
+         difficultySettings();
          snakeSpeedSettings();
          timeModeSettings();
 
@@ -120,6 +123,15 @@ public class OptionsMenu extends JFrame implements ActionListener {
         optionsPanel.add(musicComboBox);
     }
 
+    public void difficultySettings(){
+        JLabel difficultyLabel = new JLabel("Choose your difficulty:");
+        difficultyComboBox = new JComboBox<>(new String[]{"Easy", "Normal"});
+        difficultyComboBox.setSelectedItem(difficultyChoice);
+        difficultyComboBox.addActionListener(e -> difficultyChoice = (String) difficultyComboBox.getSelectedItem());
+        optionsPanel.add(difficultyLabel);
+        optionsPanel.add(difficultyComboBox);
+    }
+
     public void snakeSpeedSettings(){
         JLabel gameSpeedLabel = new JLabel("Select game speed:");
         speedSlider = new JSlider(JSlider.HORIZONTAL, 30, 100, gameSpeed);
@@ -145,6 +157,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
             gridColor = reader.nextLine();
             imageChoice = reader.nextLine();
             musicChoice = reader.nextLine();
+            difficultyChoice = reader.nextLine();
             gameSpeed = reader.nextInt();
             timeMode = reader.nextBoolean();
         } catch (FileNotFoundException e) {
@@ -159,6 +172,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
             writer.println(gridColor);
             writer.println(imageChoice);
             writer.println(musicChoice);
+            writer.println(difficultyChoice);
             writer.println(gameSpeed);
             writer.println(timeMode);
         } catch (FileNotFoundException e) {
@@ -171,6 +185,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
         gridColor = (String) gridColorComboBox.getSelectedItem();
         imageChoice = (String) imageComboBox.getSelectedItem();
         musicChoice = (String) musicComboBox.getSelectedItem();
+        difficultyChoice = (String) difficultyComboBox.getSelectedItem();
         gameSpeed = speedSlider.getValue();
         timeMode = timeModeCheckBox.isSelected();
     }
@@ -187,6 +202,9 @@ public class OptionsMenu extends JFrame implements ActionListener {
     }
     public String getMusicChoice() {
         return musicChoice;
+    }
+    public String getDifficultyChoice(){
+        return difficultyChoice;
     }
     public int getGameSpeed() {
         return gameSpeed;

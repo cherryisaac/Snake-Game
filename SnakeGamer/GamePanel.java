@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private ImageIcon backgroundImage;
     private ImageIcon gameOverTwo = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
     private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
-    private ImageIcon mazeGameOver = new ImageIcon( getClass().getClassLoader().getResource("maze-game-over.gif"));
+    private ImageIcon mazeGameOver = new ImageIcon( getClass().getClassLoader().getResource("maze-game-over-loop-1.gif"));
 
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
@@ -197,8 +197,19 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         //Checks if head touches left border, Checks if head touches right border,
         //Checks if head touches top border, Checks if head touches bottom border
-        if(X[0] < 0 || X[0] > SCREEN_WIDTH || Y[0] < 0 || Y[0] > SCREEN_HEIGHT){
-            running = false;
+        switch (optionsMenu.getDifficultyChoice()){
+            case "Easy" -> {
+                if(X[0] < 0) X[0] = SCREEN_WIDTH;
+                else if(X[0] > SCREEN_WIDTH - 1) X[0] = 0;
+
+                if(Y[0] < 0) Y[0] = SCREEN_HEIGHT;
+                else if(Y[0] > SCREEN_HEIGHT - 1) Y[0] = 0;
+            }
+            case "Normal" -> {
+                if(X[0] < 0 || X[0] > SCREEN_WIDTH || Y[0] < 0 || Y[0] > SCREEN_HEIGHT){
+                    running = false;
+                }
+            }
         }
         if(!running){
             timer.stop();
@@ -303,7 +314,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void flushIcon(){
         new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif")).getImage().flush();
         new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif")).getImage().flush();
-        new ImageIcon(getClass().getClassLoader().getResource("maze-game-over.gif")).getImage().flush();
+        new ImageIcon(getClass().getClassLoader().getResource("maze-game-over-loop-1.gif")).getImage().flush();
     }
 
     public void togglePause(){
@@ -358,7 +369,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             "Animated-bg/light-squares2.gif",
                             "Animated-bg/lines-and-sparks.gif",
                             "Animated-bg/matrix.gif",
-                            "Animated-bg/speed-tunnel.gif",
                             "Animated-bg/occult-triangle.gif",
                             "Animated-bg/wireframe.gif"
                     };
