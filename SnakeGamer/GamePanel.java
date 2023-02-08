@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import java.util.Random;
 import java.util.TimerTask;
 
@@ -36,14 +37,15 @@ public class GamePanel extends JPanel implements ActionListener {
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
     private ImageIcon backgroundImage;
-    private ImageIcon gameOverTwo = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
+    private ImageIcon gameOverThree = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
     private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
     private ImageIcon mazeGameOver = new ImageIcon( getClass().getClassLoader().getResource("maze-game-over-loop-1.gif"));
 
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     private long startTime;
-    private Timer timer1;
+    private Timer hardTimer;
+    private boolean timerZero = false;
     private Timer insaneTimer;
     int score;
 
@@ -83,6 +85,7 @@ public class GamePanel extends JPanel implements ActionListener {
         draw(g);
         if(paused){
             timer.stop();
+            stopDifficultyTimer();
             g.setColor(new Color(0, 0, 0, 128));
             g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             g.setColor(Color.WHITE);
@@ -144,35 +147,39 @@ public class GamePanel extends JPanel implements ActionListener {
             Font font = new Font("Verdana", Font.BOLD, 18);
             g.setFont(font);
             g.setColor(Color.white);
-            if(optionsMenu.getDifficultyChoice().equals("Hard")){
+            if(optionsMenu.getDifficultyChoice().equals( "Hard")){
                 long elapsedTime = System.currentTimeMillis() - startTime;
-                long timeRemaining = 8 * 1000 - elapsedTime;
+                long timeRemaining = 7 * 1000 - elapsedTime;
+
                 FontMetrics metrics2 = getFontMetrics(g.getFont());
                 g.drawString("Time Remaining: " + timeRemaining / 1000 + " seconds", (SCREEN_WIDTH -
                         metrics2.stringWidth("Time Remaining: " + timeRemaining / 1000 + " seconds")), g.getFont().getSize());
             }
-        } else {
+        } else{
             gameOver(g);
             musicSoundBoard.stopMusic();
-            //Delay the appearance of the buttons
-            score = applesEaten;
-            int delayTime;
-            if(applesEaten < 10){
-                delayTime = 5000; // 5 seconds
-            } else if(applesEaten <= 39) {
-                delayTime = 10000; // 10 seconds
-            } else {
-                delayTime = 19500; // 20 seconds
-            }
-            Timer delayTimer = new Timer(delayTime, e -> {
-                retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
-                mainMenuButton.setBounds(230,375,150,50);
-                retryButton.setVisible(true);
-                mainMenuButton.setVisible(true);
-            });
-            delayTimer.setRepeats(false);
-            delayTimer.start();
+            gameOverButtonsTimer();
         }
+    }
+
+    public void gameOverButtonsTimer(){
+        //Delay the appearance of the buttons
+        int delayTime;
+        if(applesEaten < 10){
+            delayTime = 5000; // 5 seconds
+        } else if(applesEaten <= 39) {
+            delayTime = 10000; // 10 seconds
+        } else {
+            delayTime = 19500; // 20 seconds
+        }
+        Timer delayTimer = new Timer(delayTime, e -> {
+            retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
+            mainMenuButton.setBounds(230,375,150,50);
+            retryButton.setVisible(true);
+            mainMenuButton.setVisible(true);
+        });
+        delayTimer.setRepeats(false);
+        delayTimer.start();
     }
 
     public void newApple(){
@@ -180,25 +187,14 @@ public class GamePanel extends JPanel implements ActionListener {
         appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
         if(optionsMenu.getDifficultyChoice().equals("Hard")){
             startTime = System.currentTimeMillis();
-            timer1 = new Timer(8 * 1000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // code to remove the apple
-                    running = false;
-                    timer.stop();
-                }
+            hardTimer = new Timer(7 * 1000, e -> {
+                running = false;
             });
-            timer1.start();
+            hardTimer.start();
+        } else if(optionsMenu.getDifficultyChoice().equals("Insane")){
+            insaneTimer = new Timer(5 * 1000, e -> running = false);
+            insaneTimer.start();
         }
-//        else if(optionsMenu.getDifficultyChoice().equals("Insane")){
-//            insaneTimer = new Timer(8 * 1000, new ActionListener() {
-//                public void actionPerformed(ActionEvent e) {
-//                    // code to remove the apple
-//                    running = false;
-//                    timer.stop();
-//                }
-//            });
-//            insaneTimer.start();
-//        }
     }
 
     public void move(){
@@ -224,15 +220,14 @@ public class GamePanel extends JPanel implements ActionListener {
             applesEaten++;
             musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
             if(optionsMenu.getDifficultyChoice().equals("Hard")){
-                if (timer1 != null) {
-                    timer1.stop();
+                if (hardTimer != null && running) {
+                    hardTimer.stop();
                 }
+            } else if (optionsMenu.getDifficultyChoice().equals("Insane")){
+               if(insaneTimer != null && running){
+                   insaneTimer.stop();
+               }
             }
-//            else if (optionsMenu.getDifficultyChoice().equals("Insane")){
-//               if(insaneTimer != null){
-//                   insaneTimer.stop();
-//               }
-//            }
             newApple();
         }
     }
@@ -259,40 +254,30 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
             }
         }
-        if(!running){
-            timer.stop();
-            if(applesEaten < 10){
-                musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
-            } else if(applesEaten <= 20){
-                musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
-            }
-            else if (applesEaten <= 39) {
-                musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
-            } else {
-                musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
-            }
-        }
     }
 
     public void gameOver(Graphics g){
-        if(applesEaten < 10){
-            //Background image/animation
-            ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
-            g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-            //Game Over text
-            ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
-            g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
-        } else if(applesEaten <=20){
-            g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-        }
-        else if(applesEaten <= 39) {
-            g.drawImage(gameOverTwo.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-        } else {
-            g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+        if(!running){
+            timer.stop();
+            if(applesEaten < 10){
+                //Background image/animation
+                ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
+                g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+                //Game Over text
+                ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
+                g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
+            } else if(applesEaten <=19){
+                g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+            } else if (applesEaten <= 39) {
+                    g.drawImage(gameOverThree.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+            } else {
+                g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+            }
         }
     }
 
     public void gameOverButtons(){
+        soundBuffer();
         //A button for the option to retry the game
         retryButton = new JButton("Retry");
         retryButton.setBackground(Color.black);
@@ -328,8 +313,6 @@ public class GamePanel extends JPanel implements ActionListener {
             retryButton.setBackground(new Color(255, 0, 0, alpha));
             if (alpha <= 0) {
                 animationTimer.stop();
-                applesEaten = score;
-                //restart game
                 new GameFrame();
             }
         });
@@ -345,7 +328,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 animationTimer.stop();
                 JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(mainMenuButton);
                 currentFrame.dispose();
-                //Return to main menu
                 new MainMenu().setVisible(true);
             }
         });
@@ -387,16 +369,41 @@ public class GamePanel extends JPanel implements ActionListener {
                         musicSoundBoard.setSoundAndPause(getClass().getResource("/Sound/pause-sound.wav"), 260);
                         togglePause();
                         musicSoundBoard.stopMusic();
-                        timer1.stop();
-//                        insaneTimer.stop();
                     } else {
                         timer.start();
-                        timer1.start();
-//                        insaneTimer.start();
+                        startDifficultyTimer();
                         musicSoundBoard.resumeMusic();
                     }
                 }
             }
+        }
+    }
+
+    public void soundBuffer(){
+        if(!running){
+            timer.stop();
+            if(applesEaten < 10){
+                musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
+            } else if(applesEaten <= 20){
+                musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
+            } else if (applesEaten <= 39) {
+                musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
+            } else {
+                musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
+            }
+        }
+    }
+
+    public void stopDifficultyTimer(){
+        switch (optionsMenu.getDifficultyChoice()){
+            case "Hard"-> hardTimer.stop();
+            case "Insane" -> insaneTimer.stop();
+        }
+    }
+    public void startDifficultyTimer(){
+        switch (optionsMenu.getDifficultyChoice()){
+            case "Hard"-> hardTimer.start();
+            case "Insane" -> insaneTimer.start();
         }
     }
 
@@ -432,6 +439,7 @@ public class GamePanel extends JPanel implements ActionListener {
             checkApple();
             checkCollisions();
         }
+
             flushIcon();
             repaint();
             gameOverButtons();

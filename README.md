@@ -36,7 +36,6 @@ Future features I would like to implement:
 TODOs: 
 - Figure out how to incorporate key interaction with the game over buttons
 - Set up time mode settings
-- Fix Insane difficulty freezing when time runs out
 - Figure out how to publish the finished product (game) so it's playable to all OS's without having to download extra 
 resources/software. Ideally, maybe I can figure out a way to put the game on a cloud server for the most accessibility.
 
