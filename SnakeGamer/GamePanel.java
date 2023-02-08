@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
+import java.util.TimerTask;
 
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -41,6 +42,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
+    private long startTime;
+    private Timer timer1;
+    private Timer insaneTimer;
     int score;
 
 
@@ -130,10 +134,23 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
+            //Score
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metrics = getFontMetrics(g.getFont());
             g.drawString("Score: "+applesEaten, (SCREEN_WIDTH/5 - metrics.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+
+            //Hard mode timer
+            Font font = new Font("Verdana", Font.BOLD, 18);
+            g.setFont(font);
+            g.setColor(Color.white);
+            if(optionsMenu.getDifficultyChoice().equals("Hard")){
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                long timeRemaining = 8 * 1000 - elapsedTime;
+                FontMetrics metrics2 = getFontMetrics(g.getFont());
+                g.drawString("Time Remaining: " + timeRemaining / 1000 + " seconds", (SCREEN_WIDTH -
+                        metrics2.stringWidth("Time Remaining: " + timeRemaining / 1000 + " seconds")), g.getFont().getSize());
+            }
         } else {
             gameOver(g);
             musicSoundBoard.stopMusic();
@@ -153,6 +170,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 retryButton.setVisible(true);
                 mainMenuButton.setVisible(true);
             });
+            delayTimer.setRepeats(false);
             delayTimer.start();
         }
     }
@@ -160,6 +178,27 @@ public class GamePanel extends JPanel implements ActionListener {
     public void newApple(){
         appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+        if(optionsMenu.getDifficultyChoice().equals("Hard")){
+            startTime = System.currentTimeMillis();
+            timer1 = new Timer(8 * 1000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    // code to remove the apple
+                    running = false;
+                    timer.stop();
+                }
+            });
+            timer1.start();
+        }
+//        else if(optionsMenu.getDifficultyChoice().equals("Insane")){
+//            insaneTimer = new Timer(8 * 1000, new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    // code to remove the apple
+//                    running = false;
+//                    timer.stop();
+//                }
+//            });
+//            insaneTimer.start();
+//        }
     }
 
     public void move(){
@@ -184,6 +223,16 @@ public class GamePanel extends JPanel implements ActionListener {
             bodyParts++;
             applesEaten++;
             musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
+            if(optionsMenu.getDifficultyChoice().equals("Hard")){
+                if (timer1 != null) {
+                    timer1.stop();
+                }
+            }
+//            else if (optionsMenu.getDifficultyChoice().equals("Insane")){
+//               if(insaneTimer != null){
+//                   insaneTimer.stop();
+//               }
+//            }
             newApple();
         }
     }
@@ -191,7 +240,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void checkCollisions(){
         //checks if head collides with body
         for (int i = bodyParts; i > 0; i--) {
-            if((X[0] == X[i]) && (Y[0]==Y[i])){
+            if ((X[0] == X[i]) && (Y[0] == Y[i])) {
                 running = false;
             }
         }
@@ -199,13 +248,12 @@ public class GamePanel extends JPanel implements ActionListener {
         //Checks if head touches top border, Checks if head touches bottom border
         switch (optionsMenu.getDifficultyChoice()){
             case "Easy" -> {
-                if(X[0] < 0) X[0] = SCREEN_WIDTH;
-                else if(X[0] > SCREEN_WIDTH - 1) X[0] = 0;
-
-                if(Y[0] < 0) Y[0] = SCREEN_HEIGHT;
-                else if(Y[0] > SCREEN_HEIGHT - 1) Y[0] = 0;
+                X[0] = (X[0] < 0) ? SCREEN_WIDTH :
+                        (X[0] > SCREEN_WIDTH - 1) ? 0 : X[0];
+                Y[0] = (Y[0] < 0) ? SCREEN_HEIGHT :
+                        (Y[0] > SCREEN_HEIGHT - 1) ? 0 : Y[0];
             }
-            case "Normal" -> {
+            case "Normal", "Hard", "Insane" -> {
                 if(X[0] < 0 || X[0] > SCREEN_WIDTH || Y[0] < 0 || Y[0] > SCREEN_HEIGHT){
                     running = false;
                 }
@@ -227,9 +275,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics g){
-        //Score
-        FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
         if(applesEaten < 10){
             //Background image/animation
             ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
@@ -286,8 +331,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 applesEaten = score;
                 //restart game
                 new GameFrame();
-                retryClicked = true;
-//                mainMenuClicked = false;
             }
         });
         animationTimer.start();
@@ -304,8 +347,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 currentFrame.dispose();
                 //Return to main menu
                 new MainMenu().setVisible(true);
-                mainMenuClicked = true;
-//                retryClicked = false;
             }
         });
         animationTimer.start();
@@ -346,8 +387,12 @@ public class GamePanel extends JPanel implements ActionListener {
                         musicSoundBoard.setSoundAndPause(getClass().getResource("/Sound/pause-sound.wav"), 260);
                         togglePause();
                         musicSoundBoard.stopMusic();
+                        timer1.stop();
+//                        insaneTimer.stop();
                     } else {
                         timer.start();
+                        timer1.start();
+//                        insaneTimer.start();
                         musicSoundBoard.resumeMusic();
                     }
                 }

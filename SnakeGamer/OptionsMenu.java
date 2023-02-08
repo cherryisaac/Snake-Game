@@ -125,7 +125,7 @@ public class OptionsMenu extends JFrame implements ActionListener {
 
     public void difficultySettings(){
         JLabel difficultyLabel = new JLabel("Choose your difficulty:");
-        difficultyComboBox = new JComboBox<>(new String[]{"Easy", "Normal"});
+        difficultyComboBox = new JComboBox<>(new String[]{"Easy", "Normal", "Hard", "Insane"});
         difficultyComboBox.setSelectedItem(difficultyChoice);
         difficultyComboBox.addActionListener(e -> difficultyChoice = (String) difficultyComboBox.getSelectedItem());
         optionsPanel.add(difficultyLabel);
