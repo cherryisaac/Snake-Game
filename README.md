@@ -4,6 +4,9 @@ by Isaac Cherry
 The goal of the player:
 - To collect as many apples as possible
 
+Latest Update 2/7/23:
+- Added difficulty modes Easy, Normal, Hard, Insane
+
 Latest Update 1/29/23 - 1/30/23:
 - Added Options Menu with choices to change speed of snake and color (and more!)
 - Added sound effects and music
@@ -14,23 +17,28 @@ Functionality:
 - The apple will appear randomly each time the snake eats it
 - The snake grows longer as it eats more apples
 - There is a scoreboard at the top left that lets you know how many apples you've collected in total so far
-- When the snake goes out of bounds or runs into itself game over text will be shown to the user
-- The option to restart or return to the main menu when player goes to the game screen
-- Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, and toggle music
+- When the snake goes out of bounds or runs out of time (dependent on difficulty) or runs into itself Game Over text/a 
+game over sequence will be shown to the user
+- The option to restart or return to the main menu when player goes to the game over screen
+- Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
+difficulty
 
 Bugs:
 - Music does not loop...sometimes
 - "Pause" word can be triggered with pause button after game over screen
-- Snake's speed in the settings works the opposite as intended (the higher the number then the slower the snake moves)
 - If retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
-- Select difficulty between Easy, Medium, and Hard
-- With easy mode the snake can go out of bounds and spawns on the opposite side, but can still fail if it runs into it's self
-- With medium mode the user can lose if the snake goes out of bounds, or it runs into itself
-- With hard mode I would like the same as medium, but with a few obstacles that have to be avoided
-- Time attack mode where the snake collects as many apples in a given time frame (2 or 5 min)
+- Time attack mode where the snake collects as many apples in a given time frame (2 or 5 or 10 min)
+- BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
+
+TODOs: 
+- Figure out how to incorporate key interaction with the game over buttons
+- Set up time mode settings
+- Fix Insane difficulty freezing when time runs out
+- Figure out how to publish the finished product (game) so it's playable to all OS's without having to download extra 
+resources/software. Ideally, maybe I can figure out a way to put the game on a cloud server for the most accessibility.
 
 What I learned from this project:
 - How to utilize Java Swing API
