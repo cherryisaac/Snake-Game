@@ -3,13 +3,8 @@ package SnakeGamer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.Objects;
+import java.awt.event.*;
 import java.util.Random;
-import java.util.TimerTask;
 
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -83,7 +78,7 @@ public class GamePanel extends JPanel implements ActionListener {
             case "off" -> setBackground(Color.black);
         }
         draw(g);
-        if(paused){
+        if(paused && !gameOver){
             timer.stop();
             stopDifficultyTimer();
             g.setColor(new Color(0, 0, 0, 128));
@@ -150,7 +145,6 @@ public class GamePanel extends JPanel implements ActionListener {
             if(optionsMenu.getDifficultyChoice().equals( "Hard")){
                 long elapsedTime = System.currentTimeMillis() - startTime;
                 long timeRemaining = 7 * 1000 - elapsedTime;
-
                 FontMetrics metrics2 = getFontMetrics(g.getFont());
                 g.drawString("Time Remaining: " + timeRemaining / 1000 + " seconds", (SCREEN_WIDTH -
                         metrics2.stringWidth("Time Remaining: " + timeRemaining / 1000 + " seconds")), g.getFont().getSize());
@@ -177,6 +171,7 @@ public class GamePanel extends JPanel implements ActionListener {
             mainMenuButton.setBounds(230,375,150,50);
             retryButton.setVisible(true);
             mainMenuButton.setVisible(true);
+            gameOver = true;
         });
         delayTimer.setRepeats(false);
         delayTimer.start();
@@ -374,6 +369,14 @@ public class GamePanel extends JPanel implements ActionListener {
                         startDifficultyTimer();
                         musicSoundBoard.resumeMusic();
                     }
+                }case KeyEvent.VK_ENTER ->{
+                    if(gameOver){
+                       retryButton.doClick();
+                    }
+                } case KeyEvent.VK_SHIFT -> {
+                    if(gameOver){
+                       mainMenuButton.doClick();
+                    }
                 }
             }
         }
@@ -384,7 +387,7 @@ public class GamePanel extends JPanel implements ActionListener {
             timer.stop();
             if(applesEaten < 10){
                 musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
-            } else if(applesEaten <= 20){
+            } else if(applesEaten <= 19){
                 musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
             } else if (applesEaten <= 39) {
                 musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
@@ -439,35 +442,8 @@ public class GamePanel extends JPanel implements ActionListener {
             checkApple();
             checkCollisions();
         }
-
             flushIcon();
             repaint();
             gameOverButtons();
-            gameOver = true;
      }
-
-     //TODO: Figure out how to incorporate key interaction for game over buttons
-    public class MyKeyAdapterTwo extends KeyAdapter{
-        public void setActionListener() {//For interacting with game over screen with keys
-            retryButton.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_ENTER -> retryButton.doClick();
-                        case KeyEvent.VK_DOWN, KeyEvent.VK_UP -> retryButton.requestFocus();
-                    }
-                }
-            });
-            mainMenuButton.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    switch (e.getKeyCode()) {
-                        case KeyEvent.VK_ENTER -> mainMenuButton.doClick();
-                        case KeyEvent.VK_DOWN, KeyEvent.VK_UP -> mainMenuButton.requestFocus();
-                    }
-                }
-            });
-        }
-    }
-
 }

@@ -19,14 +19,14 @@ Functionality:
 - There is a scoreboard at the top left that lets you know how many apples you've collected in total so far
 - When the snake goes out of bounds or runs out of time (dependent on difficulty) or runs into itself Game Over text/a 
 game over sequence will be shown to the user
-- The option to restart or return to the main menu when player goes to the game over screen
+- The option to restart or return to the main menu when player goes to the game over screen 
+(Enter key = Retry button, Shift key = Main Menu button)
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
 difficulty
 
 Bugs:
-- Music does not loop...sometimes
-- "Pause" word can be triggered with pause button after game over screen
-- If retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear
+- If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
+the player stuck at the Game Over Screen
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
@@ -34,9 +34,9 @@ Future features I would like to implement:
 - BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
 
 TODOs: 
-- Figure out how to incorporate key interaction with the game over buttons
+- Fix timer indicator not resuming where it left off after game unpauses for Hard mode
 - Set up time mode settings
-- Figure out how to publish the finished product (game) so it's playable to all OS's without having to download extra 
+- Figure out how to publish the finished product (game) so it's playable on all OS's without having to download extra 
 resources/software. Ideally, maybe I can figure out a way to put the game on a cloud server for the most accessibility.
 
 What I learned from this project:
