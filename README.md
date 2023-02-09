@@ -1,6 +1,13 @@
 My Snake-Game - Freelance Java Project
 by Isaac Cherry
 
+How this game came to be...completed: I started following this YouTube tutorial on creating a Snake Game in Java by 
+Bro Code (https://www.youtube.com/watch?v=bI6e6qjJ8JQ). By the end of it though I was happy with the outcome there was 
+no way to pause the game. So I spent about a week or so trying to get the actual pause match in tandem with the "Pause" 
+text overlay. After I finally did that I was so happy to have something of my own created in a game it made me want to 
+add more to it. So I wrote a README.md on what I wanted to develop. Fast-forward about a few months later I felt 
+inspired again to tackle this and yeah...I'm just about done with this project. My first passion project in coding.
+
 The goal of the player:
 - To collect as many apples as possible
 

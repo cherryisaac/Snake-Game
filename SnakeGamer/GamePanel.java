@@ -78,7 +78,7 @@ public class GamePanel extends JPanel implements ActionListener {
             case "off" -> setBackground(Color.black);
         }
         draw(g);
-        if(paused && !gameOver){
+        if(paused){
             timer.stop();
             stopDifficultyTimer();
             g.setColor(new Color(0, 0, 0, 128));

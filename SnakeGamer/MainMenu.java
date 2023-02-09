@@ -59,7 +59,7 @@ public class MainMenu extends JFrame implements ActionListener {
 
     public void setBackgroundImage(){
         //getClass().getClassLoader().getResource() allows for getting resources during production build (not just code)
-        ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("grid.gif"));
+        ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("grid-final.gif"));
         background = new JLabel(bg);
         add(background);
         background.setBounds(-25, -95, 750, 750);
