@@ -16,8 +16,8 @@ import java.util.Scanner;
 
 public class OptionsMenu extends JFrame implements ActionListener {
     private JButton saveButton, cancelButton;
-    private String snakeColor = "blue";
-    private String gridColor = "white";
+    private String snakeColor = "cyan";
+    private String gridColor = "black";
     private String imageChoice = "no";
     private String musicChoice = "off";
     private int gameSpeed = 75;

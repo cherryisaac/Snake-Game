@@ -132,7 +132,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
-            //Score
+            //Score board
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metrics = getFontMetrics(g.getFont());
@@ -236,17 +236,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         //Checks if head touches left border, Checks if head touches right border,
         //Checks if head touches top border, Checks if head touches bottom border
-        switch (optionsMenu.getDifficultyChoice()){
-            case "Easy" -> {
-                X[0] = (X[0] < 0) ? SCREEN_WIDTH :
-                        (X[0] > SCREEN_WIDTH - 1) ? 0 : X[0];
-                Y[0] = (Y[0] < 0) ? SCREEN_HEIGHT :
-                        (Y[0] > SCREEN_HEIGHT - 1) ? 0 : Y[0];
-            }
-            case "Normal", "Hard", "Insane" -> {
-                if(X[0] < 0 || X[0] > SCREEN_WIDTH || Y[0] < 0 || Y[0] > SCREEN_HEIGHT){
-                    running = false;
-                }
+        if ("Easy".equals(optionsMenu.getDifficultyChoice())) {
+            X[0] = (X[0] < 0) ? SCREEN_WIDTH :
+                    (X[0] > SCREEN_WIDTH - 1) ? 0 : X[0];
+            Y[0] = (Y[0] < 0) ? SCREEN_HEIGHT :
+                    (Y[0] > SCREEN_HEIGHT - 1) ? 0 : Y[0];
+        } else {
+            if (X[0] < 0 || X[0] > SCREEN_WIDTH || Y[0] < 0 || Y[0] > SCREEN_HEIGHT) {
+                running = false;
             }
         }
     }
@@ -300,7 +297,7 @@ public class GamePanel extends JPanel implements ActionListener {
             mainMenuButton.setVisible(false);
     }
     
-     //Game over button animations
+     //Game over button animations & actions
     private void retryButtonClicked() {
         animationTimer = new Timer(15, e -> {
             alpha -= 5;
@@ -329,7 +326,7 @@ public class GamePanel extends JPanel implements ActionListener {
         animationTimer.start();
     }
 
-    public void flushIcon(){
+    public void flushIcon(){ //Reloads gif images after each Game Over
         new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif")).getImage().flush();
         new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif")).getImage().flush();
         new ImageIcon(getClass().getClassLoader().getResource("maze-game-over-loop-1.gif")).getImage().flush();
@@ -369,11 +366,11 @@ public class GamePanel extends JPanel implements ActionListener {
                         startDifficultyTimer();
                         musicSoundBoard.resumeMusic();
                     }
-                }case KeyEvent.VK_ENTER ->{
+                }case KeyEvent.VK_ENTER ->{ //Key for retry after Game Over
                     if(gameOver){
                        retryButton.doClick();
                     }
-                } case KeyEvent.VK_SHIFT -> {
+                } case KeyEvent.VK_SHIFT -> { //Key for main menu after Game Over
                     if(gameOver){
                        mainMenuButton.doClick();
                     }

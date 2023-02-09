@@ -3,10 +3,10 @@ by Isaac Cherry
 
 How this game came to be...completed: I started following this YouTube tutorial on creating a Snake Game in Java by 
 Bro Code (https://www.youtube.com/watch?v=bI6e6qjJ8JQ). By the end of it though I was happy with the outcome there was 
-no way to pause the game. So I spent about a week or so trying to get the actual pause match in tandem with the "Pause" 
-text overlay. After I finally did that I was so happy to have something of my own created in a game it made me want to 
-add more to it. So I wrote a README.md on what I wanted to develop. Fast-forward about a few months later I felt 
-inspired again to tackle this and yeah...I'm just about done with this project. My first passion project in coding.
+no way to pause the game. So I spent about a week or so trying to get the actual pause function to match in tandem with 
+the "Pause" text overlay. After I finally did that I was so happy to have something of my own created in a game it made 
+me want to add more to it. So I wrote a README.md on what I wanted to develop. Fast-forward about a few months later I 
+felt inspired again to tackle this and yeah...I'm just about done with this project. My first passion project in coding.
 
 The goal of the player:
 - To collect as many apples as possible
@@ -33,7 +33,7 @@ difficulty
 
 Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
-the player stuck at the Game Over Screen
+the player stuck at the Game Over screen
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
@@ -43,6 +43,8 @@ Future features I would like to implement:
 TODOs: 
 - Fix timer indicator not resuming where it left off after game unpauses for Hard mode
 - Set up time mode settings
+- Set up High Scores prompt after Game Over
+- Set up High Score Menu selection in Main Menu
 - Figure out how to publish the finished product (game) so it's playable on all OS's without having to download extra 
 resources/software. Ideally, maybe I can figure out a way to put the game on a cloud server for the most accessibility.
 
