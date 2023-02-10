@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer hardTimer;
     private boolean timerZero = false;
     private Timer insaneTimer;
+    private boolean increaseHeadSize = false;
     int score;
 
 
@@ -132,6 +133,10 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
+            if (increaseHeadSize) {
+                g.setColor(Color.white);
+                g.fillRect(X[0] - UNIT_SIZE / 2, Y[0] - UNIT_SIZE / 2, UNIT_SIZE * 2, UNIT_SIZE * 2);
+            }
             //Score board
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
@@ -180,6 +185,15 @@ public class GamePanel extends JPanel implements ActionListener {
     public void newApple(){
         appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+
+//        if (optionsMenu.getDifficultyChoice().equals("Hard") ||
+//                optionsMenu.getDifficultyChoice().equals("Insane")) {
+//            while (isAppleOnSnake()) {
+//                appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+//                appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+//            }
+//        }
+
         if(optionsMenu.getDifficultyChoice().equals("Hard")){
             startTime = System.currentTimeMillis();
             hardTimer = new Timer(7 * 1000, e -> {
@@ -191,6 +205,15 @@ public class GamePanel extends JPanel implements ActionListener {
             insaneTimer.start();
         }
     }
+    private boolean isAppleOnSnake() {
+        for (int i = 0; i < bodyParts; i++) {
+            if (X[i] == appleX && Y[i] == appleY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void move(){
         for (int i = bodyParts; i > 0 ; i--) {
@@ -210,7 +233,26 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkApple(){
-        if((X[0]==appleX) && (Y[0]==appleY)){
+//        if((X[0]==appleX) && (Y[0]==appleY)){
+
+        if(increaseHeadSize){
+            if (((X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE) || (X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE))
+                    && ((Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE) || (Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE))) {
+                bodyParts++;
+                applesEaten++;
+                musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
+                if(optionsMenu.getDifficultyChoice().equals("Hard")){
+                    if (hardTimer != null && running) {
+                        hardTimer.stop();
+                    }
+                } else if (optionsMenu.getDifficultyChoice().equals("Insane")){
+                    if(insaneTimer != null && running){
+                        insaneTimer.stop();
+                    }
+                }
+                newApple();
+            }
+        } else if((X[0]==appleX) && (Y[0]==appleY)){
             bodyParts++;
             applesEaten++;
             musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
@@ -219,12 +261,13 @@ public class GamePanel extends JPanel implements ActionListener {
                     hardTimer.stop();
                 }
             } else if (optionsMenu.getDifficultyChoice().equals("Insane")){
-               if(insaneTimer != null && running){
-                   insaneTimer.stop();
-               }
+                if(insaneTimer != null && running){
+                    insaneTimer.stop();
+                }
             }
             newApple();
         }
+
     }
 
     public void checkCollisions(){
@@ -336,27 +379,31 @@ public class GamePanel extends JPanel implements ActionListener {
         paused = !paused;
     }
 
-    public class MyKeyAdapter extends KeyAdapter{
+    public class MyKeyAdapter extends KeyAdapter {
         @Override
-        public void keyPressed(KeyEvent e){
-            switch (e.getKeyCode()){
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT -> {
-                    if(direction != 'R'){
+                    if (direction != 'R') {
                         direction = 'L';
                     }
-                } case KeyEvent.VK_RIGHT -> {
-                    if(direction != 'L'){
+                }
+                case KeyEvent.VK_RIGHT -> {
+                    if (direction != 'L') {
                         direction = 'R';
                     }
-                } case KeyEvent.VK_UP -> {
-                    if(direction != 'D'){
+                }
+                case KeyEvent.VK_UP -> {
+                    if (direction != 'D') {
                         direction = 'U';
                     }
-                } case KeyEvent.VK_DOWN -> {
-                    if(direction != 'U'){
+                }
+                case KeyEvent.VK_DOWN -> {
+                    if (direction != 'U') {
                         direction = 'D';
                     }
-                } case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
+                }
+                case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
                         musicSoundBoard.setSoundAndPause(getClass().getResource("/Sound/pause-sound.wav"), 260);
                         togglePause();
@@ -366,13 +413,21 @@ public class GamePanel extends JPanel implements ActionListener {
                         startDifficultyTimer();
                         musicSoundBoard.resumeMusic();
                     }
-                }case KeyEvent.VK_ENTER ->{ //Key for retry after Game Over
-                    if(gameOver){
-                       retryButton.doClick();
+                }
+                case KeyEvent.VK_ENTER -> { //Key for retry after Game Over
+                    if (gameOver) {
+                        retryButton.doClick();
                     }
-                } case KeyEvent.VK_SHIFT -> { //Key for main menu after Game Over
-                    if(gameOver){
-                       mainMenuButton.doClick();
+                }
+                case KeyEvent.VK_SHIFT -> { //Key for main menu after Game Over && toggle Cardboard box
+                    if(!increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten >19 ||
+                       !increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten > 9){
+                        increaseHeadSize = true;
+                    } else {
+                        increaseHeadSize = false;
+                    }
+                    if (gameOver) {
+                        mainMenuButton.doClick();
                     }
                 }
             }
