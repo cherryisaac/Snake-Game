@@ -386,9 +386,14 @@ public class GamePanel extends JPanel implements ActionListener {
                 musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
             } else if(applesEaten <= 19){
                 musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
-            } else if (applesEaten <= 39) {
+            } else if (applesEaten <= 29) {
                 musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
-            } else {
+            } else if (applesEaten <= 34){
+                musicSoundBoard.setSound(getClass().getResource("/snake-death2.wav"));
+            } else if(applesEaten <= 39){
+                musicSoundBoard.setSound(getClass().getResource("/snake-death3.wav"));
+            }
+            else {
                 musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
             }
         }

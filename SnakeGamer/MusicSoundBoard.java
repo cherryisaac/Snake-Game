@@ -11,6 +11,7 @@ public class MusicSoundBoard {
     private Clip musicClip;
     private Random random;
     private Clip menuMusic;
+    private OptionsMenu optionsMenu;
 
     public MusicSoundBoard() {
         random = new Random();
@@ -57,7 +58,26 @@ public class MusicSoundBoard {
     }
 
     public void setMusicChoice() {
-        try {
+        optionsMenu = new OptionsMenu();
+        if(optionsMenu.getDifficultyChoice().equals("Hard") || optionsMenu.getDifficultyChoice().equals("Insane")){
+            String [] musicFiles2 = {
+                    "/Path of Pain.wav",
+                    "/Lethal Encounter.wav",
+                    "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav",
+                    "/Mind-Power-Ki (Instrumental).wav"
+            };
+            try {
+                int index = random.nextInt(musicFiles2.length);
+                String musicPath = musicFiles2[index];
+                musicClip = AudioSystem.getClip();
+                musicClip.open(AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(musicPath))));
+                musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+                musicClip.start();
+            }catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Error loading music");
+            }
+        } else {
             String[] musicFiles = {
                     "/Awesome violin beat visualisation.wav",
                     "/Kaine-Salvation.wav",
@@ -65,16 +85,17 @@ public class MusicSoundBoard {
                     "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav",
                     "/Mind-Power-Ki (Instrumental).wav"
             };
-            int index = random.nextInt(musicFiles.length);
-            String musicPath = musicFiles[index];
-            musicClip = AudioSystem.getClip();
-            musicClip.open(AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(musicPath))));
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
-            musicClip.start();
-            System.out.println(musicPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error loading music");
+            try {
+                int index = random.nextInt(musicFiles.length);
+                String musicPath = musicFiles[index];
+                musicClip = AudioSystem.getClip();
+                musicClip.open(AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource(musicPath))));
+                musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+                musicClip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Error loading music");
+            }
         }
     }
 

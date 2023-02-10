@@ -41,7 +41,7 @@ Future features I would like to implement:
 - BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
 
 TODOs: 
-- Fix timer indicator not resuming where it left off after game unpauses for Hard mode
+- Fix timer indicator not resuming where it left off after game unpauses on Hard mode
 - Set up time mode settings
 - Set up High Scores prompt after Game Over
 - Set up High Score Menu selection in Main Menu
