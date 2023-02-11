@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean timerZero = false;
     private Timer insaneTimer;
     private boolean increaseHeadSize = false;
-    int score;
+
 
 
     public GamePanel(){
@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
                 g.fillRect(X[i], Y[i], UNIT_SIZE, UNIT_SIZE);
             }
-            if (increaseHeadSize) {
+            if (increaseHeadSize) { //For cardboard box mechanic
                 g.setColor(Color.white);
                 g.fillRect(X[0] - UNIT_SIZE / 2, Y[0] - UNIT_SIZE / 2, UNIT_SIZE * 2, UNIT_SIZE * 2);
             }
@@ -186,13 +186,13 @@ public class GamePanel extends JPanel implements ActionListener {
         appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
 
-//        if (optionsMenu.getDifficultyChoice().equals("Hard") ||
-//                optionsMenu.getDifficultyChoice().equals("Insane")) {
-//            while (isAppleOnSnake()) {
-//                appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-//                appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
-//            }
-//        }
+        if (optionsMenu.getDifficultyChoice().equals("Hard") ||
+                optionsMenu.getDifficultyChoice().equals("Insane")) {
+            while (isAppleOnSnake()) {
+                appleX = random.nextInt((SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
+                appleY = random.nextInt((SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+            }
+        }
 
         if(optionsMenu.getDifficultyChoice().equals("Hard")){
             startTime = System.currentTimeMillis();
@@ -233,12 +233,10 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkApple(){
-//        if((X[0]==appleX) && (Y[0]==appleY)){
-
         if(increaseHeadSize){
             if (((X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE) || (X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE))
                     && ((Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE) || (Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE))) {
-                bodyParts++;
+                bodyParts+=2; //body parts increase by double when cardboard box is used
                 applesEaten++;
                 musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
                 if(optionsMenu.getDifficultyChoice().equals("Hard")){
@@ -419,9 +417,12 @@ public class GamePanel extends JPanel implements ActionListener {
                         retryButton.doClick();
                     }
                 }
-                case KeyEvent.VK_SHIFT -> { //Key for main menu after Game Over && toggle Cardboard box
-                    if(!increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten >19 ||
+                case KeyEvent.VK_SHIFT -> { //Key for returning to the main menu after Game Over && toggle Cardboard box
+                    if(!increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Easy") && applesEaten > 49 ||
+                       !increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Normal") && applesEaten > 39 ||
+                       !increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten > 24 ||
                        !increaseHeadSize && !gameOver && optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten > 9){
+                        musicSoundBoard.setSound(getClass().getResource("/box-switch.wav"));
                         increaseHeadSize = true;
                     } else {
                         increaseHeadSize = false;
