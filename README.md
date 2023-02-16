@@ -34,8 +34,9 @@ Functionality:
 - When the snake goes out of bounds or runs out of time (dependent on difficulty) or runs into itself Game Over text/a 
 game over sequence will be shown to the user
 - If a certain amount of apples has been eaten (depending on the difficulty) then the shift key allows Snake to use a 
-cardboard box to increase the range of how far it can get apples, but for each apple eaten the body parts count goes 
-from 1 to 2. Increases range at the cost of a higher likelihood of running into itself.
+cardboard box to increase the range of how far it can get apples. Increases range at the cost of a higher likelihood of
+running into itself.
+- There is a sound prompt that lets the player know that the box is now usable
 - The option to restart or return to the main menu when player goes to the game over screen 
 (Enter key = Retry button, Shift key = Main Menu button)
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
@@ -45,6 +46,8 @@ Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
+- When the snake is moving from right to left, and you press the right and up buttons at the same time you will get an
+instant Game Over
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
