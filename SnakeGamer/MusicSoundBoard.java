@@ -63,8 +63,7 @@ public class MusicSoundBoard {
             String [] musicFiles2 = {
                     "/Path of Pain.wav",
                     "/Lethal Encounter.wav",
-                    "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav",
-                    "/Mind-Power-Ki (Instrumental).wav"
+                    "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav"
             };
             try {
                 int index = random.nextInt(musicFiles2.length);

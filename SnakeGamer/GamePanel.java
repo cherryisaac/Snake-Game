@@ -4,6 +4,8 @@ package SnakeGamer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -31,24 +33,31 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
-    private ImageIcon backgroundImage;
+    private BackgroundManager backgroundManager;
+    private ImageIcon backgroundImage1;
+    private ImageIcon backgroundImage2;
+    private ImageIcon backgroundImage3;
     private ImageIcon gameOverThree = new ImageIcon(getClass().getClassLoader().getResource("Game-Over-Epic-MG.gif"));
     private ImageIcon gameOverNot = new ImageIcon(getClass().getClassLoader().getResource("Snake.....gif"));
     private ImageIcon mazeGameOver = new ImageIcon( getClass().getClassLoader().getResource("maze-game-over-loop-1.gif"));
-
-    private boolean retryClicked = false;
-    private boolean mainMenuClicked = false;
     private long startTime;
     private Timer hardTimer;
-    private boolean timerZero = false;
     private Timer insaneTimer;
+    private int score = 0;
+    private int highScore = 0;
+    private Map<String, Integer> highScores = new HashMap<>();
     private boolean cardBoardBox = false;
+    private boolean retryClicked = false;
+    private boolean mainMenuClicked = false;
+    private boolean timerZero = false;
 
 
 
     public GamePanel(){
         defaultPanel();
-        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage()));
+        backgroundImage1 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setStaticBackground())));
+        backgroundImage2 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setMovingBackground())));
+        backgroundImage3 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setAllBackground())));
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
@@ -63,6 +72,7 @@ public class GamePanel extends JPanel implements ActionListener {
         optionsMenu = new OptionsMenu();
         musicSoundBoard = new MusicSoundBoard();
         musicSoundBoard.setMusicClip();
+        backgroundManager = new BackgroundManager();
     }
 
     public void startGame(){
@@ -75,8 +85,10 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         switch (optionsMenu.getBackgroundImages()){
-            case "on" -> g.drawImage(backgroundImage.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
             case "off" -> setBackground(Color.black);
+            case "static animated-bg" -> g.drawImage(backgroundImage1.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+            case "moving background" -> g.drawImage(backgroundImage2.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+            case "all bg-images" -> g.drawImage(backgroundImage3.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
         }
         draw(g);
         if(paused){
@@ -164,7 +176,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void gameOverButtonsTimer(){
         //Delay the appearance of the buttons
         int delayTime;
-        if(applesEaten < 10){
+        if(applesEaten < 19){
             delayTime = 5000; // 5 seconds
         } else if(applesEaten <= 39) {
             delayTime = 10000; // 10 seconds
@@ -238,7 +250,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     && ((Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE) || (Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE))) {
                 if(optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten >= 40 ||
                         optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten >= 20){
-                    bodyParts++; //body parts increase by double when cardboard box is used
+                    bodyParts++;
                 } else {
                     bodyParts+=2;
                 }
@@ -279,7 +291,6 @@ public class GamePanel extends JPanel implements ActionListener {
             }
             newApple();
         }
-
     }
 
     public void checkCollisions(){
@@ -306,20 +317,20 @@ public class GamePanel extends JPanel implements ActionListener {
     public void gameOver(Graphics g){
         if(!running){
             timer.stop();
-            if(applesEaten < 10){
-                //Background image/animation
-                ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
-                g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-                //Game Over text
-                ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
-                g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
-            } else if(applesEaten <=19){
-                g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-            } else if (applesEaten <= 39) {
+                if(applesEaten < 19){
+                    //Background image/animation
+                    ImageIcon background = new ImageIcon( getClass().getClassLoader().getResource("gif-blood.gif"));
+                    g.drawImage(background.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+                    //Game Over text
+                    ImageIcon gif = new ImageIcon(getClass().getClassLoader().getResource("game-over-text.gif"));
+                    g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
+                } else if (applesEaten <= 39) {
                     g.drawImage(gameOverThree.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-            } else {
-                g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-            }
+                } else if (applesEaten < 60){
+                    g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+                }  else {
+                    g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
+                }
         }
     }
 
@@ -452,19 +463,18 @@ public class GamePanel extends JPanel implements ActionListener {
     public void soundBuffer(){
         if(!running){
             timer.stop();
-            if(applesEaten < 10){
+            if(applesEaten < 19){
                 musicSoundBoard.setSound(getClass().getResource("/evil-game-over-quote.wav"));
-            } else if(applesEaten <= 19){
-                musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
-            } else if (applesEaten <= 29) {
-                musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
-            } else if (applesEaten <= 34){
+            } else if (applesEaten == 30 || applesEaten == 21){
                 musicSoundBoard.setSound(getClass().getResource("/snake-death2.wav"));
-            } else if(applesEaten <= 39){
+            } else if(applesEaten == 35 || applesEaten == 26){
                 musicSoundBoard.setSound(getClass().getResource("/snake-death3.wav"));
-            }
-            else {
+            } else if (applesEaten <= 39) {
+                musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
+            } else if(applesEaten < 60) {
                 musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
+            } else {
+                musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
             }
         }
     }
@@ -482,30 +492,57 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public String setBackgroundImage(){
+    public String setBackgroundImage(String [] str){
                 try {
-                    String [] images = {
-                            "Animated-bg/blue-star.gif",
-                            "Animated-bg/cube-world.gif",
-                            "Animated-bg/green-vortex.gif",
-                            "Animated-bg/hell-maze.gif",
-                            "Animated-bg/hexahedron-animated.gif",
-                            "Animated-bg/light-ball.gif",
-                            "Animated-bg/light-hexahedron-tunnel.gif",
-                            "Animated-bg/light-squares.gif",
-                            "Animated-bg/light-squares2.gif",
-                            "Animated-bg/lines-and-sparks.gif",
-                            "Animated-bg/matrix.gif",
-                            "Animated-bg/occult-triangle.gif",
-                            "Animated-bg/wireframe.gif"
-                    };
-                    int index = random.nextInt(images.length);
-                    return images[index];
+                    int index = random.nextInt(str.length);
+                    return str[index];
                 } catch (Exception e) {
                     System.err.println("Error loading image");
                 }
                     return null;
-            }
+    }
+
+    public String [] setStaticBackground(){
+        return new String[]{
+                "Animated-bg/blue-star.gif",
+                "Animated-bg/cube-world.gif",
+                "Animated-bg/hell-maze.gif",
+                "Animated-bg/hexahedron-animated.gif",
+                "Animated-bg/lines-and-sparks.gif",
+                "Animated-bg/matrix.gif",
+                "Animated-bg/pink-star.gif"
+        };
+    }
+
+    public String [] setMovingBackground(){
+        return new String [] {
+                "Animated-bg/green-vortex.gif",
+                "Animated-bg/light-ball.gif",
+                "Animated-bg/light-hexahedron-tunnel.gif",
+                "Animated-bg/light-squares.gif",
+                "Animated-bg/light-squares2.gif",
+                "Animated-bg/occult-triangle.gif",
+                "Animated-bg/wireframe.gif"
+        };
+    }
+
+    public String [] setAllBackground(){
+        return new String [] {
+                "Animated-bg/blue-star.gif",
+                "Animated-bg/cube-world.gif",
+                "Animated-bg/green-vortex.gif",
+                "Animated-bg/hell-maze.gif",
+                "Animated-bg/hexahedron-animated.gif",
+                "Animated-bg/light-ball.gif",
+                "Animated-bg/light-hexahedron-tunnel.gif",
+                "Animated-bg/light-squares.gif",
+                "Animated-bg/light-squares2.gif",
+                "Animated-bg/lines-and-sparks.gif",
+                "Animated-bg/matrix.gif",
+                "Animated-bg/occult-triangle.gif",
+                "Animated-bg/wireframe.gif"
+        };
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -517,5 +554,5 @@ public class GamePanel extends JPanel implements ActionListener {
             flushIcon();
             repaint();
             gameOverButtons();
-     }
+    }
 }

@@ -12,8 +12,8 @@ public class MainMenu extends JFrame implements ActionListener {
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     private final JButton startButton = new JButton("Start Game");
-    private final JButton exitButton = new JButton("Exit");
     private final JButton optionsButton = new JButton("Options");
+    private final JButton exitButton = new JButton("Exit");
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel background;
     private MusicSoundBoard soundBoard;
@@ -58,7 +58,8 @@ public class MainMenu extends JFrame implements ActionListener {
     }
 
     public void setBackgroundImage(){
-        //getClass().getClassLoader().getResource() allows for getting resources during production build (not just code)
+        /* getClass().getClassLoader().getResource() allows for getting resources during production build (not just code)
+        Mark folder(s) as resources for this to work */
         ImageIcon bg = new ImageIcon(getClass().getClassLoader().getResource("grid-edit.gif"));
         background = new JLabel(bg);
         add(background);

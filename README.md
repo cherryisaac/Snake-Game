@@ -46,8 +46,8 @@ Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
-- When the snake is moving from right to left, and you press the right and up buttons at the same time you will get an
-instant Game Over
+- When the snake is moving from right to left (or moving down), and you press the right and up buttons at the same time 
+you will get an instant Game Over
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
