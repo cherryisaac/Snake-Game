@@ -6,7 +6,7 @@ Bro Code (https://www.youtube.com/watch?v=bI6e6qjJ8JQ). By the end of it though 
 no way to pause the game. So I spent about a week or so trying to get the actual pause function to match in tandem with 
 the "Pause" text overlay. After I finally did that I was so happy to have something of my own created in a game it made 
 me want to add more to it. So I wrote a README.md on what I wanted to develop. Fast-forward about a few months later I 
-felt inspired again to tackle this and yeah...I'm just about done with this project. My first passion project in coding.
+felt inspired again to tackle this and yeah. My first passion project in coding.
 
 How to play the game: In order to play this game currently, you need to install a Java (https://www.java.com/en/download/)
 to open a Java archive (jar) file. 1. Once you have downloaded and installed Java double-click the file, and it should 
@@ -46,8 +46,6 @@ Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
-- When the snake is moving from right to left (or moving down), and you press the right and up buttons at the same time 
-you will get an instant Game Over
 
 Future features I would like to implement:
 - A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
@@ -63,9 +61,5 @@ TODOs:
 Hard mode or 35 or more on Insane mode.
 - Set Hard mode & Insane mode as unlockables for getting 100 or more apples on Easy or 50 or more apples on Normal mode
 - Figure out how to publish the finished product (game) so it's playable on all OS's without having to download extra 
-resources/software. Ideally, maybe I can figure out a way to put the game on a cloud server for the most accessibility.
-
-What I learned from this project:
-- How to utilize Java Swing API
-- How to create a Jar file with resources (images & music included)
-- Converting a Jar file to an exe application
+resources/software. Ideally, maybe I can figure out a way to convert this into a web application or more likely I'll 
+make a .exe file for windows and .dmg for mac.

@@ -47,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int highScore = 0;
     private Map<String, Integer> highScores = new HashMap<>();
     private boolean cardBoardBox = false;
+    boolean[] keyDown = new boolean[256]; // Array to keep track of which keys are currently being pressed
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     private boolean timerZero = false;
@@ -55,9 +56,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public GamePanel(){
         defaultPanel();
-        backgroundImage1 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setStaticBackground())));
-        backgroundImage2 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setMovingBackground())));
-        backgroundImage3 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImage(setAllBackground())));
+        backgroundImage1 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setStaticBackground())));
+        backgroundImage2 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setMovingBackground())));
+        backgroundImage3 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setAllBackground())));
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
@@ -180,8 +181,10 @@ public class GamePanel extends JPanel implements ActionListener {
             delayTime = 5000; // 5 seconds
         } else if(applesEaten <= 39) {
             delayTime = 10000; // 10 seconds
-        } else {
+        } else if (applesEaten < 70){
             delayTime = 19500; // 20 seconds
+        } else {
+            delayTime = 10000;
         }
         Timer delayTimer = new Timer(delayTime, e -> {
             retryButton.setBounds(230,325,150,50); //Position and size of buttons as they appear
@@ -217,7 +220,7 @@ public class GamePanel extends JPanel implements ActionListener {
             insaneTimer.start();
         }
     }
-    private boolean isAppleOnSnake() {
+    private boolean isAppleOnSnake() { // Checks for no overlap of snake and apple...applied to harder difficulties
         for (int i = 0; i < bodyParts; i++) {
             if (X[i] == appleX && Y[i] == appleY) {
                 return true;
@@ -232,30 +235,42 @@ public class GamePanel extends JPanel implements ActionListener {
             X[i] = X[i-1];
             Y[i] = Y[i-1];
         }
+        if(keyDown[KeyEvent.VK_UP] && direction != 'D') {
+            direction = 'U';
+        }
+        else if(keyDown[KeyEvent.VK_DOWN] && direction != 'U') {
+            direction = 'D';
+        }
+        else if(keyDown[KeyEvent.VK_LEFT] && direction != 'R') {
+            direction = 'L';
+        }
+        else if(keyDown[KeyEvent.VK_RIGHT] && direction != 'L') {
+            direction = 'R';
+        }
         switch (direction){
             case 'U'-> Y[0] = Y[0] - UNIT_SIZE;
             case 'D'-> Y[0] = Y[0] + UNIT_SIZE;
             case 'L'-> X[0] = X[0] - UNIT_SIZE;
             case 'R'-> X[0] = X[0] + UNIT_SIZE;
-            case ' ' -> {
-                X[0]= 0;
-                Y[0]= 0;
-            }
         }
     }
 
-    public void checkApple(){
+    public void checkApple(){ // Check if apple makes contact with snake
         if(cardBoardBox){
             if (((X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE) || (X[0] + UNIT_SIZE >= appleX && X[0] <= appleX + UNIT_SIZE))
                     && ((Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE) || (Y[0] + UNIT_SIZE >= appleY && Y[0] <= appleY + UNIT_SIZE))) {
-                if(optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten >= 40 ||
-                        optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten >= 20){
-                    bodyParts++;
-                } else {
+                if(optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten <= 40||
+                        optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten <= 20){
                     bodyParts+=2;
+                    applesEaten++;
+                } else if(optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten > 100 ||
+                            optionsMenu.getDifficultyChoice().equals("Normal") && applesEaten > 80 ||
+                                optionsMenu.getDifficultyChoice().equals("Easy") && applesEaten > 75) {
+                    applesEaten++;
+                } else {
+                    bodyParts++;
+                    applesEaten++;
                 }
-
-                applesEaten++;
                 musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
                 if(optionsMenu.getDifficultyChoice().equals("Hard")){
                     if (hardTimer != null && running) {
@@ -269,7 +284,12 @@ public class GamePanel extends JPanel implements ActionListener {
                 newApple();
             }
         } else if((X[0]==appleX) && (Y[0]==appleY)){
-            bodyParts++;
+            // If apples go over a certain amount on a certain difficulty then no longer increase the length per apple
+            if ((!optionsMenu.getDifficultyChoice().equals("Hard") || applesEaten <= 100) &&
+                    (!optionsMenu.getDifficultyChoice().equals("Normal") || applesEaten <= 80) &&
+                    (!optionsMenu.getDifficultyChoice().equals("Easy") || applesEaten <= 75)) {
+                bodyParts++;
+            }
             applesEaten++;
             if(optionsMenu.getDifficultyChoice().equals("Easy") && applesEaten == 45 ||
                     optionsMenu.getDifficultyChoice().equals("Normal") && applesEaten == 35 ||
@@ -278,7 +298,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 musicSoundBoard.setSound(getClass().getResource("/cardboardbox-ready-sound.wav")); //play sound to indicate box is usable
             } else {
                 musicSoundBoard.setSound(getClass().getResource("/eating-sound-effect.wav"));
-
             }
             if(optionsMenu.getDifficultyChoice().equals("Hard")){
                 if (hardTimer != null && running) {
@@ -326,7 +345,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     g.drawImage(gif.getImage(), 50, 150, 500, 200, this);
                 } else if (applesEaten <= 39) {
                     g.drawImage(gameOverThree.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
-                } else if (applesEaten < 60){
+                } else if (applesEaten < 70){
                     g.drawImage(gameOverNot.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
                 }  else {
                     g.drawImage(mazeGameOver.getImage(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, this);
@@ -404,28 +423,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public class MyKeyAdapter extends KeyAdapter {
         @Override
+        public void keyReleased(KeyEvent e) {
+            keyDown[e.getKeyCode()] = false; // Update the corresponding value in the boolean array
+        }
+        @Override
         public void keyPressed(KeyEvent e) {
+            keyDown[e.getKeyCode()] = true; // Update the corresponding value in the boolean array
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT -> {
-                    if (direction != 'R') {
-                        direction = 'L';
-                    }
-                }
-                case KeyEvent.VK_RIGHT -> {
-                    if (direction != 'L') {
-                        direction = 'R';
-                    }
-                }
-                case KeyEvent.VK_UP -> {
-                    if (direction != 'D') {
-                        direction = 'U';
-                    }
-                }
-                case KeyEvent.VK_DOWN -> {
-                    if (direction != 'U') {
-                        direction = 'D';
-                    }
-                }
                 case KeyEvent.VK_SPACE -> { //Adds pause button with space bar
                     if (timer.isRunning()) {
                         musicSoundBoard.setSoundAndPause(getClass().getResource("/Sound/pause-sound.wav"), 260);
@@ -443,10 +447,10 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                 }
                 case KeyEvent.VK_SHIFT -> { //Key for returning to the main menu after Game Over && toggle Cardboard box
-                    if(!cardBoardBox && !gameOver && optionsMenu.getDifficultyChoice().equals("Easy") && applesEaten > 45 ||
-                       !cardBoardBox && !gameOver && optionsMenu.getDifficultyChoice().equals("Normal") && applesEaten > 34 ||
-                       !cardBoardBox && !gameOver && optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten > 24 ||
-                       !cardBoardBox && !gameOver && optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten > 13){
+                    if(!cardBoardBox && running && optionsMenu.getDifficultyChoice().equals("Easy") && applesEaten >= 45 ||
+                       !cardBoardBox && running && optionsMenu.getDifficultyChoice().equals("Normal") && applesEaten > 34 ||
+                       !cardBoardBox && running && optionsMenu.getDifficultyChoice().equals("Hard") && applesEaten > 24 ||
+                       !cardBoardBox && running && optionsMenu.getDifficultyChoice().equals("Insane") && applesEaten > 13){
                         musicSoundBoard.setSound(getClass().getResource("/box-switch.wav"));
                         cardBoardBox = true;
                     } else {
@@ -471,7 +475,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 musicSoundBoard.setSound(getClass().getResource("/snake-death3.wav"));
             } else if (applesEaten <= 39) {
                 musicSoundBoard.setSound(getClass().getResource("/Metal Gear Solid Game Over screen.wav"));
-            } else if(applesEaten < 60) {
+            } else if(applesEaten < 70) {
                 musicSoundBoard.setSound(getClass().getResource("/continue.wav"));
             } else {
                 musicSoundBoard.setSound(getClass().getResource("/tunnel-bang-sound.wav"));
@@ -492,7 +496,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public String setBackgroundImage(String [] str){
+    public String setBackgroundImages(String [] str){
                 try {
                     int index = random.nextInt(str.length);
                     return str[index];
