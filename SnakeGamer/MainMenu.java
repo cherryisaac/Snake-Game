@@ -103,8 +103,6 @@ public class MainMenu extends JFrame implements ActionListener {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
                     highScoreTracker.showHighScores();
-                } else {
-                    highScoreTracker.hideHighScores();
                 }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     exit.requestFocus();

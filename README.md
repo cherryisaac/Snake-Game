@@ -56,6 +56,7 @@ Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
+- The button to view the highscores stops working after going to into and leaving the options menu
 
 Future features I would like to implement:
 - Time attack mode where the snake collects as many apples in a given time frame (2 or 5 or 10 min)

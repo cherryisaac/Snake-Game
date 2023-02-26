@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean cardBoardBox = false;
     boolean[] keyDown = new boolean[256]; // Array to keep track of which keys are currently being pressed
     private boolean isPromptDisplayed = false;
-
+    private static final JTextField nameField = new JTextField();
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     private boolean timerZero = false;
@@ -55,9 +55,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public GamePanel(){
         defaultPanel();
-        backgroundImage1 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setStaticBackground())));
-        backgroundImage2 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setMovingBackground())));
-        backgroundImage3 = new ImageIcon(getClass().getClassLoader().getResource(setBackgroundImages(setAllBackground())));
+        backgroundImage1 = new ImageIcon(getClass().getClassLoader().getResource(backgroundManager.setBackgroundImages(backgroundManager.setStaticBackground())));
+        backgroundImage2 = new ImageIcon(getClass().getClassLoader().getResource(backgroundManager.setBackgroundImages(backgroundManager.setMovingBackground())));
+        backgroundImage3 = new ImageIcon(getClass().getClassLoader().getResource(backgroundManager.setBackgroundImages(backgroundManager.setAllBackground())));
         switch (optionsMenu.getMusicChoice()) {
             case "on" -> musicSoundBoard.setMusicChoice();
             case "off" -> {}
@@ -498,63 +498,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public String setBackgroundImages(String [] str){
-                try {
-                    int index = random.nextInt(str.length);
-                    return str[index];
-                } catch (Exception e) {
-                    System.err.println("Error loading image");
-                }
-                    return null;
-    }
-
-    public String [] setStaticBackground(){
-        return new String[]{
-                "Animated-bg/blue-star.gif",
-                "Animated-bg/cube-world.gif",
-                "Animated-bg/hell-maze.gif",
-                "Animated-bg/hexahedron-animated.gif",
-                "Animated-bg/lines-and-sparks.gif",
-                "Animated-bg/matrix.gif",
-                "Animated-bg/pink-star.gif"
-        };
-    }
-
-    public String [] setMovingBackground(){
-        return new String [] {
-                "Animated-bg/green-vortex.gif",
-                "Animated-bg/light-ball.gif",
-                "Animated-bg/light-hexahedron-tunnel.gif",
-                "Animated-bg/light-squares.gif",
-                "Animated-bg/light-squares2.gif",
-                "Animated-bg/occult-triangle.gif",
-                "Animated-bg/wireframe.gif"
-        };
-    }
-
-    public String [] setAllBackground(){
-        return new String [] {
-                "Animated-bg/blue-star.gif",
-                "Animated-bg/cube-world.gif",
-                "Animated-bg/green-vortex.gif",
-                "Animated-bg/hell-maze.gif",
-                "Animated-bg/hexahedron-animated.gif",
-                "Animated-bg/light-ball.gif",
-                "Animated-bg/light-hexahedron-tunnel.gif",
-                "Animated-bg/light-squares.gif",
-                "Animated-bg/light-squares2.gif",
-                "Animated-bg/lines-and-sparks.gif",
-                "Animated-bg/matrix.gif",
-                "Animated-bg/occult-triangle.gif",
-                "Animated-bg/wireframe.gif"
-        };
-    }
     public void setNewHighScorePrompt(){
         int currentHighScore = highScores.isEmpty() ? 0 : highScores.lastKey();
         if(!isPromptDisplayed && applesEaten > currentHighScore) {
-            // Prompt the user to enter their name
             isPromptDisplayed = true;
-            String name = JOptionPane.showInputDialog(this, "Enter your name:");
+            String name = showDialog();
+//                    JOptionPane.showInputDialog(this, "Congratulations! " +
+//                    "You got a new High Score! Please Enter your name: ");
             if (name != null && !name.isEmpty()) {
                 highScores.put(applesEaten, name);
                 highScoreTracker.saveHighScores(highScores);
@@ -562,6 +512,20 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    public static String showDialog() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.add(new JLabel("Congratulations! You got a new High Score! "));
+        panel.add(new JLabel("Please enter your name: "));
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;   c.gridy = 1;
+        c.weightx = 1.0;   c.weighty = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(nameField, c);
+        nameField.setPreferredSize(new Dimension(200, 20));
+        nameField.setText("");
+        JOptionPane.showConfirmDialog(null, panel, "High Score", JOptionPane.DEFAULT_OPTION);
+        return nameField.getText();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
