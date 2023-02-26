@@ -18,10 +18,18 @@ line by typing "cd " then drag the folder containing the jar file to the command
 The goal of the player:
 - To collect as many apples as possible
 
-Latest Update 2/7/23:
+Latest update 2/26/23:
+-Implemented High score tracker which keep track of the player's high score and what difficulty they were 
+playing on when they got the high score
+
+Update 2/6/23:
+- Added cardboard box which allows the snake to get apples at a further range when it eats a certain amount of apples
+  (depending upon difficulty)
+
+Update 2/7/23:
 - Added difficulty modes Easy, Normal, Hard, Insane
 
-Latest Update 1/29/23 - 1/30/23:
+Update 1/29/23 - 1/30/23:
 - Added Options Menu with choices to change speed of snake and color (and more!)
 - Added sound effects and music
 
@@ -41,6 +49,8 @@ running into itself.
 (Enter key = Retry button, Shift key = Main Menu button)
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
 difficulty
+- Pressing the shift key in the main menu allows the player to view the high score and the difficulty each player was 
+playing on when they got those scores
 
 Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
@@ -48,14 +58,14 @@ the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
 
 Future features I would like to implement:
-- A high score tracker to keep track of the highest score so far or of the top 5 highest scores made for each mode
 - Time attack mode where the snake collects as many apples in a given time frame (2 or 5 or 10 min)
 - BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
 
 TODOs:
 - Set up time mode settings
-- Set up High Score Menu selection in Main Menu
-- Set up High Scores prompt after Game Over if the player got a new high score
+- Fix High score menu does not close when the shift button is pressed again
+- Fix high score prompt position after a player gets a new high score
+- Fix player's difficulty being overwritten when the player changes difficulties and gets a new high score
 - If the player gets 100 or more apples than a victory sequence is triggered
 - Set the cardboard box mechanic as an unlockable for getting 75 or more apples on Normal difficulty, 50 or more on 
 Hard mode or 35 or more on Insane mode.

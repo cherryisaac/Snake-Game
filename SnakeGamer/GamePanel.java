@@ -4,13 +4,11 @@ package SnakeGamer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 
 public class GamePanel extends JPanel implements ActionListener {
-    HighScoreTracker highScoreTracker;
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     //How big do we want the objects in this game?
@@ -33,6 +31,7 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean gameOver = false;
     private OptionsMenu optionsMenu;
     private MusicSoundBoard musicSoundBoard;
+    private HighScoreTracker highScoreTracker;
     private BackgroundManager backgroundManager;
     private ImageIcon backgroundImage1;
     private ImageIcon backgroundImage2;
@@ -43,11 +42,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private long startTime;
     private Timer hardTimer;
     private Timer insaneTimer;
-    private int score = 0;
-    private int highScore = 0;
-    private Map<String, Integer> highScores = new HashMap<>();
+    private TreeMap<Integer, String> highScores;
     private boolean cardBoardBox = false;
     boolean[] keyDown = new boolean[256]; // Array to keep track of which keys are currently being pressed
+    private boolean isPromptDisplayed = false;
+
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
     private boolean timerZero = false;
@@ -74,6 +73,8 @@ public class GamePanel extends JPanel implements ActionListener {
         musicSoundBoard = new MusicSoundBoard();
         musicSoundBoard.setMusicClip();
         backgroundManager = new BackgroundManager();
+        highScoreTracker = new HighScoreTracker();
+        highScores = highScoreTracker.loadHighScores();
     }
 
     public void startGame(){
@@ -171,6 +172,7 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
             musicSoundBoard.stopMusic();
             gameOverButtonsTimer();
+            setNewHighScorePrompt();
         }
     }
 
@@ -547,6 +549,19 @@ public class GamePanel extends JPanel implements ActionListener {
                 "Animated-bg/wireframe.gif"
         };
     }
+    public void setNewHighScorePrompt(){
+        int currentHighScore = highScores.isEmpty() ? 0 : highScores.lastKey();
+        if(!isPromptDisplayed && applesEaten > currentHighScore) {
+            // Prompt the user to enter their name
+            isPromptDisplayed = true;
+            String name = JOptionPane.showInputDialog(this, "Enter your name:");
+            if (name != null && !name.isEmpty()) {
+                highScores.put(applesEaten, name);
+                highScoreTracker.saveHighScores(highScores);
+            }
+        }
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

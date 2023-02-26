@@ -17,6 +17,8 @@ public class MainMenu extends JFrame implements ActionListener {
     private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel background;
     private MusicSoundBoard soundBoard;
+    private HighScoreTracker highScoreTracker;
+    private boolean viewHighScores = false;
     public MainMenu() {
         defaultMainMenu();
         setBackgroundImage();
@@ -39,6 +41,7 @@ public class MainMenu extends JFrame implements ActionListener {
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         soundBoard = new MusicSoundBoard();
+        highScoreTracker = new HighScoreTracker();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
@@ -98,6 +101,11 @@ public class MainMenu extends JFrame implements ActionListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     start.doClick();
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    highScoreTracker.showHighScores();
+                } else {
+                    highScoreTracker.hideHighScores();
+                }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     exit.requestFocus();
                 }
@@ -156,4 +164,3 @@ public class MainMenu extends JFrame implements ActionListener {
         }
     }
 }
-
