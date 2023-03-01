@@ -17,7 +17,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private int gameSpeed = 75;
     private String difficultyChoice = "Normal";
     private boolean timeMode = false;
-    private Timer timer;
     private JSlider speedSlider;
     private JComboBox<String> snakeColorComboBox;
     private JComboBox<String> gridColorComboBox;
@@ -45,7 +44,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
          musicSettings();
          difficultySettings();
          snakeSpeedSettings();
-         timeModeSettings();
 
         //Save button properties
         saveButton = new JButton("Save");
@@ -54,6 +52,9 @@ public class OptionsMenu extends JFrame implements ActionListener {
         //Cancel button properties
         cancelButton = new JButton("Cancel");
         setCancelButton();
+
+        optionsFrame.add(optionsPanel);
+        optionsFrame.pack();
     }
     public void setSaveButton(){
         optionsPanel.add(saveButton);
@@ -72,8 +73,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
             soundBoard.setSoundAndPause(getClass().getResource("/cancel-sound.wav"), 275);
             optionsFrame.dispose();
         });
-        optionsFrame.add(optionsPanel);
-        optionsFrame.pack();
     }
 
     public void snakeColorSettings(){
@@ -129,16 +128,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
         speedSlider.addChangeListener(e -> gameSpeed = speedSlider.getValue());
         optionsPanel.add(gameSpeedLabel);
         optionsPanel.add(speedSlider);
-    }
-
-    public void timeModeSettings(){
-        //TODO: Time Mode settings
-        JLabel timeModeLabel = new JLabel("Select time mode:");
-        timeModeCheckBox = new JCheckBox();
-        timeModeCheckBox.setSelected(timeMode);
-        timeModeCheckBox.addItemListener(e -> timeMode = timeModeCheckBox.isSelected());
-        optionsPanel.add(timeModeLabel);
-        optionsPanel.add(timeModeCheckBox);
     }
 
     public void loadOptions() {

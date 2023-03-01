@@ -1,4 +1,4 @@
-My Snake-Game - Freelance Java Project
+My Snake-Game - Freelance Java Project (Started: Dec.2022 | Completed Mar. 2023)
 by Isaac Cherry
 
 
@@ -53,16 +53,15 @@ the player stuck at the Game Over screen
 - The button to view the highscores stops working after going to into and leaving the options menu
 
 Future features I would like to implement:
-- Time attack mode where the snake collects as many apples in a given time frame (2 or 5 or 10 min)
+- Set up high scores by difficulty
 - BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
 
 TODOs:
-- Set up time mode settings
-- Fix high score prompt position after a player gets a new high score
-- Fix player's difficulty being overwritten when the player changes difficulties and gets a new high score
-- Set the cardboard box mechanic as an unlockable for getting 75 or more apples on Normal difficulty, 50 or more on 
-Hard mode or 35 or more on Insane mode.
-- Set Hard mode & Insane mode as unlockables for getting 100 or more apples on Easy or 50 or more apples on Normal mode
 - Figure out how to publish the finished product (game) so it's playable on all OS's without having to download extra 
 resources/software. Ideally, maybe I can figure out a way to convert this into a web application or more likely I'll 
 make a .exe file for windows and .dmg for mac.
+
+Last Remarks: I've done so much with this project in the last 2 month since first working on this project (Dec. 2022) 
+that I've decided to not add anymore features and to just publish this and fix any bugs (and MAYBE set up high scores by 
+difficulty) This was a really tough and interesting project, but I'm ready to go on to other projects and fix up/improve 
+some of my older work. Thanks for reading this if you did and have a great day!
