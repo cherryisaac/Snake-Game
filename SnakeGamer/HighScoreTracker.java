@@ -2,20 +2,23 @@ package SnakeGamer;
 
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class HighScoreTracker {
+public class HighScoreTracker extends JFrame implements ActionListener {
     private OptionsMenu optionsMenu;
-    public JFrame frame;
+    private JFrame frame;
+    private MusicSoundBoard soundBoard;
 
 
-    public HighScoreTracker(){
+    public HighScoreTracker() {
         optionsMenu = new OptionsMenu();
         frame = new JFrame("High Scores");
-        frame.setVisible(false);
+        soundBoard = new MusicSoundBoard();
     }
 
     public String mapNameWithDifficulty(){
@@ -37,10 +40,12 @@ public class HighScoreTracker {
 
     public void saveHighScores(TreeMap<Integer, String> scores) {
         try {
-            FileWriter writer = new FileWriter("highscores.txt");
-            writer.write("͟N͟a͟m͟e͟ ͟|͟ ͟S͟c͟o͟r͟e͟͟ ͟͟ ͟|͟ ͟D͟i͟f͟f͟i͟c͟u͟l͟t͟y͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟\n");
+            FileWriter writer = new FileWriter("highscores.txt", false);
+//            writer.write("͟N͟a͟m͟e͟ ͟|͟ ͟S͟c͟o͟r͟e͟͟ ͟͟ ͟|͟ ͟D͟i͟f͟f͟i͟c͟u͟l͟t͟y͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟\n");
+            writer.write("͟N͟a͟m͟e͟ ͟|͟ ͟S͟c͟o͟r͟e͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟͟ ͟͟ ͟͟ ͟͟ ͟͟\n");
             for(Map.Entry<Integer, String> entry : scores.entrySet()) {
-                writer.write(entry.getValue() + ": " + entry.getKey() + mapNameWithDifficulty() + "\n");
+//                writer.write(entry.getValue() + ": " + entry.getKey() + mapNameWithDifficulty() + "\n");
+                writer.write(entry.getValue() + ": " + entry.getKey() + "\n");
             }
             writer.close();
         } catch(IOException e) {
@@ -80,6 +85,15 @@ public class HighScoreTracker {
     public void showHighScores() {
         JTextArea textArea = new JTextArea(10, 30);
         textArea.setEditable(false);
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    hideHighScores();
+                    soundBoard.setSound(getClass().getResource("/highscores-close.wav"));
+                }
+            }
+        });
         JScrollPane scrollPane = new JScrollPane(textArea);
         frame.getContentPane().add(scrollPane);
         try {
@@ -93,18 +107,16 @@ public class HighScoreTracker {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (!frame.isVisible()) {
             frame.pack();
             frame.setVisible(true);
-        }
     }
 
     public void hideHighScores() {
-        if (frame.isVisible()) {
             frame.setVisible(false);
             frame.dispose();
-        }
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
 }
-

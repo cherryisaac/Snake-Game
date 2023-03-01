@@ -1,12 +1,6 @@
 My Snake-Game - Freelance Java Project
 by Isaac Cherry
 
-How this game came to be...completed: I started following this YouTube tutorial on creating a Snake Game in Java by 
-Bro Code (https://www.youtube.com/watch?v=bI6e6qjJ8JQ). By the end of it though I was happy with the outcome there was 
-no way to pause the game. So I spent about a week or so trying to get the actual pause function to match in tandem with 
-the "Pause" text overlay. After I finally did that I was so happy to have something of my own created in a game it made 
-me want to add more to it. So I wrote a README.md on what I wanted to develop. Fast-forward about a few months later I 
-felt inspired again to tackle this and yeah. My first passion project in coding.
 
 How to play the game: In order to play this game currently, you need to install a Java (https://www.java.com/en/download/)
 to open a Java archive (jar) file. 1. Once you have downloaded and installed Java double-click the file, and it should 
@@ -49,8 +43,8 @@ running into itself.
 (Enter key = Retry button, Shift key = Main Menu button)
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
 difficulty
-- Pressing the shift key in the main menu allows the player to view the high score and the difficulty each player was 
-playing on when they got those scores
+- Pressing the shift key in the main menu allows the player to view the high score(s) (difficulty for each high score I 
+plan to implement later)
 
 Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
@@ -64,10 +58,8 @@ Future features I would like to implement:
 
 TODOs:
 - Set up time mode settings
-- Fix High score menu does not close when the shift button is pressed again
 - Fix high score prompt position after a player gets a new high score
 - Fix player's difficulty being overwritten when the player changes difficulties and gets a new high score
-- If the player gets 100 or more apples than a victory sequence is triggered
 - Set the cardboard box mechanic as an unlockable for getting 75 or more apples on Normal difficulty, 50 or more on 
 Hard mode or 35 or more on Insane mode.
 - Set Hard mode & Insane mode as unlockables for getting 100 or more apples on Easy or 50 or more apples on Normal mode

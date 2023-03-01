@@ -14,11 +14,10 @@ public class MainMenu extends JFrame implements ActionListener {
     private final JButton startButton = new JButton("Start Game");
     private final JButton optionsButton = new JButton("Options");
     private final JButton exitButton = new JButton("Exit");
-    private OptionsMenu optionsMenu = new OptionsMenu();
     private JLabel background;
     private MusicSoundBoard soundBoard;
-    private HighScoreTracker highScoreTracker;
-    private boolean viewHighScores = false;
+
+
     public MainMenu() {
         defaultMainMenu();
         setBackgroundImage();
@@ -41,7 +40,6 @@ public class MainMenu extends JFrame implements ActionListener {
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         setLocationRelativeTo(null);
         soundBoard = new MusicSoundBoard();
-        highScoreTracker = new HighScoreTracker();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
@@ -102,7 +100,8 @@ public class MainMenu extends JFrame implements ActionListener {
                     start.doClick();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-                    highScoreTracker.showHighScores();
+                    new HighScoreTracker().showHighScores();
+                    soundBoard.setSound(getClass().getResource("/highscores-open.wav"));
                 }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     exit.requestFocus();

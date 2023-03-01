@@ -28,8 +28,8 @@ public class OptionsMenu extends JFrame implements ActionListener {
     //If it's not accessible to the main menu then the options will not load when clicked
     public JFrame optionsFrame;
     private static final String OPTIONS_FILE = "options.txt";
-    JPanel optionsPanel;
-    MusicSoundBoard soundBoard;
+    private JPanel optionsPanel;
+    private MusicSoundBoard soundBoard;
 
 
      public OptionsMenu(){
@@ -54,8 +54,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
         //Cancel button properties
         cancelButton = new JButton("Cancel");
         setCancelButton();
-        //I only want this visible when the options button is clicked NOT in-game
-        optionsFrame.setVisible(false);
     }
     public void setSaveButton(){
         optionsPanel.add(saveButton);
