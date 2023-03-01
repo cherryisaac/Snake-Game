@@ -16,14 +16,12 @@ public class OptionsMenu extends JFrame implements ActionListener {
     private String musicChoice = "off";
     private int gameSpeed = 75;
     private String difficultyChoice = "Normal";
-    private boolean timeMode = false;
     private JSlider speedSlider;
     private JComboBox<String> snakeColorComboBox;
     private JComboBox<String> gridColorComboBox;
     private JComboBox<String> imageComboBox;
     private JComboBox<String> musicComboBox;
     private JComboBox<String> difficultyComboBox;
-    private JCheckBox timeModeCheckBox;
     //If it's not accessible to the main menu then the options will not load when clicked
     public JFrame optionsFrame;
     private static final String OPTIONS_FILE = "options.txt";
@@ -138,7 +136,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
             musicChoice = reader.nextLine();
             difficultyChoice = reader.nextLine();
             gameSpeed = reader.nextInt();
-            timeMode = reader.nextBoolean();
         } catch (FileNotFoundException e) {
             System.err.println("Options file not found, using default options.");
         }
@@ -153,7 +150,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
             writer.println(musicChoice);
             writer.println(difficultyChoice);
             writer.println(gameSpeed);
-            writer.println(timeMode);
         } catch (FileNotFoundException e) {
             System.err.println("Could not save options to file " + OPTIONS_FILE);
         }
@@ -166,7 +162,6 @@ public class OptionsMenu extends JFrame implements ActionListener {
         musicChoice = (String) musicComboBox.getSelectedItem();
         difficultyChoice = (String) difficultyComboBox.getSelectedItem();
         gameSpeed = speedSlider.getValue();
-        timeMode = timeModeCheckBox.isSelected();
     }
     
     //Getters so the parameters are accessible to other classes

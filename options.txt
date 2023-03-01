@@ -1,6 +1,0 @@
-cyan
-black
-on
-on
-75
-false
