@@ -23,7 +23,6 @@ public class BackgroundManager {
     public String [] setStaticBackground(){
         return new String[]{
                 "Animated-bg/blue-star.gif",
-                "Animated-bg/cube-world.gif",
                 "Animated-bg/hell-maze.gif",
                 "Animated-bg/hexahedron-animated.gif",
                 "Animated-bg/lines-and-sparks.gif",
@@ -35,6 +34,7 @@ public class BackgroundManager {
     public String [] setMovingBackground(){
         return new String [] {
                 "Animated-bg/green-vortex.gif",
+                "Animated-bg/cube-world.gif",
                 "Animated-bg/light-ball.gif",
                 "Animated-bg/light-hexahedron-tunnel.gif",
                 "Animated-bg/light-squares.gif",

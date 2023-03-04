@@ -43,7 +43,7 @@ public class HighScoreTracker extends JFrame implements ActionListener {
             FileWriter writer = new FileWriter("highscores.txt", false);
 //            writer.write("͟N͟a͟m͟e͟ ͟|͟ ͟S͟c͟o͟r͟e͟͟ ͟͟ ͟|͟ ͟D͟i͟f͟f͟i͟c͟u͟l͟t͟y͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟\n");
             writer.write("͟N͟a͟m͟e͟ ͟|͟ ͟S͟c͟o͟r͟e͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟ ͟͟͟ ͟͟ ͟͟ ͟͟ ͟͟\n");
-            for(Map.Entry<Integer, String> entry : scores.entrySet()) {
+            for(Map.Entry<Integer, String> entry : scores.descendingMap().entrySet()) {
 //                writer.write(entry.getValue() + ": " + entry.getKey() + mapNameWithDifficulty() + "\n");
                 writer.write(entry.getValue() + ": " + entry.getKey() + "\n");
             }
@@ -54,7 +54,7 @@ public class HighScoreTracker extends JFrame implements ActionListener {
     }
 
     public TreeMap<Integer, String> loadHighScores() {
-        TreeMap<Integer, String> scores = new TreeMap<>(Collections.reverseOrder());
+        TreeMap<Integer, String> scores = new TreeMap<>();
 
         try {
             File file = new File("highscores.txt");
@@ -67,11 +67,8 @@ public class HighScoreTracker extends JFrame implements ActionListener {
                 String[] parts = line.split(": ");
                 if(parts.length == 2) {
                     String name = parts[0].trim();
-                    String[] scoreAndDifficulty = parts[1].trim().split(" ");
-                    if(scoreAndDifficulty.length == 2) {
-                        int score = Integer.parseInt(scoreAndDifficulty[0].stripTrailing());
-                        scores.put(score, name);
-                    }
+                    int score = Integer.parseInt(parts[1].trim());
+                    scores.put(score, name);
                 }
             }
             reader.close();

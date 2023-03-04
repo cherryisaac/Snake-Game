@@ -43,14 +43,14 @@ running into itself.
 (Enter key = Retry button, Shift key = Main Menu button)
 - Settings menu allows the player to change the snake's color, snake's speed, grid color, bg color, toggle music, choose
 difficulty
-- Pressing the shift key in the main menu allows the player to view the high score(s) (difficulty for each high score I 
-plan to implement later)
+- Pressing the shift key in the main menu allows the player to view the high score(s) (difficulty for each high score
+I plan to implement later)
 
 Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
-- The button to view the highscores stops working after going to into and leaving the options menu
+- The button to view the high scores stops working after going to into the options menu
 
 Future features I would like to implement:
 - Set up high scores by difficulty
@@ -61,7 +61,7 @@ TODOs:
 resources/software. Ideally, maybe I can figure out a way to convert this into a web application or more likely I'll 
 make a .exe file for windows and .dmg for mac.
 
-Last Remarks: I've done so much with this project in the last 2 month since first working on this project (Dec. 2022) 
+Remarks: I've done so much with this project in the last 2 month since first working on this project (Dec. 2022) 
 that I've decided to not add anymore features and to just publish this and fix any bugs (and MAYBE set up high scores by 
 difficulty) This was a really tough and interesting project, but I'm ready to go on to other projects and fix up/improve 
 some of my older work. Thanks for reading this if you did and have a great day!

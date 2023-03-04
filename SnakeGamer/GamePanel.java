@@ -42,15 +42,13 @@ public class GamePanel extends JPanel implements ActionListener {
     private long startTime;
     private Timer hardTimer;
     private Timer insaneTimer;
-    private TreeMap<Integer, String> highScores;
+    private TreeMap<Integer, String> highScores = new TreeMap<>();
     private boolean cardBoardBox = false;
     boolean[] keyDown = new boolean[256]; // Array to keep track of which keys are currently being pressed
     private boolean isPromptDisplayed = false;
     private static final JTextField nameField = new JTextField();
     private boolean retryClicked = false;
     private boolean mainMenuClicked = false;
-    private boolean timerZero = false;
-
 
 
     public GamePanel(){
@@ -172,7 +170,9 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
             musicSoundBoard.stopMusic();
             gameOverButtonsTimer();
-            setNewHighScorePrompt();
+            if (optionsMenu.getScorePromptToggle()) {
+                setNewHighScorePrompt();
+            }
         }
     }
 
@@ -499,7 +499,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void setNewHighScorePrompt(){
-        int currentHighScore = highScores.isEmpty() ? 0 : highScores.lastKey();
+        int currentHighScore = highScores.size() == 0 ? 0 : highScores.lastKey();
         if(!isPromptDisplayed && applesEaten > currentHighScore) {
             isPromptDisplayed = true;
             String name = showDialog();
