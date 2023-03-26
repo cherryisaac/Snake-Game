@@ -117,6 +117,10 @@ public class MainMenu extends JFrame implements ActionListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     options.doClick();
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    new HighScoreTracker().showHighScores();
+                    soundBoard.setSound(getClass().getResource("/highscores-open.wav"));
+                }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     start.requestFocus();
                 }
@@ -130,6 +134,10 @@ public class MainMenu extends JFrame implements ActionListener {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     exit.doClick();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                    new HighScoreTracker().showHighScores();
+                    soundBoard.setSound(getClass().getResource("/highscores-open.wav"));
                 }
                 if(e.getKeyCode() == KeyEvent.VK_UP){
                     options.requestFocus();

@@ -50,7 +50,6 @@ Bugs:
 - If the retry & main menu buttons are both clicked within seconds of each other than the buttons will disappear leaving
 the player stuck at the Game Over screen
 - Timer indicator does not resume where it left off after game unpauses on Hard mode
-- The button to view the high scores stops working after going to into the options menu
 
 Future features I would like to implement:
 - Set up high scores by difficulty

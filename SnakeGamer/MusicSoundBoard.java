@@ -81,7 +81,6 @@ public class MusicSoundBoard {
                     "/Awesome violin beat visualisation.wav",
                     "/Kaine-Salvation.wav",
                     "/KBT Expressway - GBA Pokémon Unbound_ Super Music Collection.wav",
-                    "/NieR Unreleased OST - The Wretched Automatons FULL INSTRUMENTAL 11.48.25 AM.wav",
                     "/Mind-Power-Ki (Instrumental).wav"
             };
             try {
