@@ -7,7 +7,9 @@ to open a Java archive (jar) file. 1. Once you have downloaded and installed Jav
 open. If not right-click the file and navigate to the installed java folder and go to the "bin" folder and open it with 
 a file that says something like javac.exe or javaw.exe. 2. You can also run this file through the terminal or command 
 line by typing "cd " then drag the folder containing the jar file to the command line and press enter. After type 
-"java -jar jarfilename.jar" to execute the file.
+"java -jar jarfilename.jar" to execute the file. 
+
+IMPORTANT: When cloning to your local computer to play it through your IDE make sure to mark the folders Images, Music, and Sound as resources in the project structure otherwise the game will not run.
 
 The goal of the player:
 - To collect as many apples as possible
