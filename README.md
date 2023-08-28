@@ -58,9 +58,8 @@ Future features I would like to implement:
 - BONUS: Maybe add an intro sequence to the game (not likely, but interested in the concept)
 
 TODOs:
-- Figure out how to publish the finished product (game) so it's playable on all OS's without having to download extra 
-resources/software. Ideally, maybe I can figure out a way to convert this into a web application or more likely I'll 
-make a .exe file for windows and .dmg for mac.
+- Add the option for AI in the options menu so that the game can play on it's own.
+- Fix the High Scores menu where if the same user surpases their own high score it shows duplicates of that user and the score
 
 Remarks: I've done so much with this project in the last 2 month since first working on this project (Dec. 2022) 
 that I've decided to not add anymore features and to just publish this and fix any bugs (and MAYBE set up high scores by 
